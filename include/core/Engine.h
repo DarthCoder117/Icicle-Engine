@@ -26,7 +26,7 @@ namespace ice
 			
 			void startGame();
 			
-			sf::Window* getWindow(){return m_window;}
+			sf::Window* getWindow(){return m_window.get();}
 			
 		protected:
 			

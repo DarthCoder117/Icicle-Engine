@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <SFML/Window.hpp>
+
 #include "core/Engine.h"
 
 
@@ -16,7 +18,10 @@ Test::Test() {
 }
 
 void Test::start() {
-	Engine engine;
+
+	sf::Window window(sf::VideoMode(800, 600), "Icicle Engine example");
+
+	Engine engine(&window);
 	
 	cout << "Hello World!\n";
 }
