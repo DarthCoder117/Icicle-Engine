@@ -1,5 +1,7 @@
 # build folder
 build/
+bin/
+lib/GNU
 
 # project folder
 projects/

@@ -21,7 +21,7 @@ Test::Test() {
 void Test::start() {
 	sf::Window window(sf::VideoMode(800, 600), "Icicle Engine example");
 	
-	Engine engine(&window);
+	Engine engine(window);
 	engine.startGame();
 	cout << "Hello World!\n";
 }
