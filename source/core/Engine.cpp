@@ -34,7 +34,15 @@ void Engine::startGame()
 				m_window->close();
 			}
 		}
+
+		//TODO: Update event manager
+
+		//TODO: Update each subsystem in a seperate thread
 		
+		//TODO: Update game logic
+
+		//TODO: Start rendering thread
+
 		m_window->display();
 
 	}

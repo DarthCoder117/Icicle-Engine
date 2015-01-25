@@ -21,7 +21,7 @@ namespace ice
 		class Engine : public Uncopyable
 		{
 		public:
-		
+			
 			Engine(sf::Window* window);
 			
 			void startGame();
