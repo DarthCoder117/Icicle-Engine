@@ -30,4 +30,3 @@ file(GLOB CORE_SOURCES
 	)
 
 add_library(icicle-core ${CORE_SOURCES})
-target_link_libraries(icicle-core SFML)
