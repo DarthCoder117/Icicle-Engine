@@ -9,7 +9,7 @@ using namespace core;
 
 using namespace std;
 
-Engine::Engine(sf::Window* window)
+Engine::Engine(sf::Window& window)
 	:m_window(window)
 {
 	
@@ -17,11 +17,11 @@ Engine::Engine(sf::Window* window)
 
 void Engine::startGame()
 {
-	while (m_window->isOpen())
+	while (m_window.isOpen())
 	{
 		//Handle window events
 		sf::Event evt;
-		while (m_window->pollEvent(evt))
+		while (m_window.pollEvent(evt))
 		{
 			//Send window event to all callbacks
 			for (unsigned int i = 0; i < m_windowCallbacks.size(); ++i)
@@ -31,10 +31,10 @@ void Engine::startGame()
 
 			if (evt.type == sf::Event::Closed)
 			{
-				m_window->close();
+				m_window.close();
 			}
 		}
 		
-		m_window->display();
+		m_window.display();
 	}
 }

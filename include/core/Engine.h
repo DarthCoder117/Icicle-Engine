@@ -3,7 +3,6 @@
 #include "core/Uncopyable.h"
 #include <SFML/Window.hpp>
 #include <vector>
-#include <memory>
 
 namespace ice
 {
@@ -15,22 +14,21 @@ namespace ice
 		
 			virtual ~WindowEventCallback(){}
 			
-			virtual void onWindowEvent(const sf::Event& evt){}
+			virtual void onWindowEvent(const sf::Event& evt) = 0;
 		};
 	
 		class Engine : public Uncopyable
 		{
 		public:
 		
-			Engine(sf::Window* window);
+			Engine(sf::Window& window);
 			
 			void startGame();
 			
-			sf::Window* getWindow(){return m_window.get();}
-			
+			sf::Window& getWindow(){return m_window;}
 		protected:
 			
-			std::unique_ptr<sf::Window> m_window;
+			sf::Window &m_window;
 			
 			std::vector<WindowEventCallback*> m_windowCallbacks; 
 		};

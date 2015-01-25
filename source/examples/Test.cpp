@@ -19,7 +19,7 @@ Test::Test() {
 }
 
 void Test::start() {
-	sf::Window* window = new sf::Window(sf::VideoMode(800, 600), "Icicle Engine example");
+	sf::Window window(sf::VideoMode(800, 600), "Icicle Engine example");
 	
 	Engine engine(window);
 	engine.startGame();
