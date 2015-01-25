@@ -3,6 +3,7 @@
 #include "core/Uncopyable.h"
 #include "core/SubSystem.h"
 #include "graphics/Graphics.h"
+#include "core/Window.h"
 #include <SFML/Window.hpp>
 #include <vector>
 
@@ -19,8 +20,11 @@ namespace ice
 			void startGame();
 
 			SubSystem* getSubSystem(SubSystemType type);
+
 		private:
+			
 			graphics::Graphics m_graphics;
+			core::Window m_window;
 		};
 	}
 }

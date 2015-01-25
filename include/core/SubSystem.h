@@ -7,12 +7,14 @@ namespace ice
 	namespace core
 	{
 		enum SubSystemType {
-			GRAPHICS
+			GRAPHICS,
+			WINDOW
 		};
 
 		class SubSystem
 		{
 		public:
+
 			virtual SubSystemType getType() = 0;
 		};
 	}

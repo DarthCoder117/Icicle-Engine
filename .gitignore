@@ -2,11 +2,10 @@
 build/
 bin/
 lib/GNU
+lib/MSVC
 
 # project folder
 projects/
-# binary folders
-bin/
 
 # kdev project file
 Icicle-Engine.kdev4
