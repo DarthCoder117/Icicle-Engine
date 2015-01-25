@@ -1,6 +1,9 @@
 # build folder
 build/
 
+# project folder
+projects/
+
 # kdev project file
 Icicle-Engine.kdev4
 
