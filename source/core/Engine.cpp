@@ -12,10 +12,3 @@ using namespace std;
 Engine::Engine() {
 	
 }
-
-void Engine::buildTest() {
-	cout << "Hello test" << endl;
-	
-	sf::RenderWindow window;
-	
-}

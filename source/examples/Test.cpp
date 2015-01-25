@@ -18,7 +18,7 @@ Test::Test() {
 void Test::start() {
 	Engine engine;
 	
-	engine.buildTest();
+	cout << "Hello World!\n";
 }
 
 

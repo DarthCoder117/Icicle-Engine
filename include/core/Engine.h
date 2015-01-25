@@ -10,7 +10,6 @@ namespace ice
 		{
 		public:
 			Engine();
-			void buildTest();
 		};
 	}
 }
