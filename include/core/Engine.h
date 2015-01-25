@@ -9,8 +9,8 @@ namespace ice
 		class Engine : public Uncopyable
 		{
 		public:
-			
-			
+			Engine();
+			void buildTest();
 		};
 	}
 }
