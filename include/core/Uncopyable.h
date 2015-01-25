@@ -14,8 +14,8 @@ namespace ice
 			
 		private:
 
-			Uncopyable(const Uncopyable& oth){}
-			Uncopyable& operator=(const Uncopyable& rhs){}
+			Uncopyable(const Uncopyable& oth);
+			Uncopyable& operator=(const Uncopyable& rhs);
 		};
 	}
 }

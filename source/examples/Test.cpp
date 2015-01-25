@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "core/Engine.h"
+#include <SFML/Window.hpp>
 
 
 using namespace ice;
@@ -16,8 +17,11 @@ Test::Test() {
 }
 
 void Test::start() {
-	Engine engine;
+	sf::Window window;
+	window.create(sf::VideoMode(800, 600), "My window");
 	
+	Engine engine(&window);
+	engine.startGame();
 	cout << "Hello World!\n";
 }
 
