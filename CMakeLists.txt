@@ -12,6 +12,10 @@ option (BUILD_TESTS "Build Icicle Engine tests" ON)
 set(SFML_PATH ${CMAKE_SOURCE_DIR}/3rd-party/SFML)
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib")
 
+if ( WIN32 )
+link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib/${CMAKE_CXX_COMPILER_ID}")
+endif ( WIN32 )
+
 # Generate configuration header
 configure_file("${CMAKE_SOURCE_DIR}/include/IcicleConfig.h.in" "${CMAKE_SOURCE_DIR}/include/IcicleConfig.h")
 
