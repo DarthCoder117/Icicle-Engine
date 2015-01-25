@@ -21,7 +21,9 @@ configure_file("${CMAKE_SOURCE_DIR}/include/IcicleConfig.h.in" "${CMAKE_SOURCE_D
 
 #Directories
 set (ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
-include_directories ("${ENGINE_INCLUDE_DIR}")
+include_directories (
+	"${ENGINE_INCLUDE_DIR}"
+	"${CMAKE_SOURCE_DIR}/3rd-party/SFML/include")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_ID})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_ID})
