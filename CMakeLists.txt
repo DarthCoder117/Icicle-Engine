@@ -36,7 +36,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_
 
 
 #Linux compile
+if ( NOT WIN32 )
 set( CMAKE_CXX_FLAGS "-Wall -g -std=gnu++0x" )
+endif ( NOT WIN32 )
 
 #icicle-core
 file(GLOB CORE_SOURCES 
