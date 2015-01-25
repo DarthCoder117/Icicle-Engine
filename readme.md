@@ -18,5 +18,5 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 
 # 3rd-party libraries
-* SFML
-* GLM
+* SFML - Simple and Fast Multimedia Library http://www.sfml-dev.org/
+* GLM - OpenGL Mathematics (GLM) http://glm.g-truc.net/

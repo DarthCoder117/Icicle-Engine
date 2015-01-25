@@ -3,6 +3,11 @@ build/
 bin/
 lib/GNU
 
+# project folder
+projects/
+# binary folders
+bin/
+
 # kdev project file
 Icicle-Engine.kdev4
 
