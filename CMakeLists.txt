@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.1)
-project(Icicle Engine)
+cmake_minimum_required(VERSION 2.8)
+project(IcicleEngine)
 
 # Version nuber.
 set (ICE_VERSION_MAJOR 1)
 set (ICE_VERSION_MINOR 0)
 
-#Build options
+#Configuration options
 option(BUILD_TESTS "Build Icicle Engine tests" ON)
 
 # Generate configuration header
@@ -14,6 +14,10 @@ configure_file("${CMAKE_SOURCE_DIR}/include/IcicleConfig.h.in" "${CMAKE_SOURCE_D
 #Directories
 set (ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 include_directories ("${ENGINE_INCLUDE_DIR}")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_GENERATOR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_GENERATOR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_GENERATOR})
 
 #icicle-core
 file(GLOB CORE_SOURCES 
