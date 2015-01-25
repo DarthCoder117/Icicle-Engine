@@ -11,6 +11,11 @@ option (BUILD_TESTS "Build Icicle Engine tests" ON)
 #3rd party library directories
 set(SFML_PATH ${CMAKE_SOURCE_DIR}/3rd-party/SFML)
 
+#sfml-librarys
+FIND_LIBRARY(sfml-graphics SFML_PATH/lib)
+FIND_LIBRARY(sfml-system SFML_PATH/lib)
+FIND_LIBRARY(sfml-window SFML_PATH/lib)
+
 # Generate configuration header
 configure_file("${CMAKE_SOURCE_DIR}/include/IcicleConfig.h.in" "${CMAKE_SOURCE_DIR}/include/IcicleConfig.h")
 
@@ -22,10 +27,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_ID})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_ID})
 
-#sfml-librarys
-FIND_LIBRARY(sfml-graphics ${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib)
-FIND_LIBRARY(sfml-system ${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib)
-FIND_LIBRARY(sfml-window ${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib)
+
 
 #icicle-core
 file(GLOB CORE_SOURCES 
