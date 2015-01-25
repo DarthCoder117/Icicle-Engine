@@ -34,6 +34,8 @@ void Engine::startGame()
 				m_window->close();
 			}
 		}
+		
+		m_window->display();
 
 	}
 }

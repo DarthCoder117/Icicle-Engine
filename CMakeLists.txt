@@ -35,6 +35,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_ID})
 
 
+#Linux compile
+set( CMAKE_CXX_FLAGS "-Wall -g -std=gnu++0x" )
 
 #icicle-core
 file(GLOB CORE_SOURCES 
@@ -54,4 +56,4 @@ file(GLOB EXAMPLES_SOURCES
 	)
 
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
-target_link_libraries (icicle-examples icicle-core sfml-system sfml-main sfml-window sfml-graphics)
+target_link_libraries (icicle-examples icicle-core sfml-graphics sfml-window sfml-system)

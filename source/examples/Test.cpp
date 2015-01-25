@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 
 #include "core/Engine.h"
+#include <SFML/Window.hpp>
 
 
 using namespace ice;
@@ -18,11 +19,10 @@ Test::Test() {
 }
 
 void Test::start() {
-
 	sf::Window window(sf::VideoMode(800, 600), "Icicle Engine example");
-
-	Engine engine(&window);
 	
+	Engine engine(&window);
+	engine.startGame();
 	cout << "Hello World!\n";
 }
 
