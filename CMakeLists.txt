@@ -38,12 +38,22 @@ endif ( NOT WIN32 )
 
 #icicle-core
 file(GLOB CORE_SOURCES 
-	"${CMAKE_SOURCE_DIR}/include/core/*.h" 
-	"${CMAKE_SOURCE_DIR}/source/core/*.h" 
+	"${CMAKE_SOURCE_DIR}/include/core/*.h"
+	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+	"${CMAKE_SOURCE_DIR}/source/core/*.h"
 	"${CMAKE_SOURCE_DIR}/source/core/*.cpp"
 	)
 	
 add_library(icicle-core ${CORE_SOURCES})
+
+#icicle-graphics
+file(GLOB GRAPHICS_SOURCES 
+	"${CMAKE_SOURCE_DIR}/include/core/*.h" 
+	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+	"${CMAKE_SOURCE_DIR}/source/graphics/*.h" 
+	"${CMAKE_SOURCE_DIR}/source/graphics/*.cpp"
+	)
+add_library(icicle-graphics ${GRAPHICS_SOURCES})
 
 #icicle-examples
 file(GLOB EXAMPLES_SOURCES 
@@ -54,4 +64,4 @@ file(GLOB EXAMPLES_SOURCES
 	)
 
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
-target_link_libraries (icicle-examples icicle-core sfml-graphics sfml-window sfml-system)
+target_link_libraries (icicle-examples icicle-core icicle-graphics sfml-graphics sfml-window sfml-system)

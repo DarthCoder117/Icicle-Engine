@@ -3,38 +3,29 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 using namespace ice;
 using namespace core;
+using namespace graphics;
 
 using namespace std;
 
-Engine::Engine(sf::Window& window)
-	:m_window(window)
+Engine::Engine()
 {
 	
 }
 
 void Engine::startGame()
 {
-	while (m_window.isOpen())
-	{
-		//Handle window events
-		sf::Event evt;
-		while (m_window.pollEvent(evt))
-		{
-			//Send window event to all callbacks
-			for (unsigned int i = 0; i < m_windowCallbacks.size(); ++i)
-			{
-				m_windowCallbacks[i]->onWindowEvent(evt);
-			}
+	m_graphics.render();
+}
 
-			if (evt.type == sf::Event::Closed)
-			{
-				m_window.close();
-			}
-		}
-		
-		m_window.display();
+SubSystem* Engine::getSubSystem(SubSystemType type) {
+	switch (type) {
+		case SubSystemType::GRAPHICS:
+			return &m_graphics;
+		default:
+			return NULL;
 	}
 }

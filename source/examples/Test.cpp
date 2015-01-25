@@ -10,6 +10,7 @@
 
 using namespace ice;
 using namespace core;
+using namespace graphics;
 using namespace test;
 
 using namespace std;
@@ -18,11 +19,11 @@ Test::Test() {
 	
 }
 
-void Test::start() {
-	sf::Window window(sf::VideoMode(800, 600), "Icicle Engine example");
+void Test::start() {	
+	Engine engine;
 	
-	Engine engine(window);
 	engine.startGame();
+	
 	cout << "Hello World!\n";
 }
 
