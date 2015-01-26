@@ -24,10 +24,17 @@ namespace ice
 
 			Window(const sf::VideoMode& videoMode = sf::VideoMode(800, 600), const char* windowName = "Icicle Engine Window");
 
+			void init();
+			
 			///@brief Called periodically to poll for window events and ensure that the window is running.
-			bool run();
+			void update();
 
+			void shutdown();
+			
 			void registerWindowCallback(WindowEventCallback* callback);
+			
+			bool isOpen();
+			void close();
 
 		private:
 

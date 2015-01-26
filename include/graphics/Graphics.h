@@ -9,26 +9,14 @@ namespace ice
 {
 	namespace graphics
 	{
-		class WindowEventCallback
-		{
-		public:
-			
-			virtual ~WindowEventCallback(){}
-			
-			virtual void onWindowEvent(const sf::Event& evt) = 0;
-		};
-
 		class Graphics : public core::SubSystem<Graphics> {
 		public:
 			Graphics();
 			
 			void render();
-			
-			sf::Window& getWindow(){return m_window;}
+
 			
 		private:
-			std::vector<WindowEventCallback*> m_windowCallbacks;
-			sf::Window m_window;
 		};
 	}
 }

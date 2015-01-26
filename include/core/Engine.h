@@ -13,7 +13,7 @@ namespace ice
 	namespace core
 	{
 		///@brief The Engine manages the game loop and SubSystems.
-		class Engine : public Uncopyable
+		class Engine : public Uncopyable, public WindowEventCallback
 		{
 		public:
 		
@@ -31,14 +31,13 @@ namespace ice
 			///@brief Starts the game loop and initializes all registered sub-systems.
 			void startGame();
 
-			graphics::Graphics* getGraphics(){ return &m_graphics; }
-			Window* getWindow(){ return &m_window; }
+			Window& getWindow(){ return m_window; }
 
 		private:
+			virtual void onWindowEvent(const sf::Event& evt);
 			
-			graphics::Graphics m_graphics;
+		private:
 			Window m_window;
-
 			std::unordered_map<SubSystemType, ISubSystem*> m_systemMap;
 		};
 	}

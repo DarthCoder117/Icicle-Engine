@@ -9,6 +9,11 @@ void FileSystem::init(int argc, char *argv[])
 	PHYSFS_init(argv[0]);
 }
 
+void FileSystem::update()
+{
+
+}
+
 void FileSystem::shutdown()
 {
 	PHYSFS_deinit();

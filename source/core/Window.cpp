@@ -8,7 +8,12 @@ Window::Window(const sf::VideoMode& videoMode, const char* windowName)
 	m_window.create(videoMode, windowName);
 }
 
-bool Window::run()
+void Window::init()
+{
+}
+
+
+void Window::update()
 {
 	if (m_window.isOpen())
 	{
@@ -21,17 +26,25 @@ bool Window::run()
 			{
 				m_windowCallbacks[i]->onWindowEvent(evt);
 			}
-
-			if (evt.type == sf::Event::Closed)
-			{
-				m_window.close();
-			}
 		}
-
-		return true;
+		
+		m_window.display();
 	}
+}
 
-	return false;
+void Window::shutdown()
+{
+}
+
+
+bool Window::isOpen()
+{
+	return m_window.isOpen();
+}
+
+void Window::close()
+{
+	m_window.close();
 }
 
 void Window::registerWindowCallback(WindowEventCallback* callback)

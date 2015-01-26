@@ -12,6 +12,7 @@ namespace ice
 		public:
 
 			void init(int argc, char *argv[]);
+			void update();
 			void shutdown();
 
 			void mount(const char* path, const char* mountPoint = "");

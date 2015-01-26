@@ -3,6 +3,10 @@
 #include "core/Uncopyable.h"
 #include <typeinfo>
 
+#ifdef __linux
+#include <stdlib.h>
+#endif
+
 namespace ice
 {
 	namespace core
@@ -18,9 +22,13 @@ namespace ice
 		public:
 
 			///@brief Called when the SubSystem is registered with the Engine.
-			virtual void init(){}
+			virtual void init() = 0;
+			
+			///@brief Called to update the SubSystem
+			virtual void update() = 0;
+			
 			///@brief Called for each SubSystem before the Engine is shutdown.
-			virtual void shutdown(){}
+			virtual void shutdown() = 0;
 
 			Engine* getEngine(){ return m_engine; }
 

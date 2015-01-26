@@ -14,18 +14,23 @@ using namespace graphics;
 
 using namespace std;
 
-Engine::Engine()
+Engine::Engine() : m_window()
 {
-	
+	m_window.registerWindowCallback(this);
+	registerSubSystem(&m_window);
 }
 
 void Engine::startGame()
 {
 	//m_graphics.render();
 
-	while (m_window.run())
+	while (m_window.isOpen())
 	{
-
+		std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+		for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
+		{
+			iter->second->update();
+		}
 	}
 
 	//Shutdown all SubSystems
@@ -58,4 +63,11 @@ ISubSystem* Engine::getSubSystem(SubSystemType type)
 	}
 
 	return NULL;
+}
+
+void Engine::onWindowEvent(const sf::Event& evt) {
+	if (evt.type == sf::Event::Closed)
+	{
+		m_window.close();
+	}
 }
