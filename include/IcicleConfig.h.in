@@ -10,4 +10,9 @@
 #define ICE_WIN32
 #endif
 
+//Configuration detection
+#ifdef _DEBUG
+#define ICE_DEBUG
+#endif
+
 #endif
