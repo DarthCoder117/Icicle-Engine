@@ -17,7 +17,8 @@ namespace ice
 			virtual void onWindowEvent(const sf::Event& evt) = 0;
 		};
 
-		class Window : public SubSystem
+		///@brief Manages the application window and sends window events to any subscribed callback listeners.
+		class Window : public SubSystem<Window>
 		{
 		public:
 
@@ -27,11 +28,6 @@ namespace ice
 			bool run();
 
 			void registerWindowCallback(WindowEventCallback* callback);
-
-			SubSystemType getType()
-			{
-				return WINDOW;
-			}
 
 		private:
 

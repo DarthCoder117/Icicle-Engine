@@ -34,7 +34,3 @@ void Graphics::render() {
 	}
 	
 }
-
-SubSystemType Graphics::getType() {
-	return SubSystemType::GRAPHICS;
-}

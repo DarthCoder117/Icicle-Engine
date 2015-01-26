@@ -11,6 +11,7 @@ option (BUILD_TESTS "Build Icicle Engine tests" ON)
 #3rd party library directories
 set(SFML_PATH ${CMAKE_SOURCE_DIR}/3rd-party/SFML)
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib")
+link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/physfs/lib/${CMAKE_CXX_COMPILER_ID}")
 
 if ( WIN32 )
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/SFML/lib/${CMAKE_CXX_COMPILER_ID}")
@@ -64,4 +65,4 @@ file(GLOB EXAMPLES_SOURCES
 	)
 
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
-target_link_libraries (icicle-examples icicle-core icicle-graphics sfml-graphics sfml-window sfml-system)
+target_link_libraries (icicle-examples icicle-core icicle-graphics sfml-graphics sfml-window sfml-system physfs)

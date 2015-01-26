@@ -20,3 +20,4 @@ freely, subject to the following restrictions:
 # 3rd-party libraries
 * SFML - Simple and Fast Multimedia Library http://www.sfml-dev.org/
 * GLM - OpenGL Mathematics (GLM) http://glm.g-truc.net/
+* PhysicsFS - virtual filesystem library http://icculus.org/physfs/

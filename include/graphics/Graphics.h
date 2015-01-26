@@ -18,7 +18,7 @@ namespace ice
 			virtual void onWindowEvent(const sf::Event& evt) = 0;
 		};
 
-		class Graphics : public core::SubSystem {
+		class Graphics : public core::SubSystem<Graphics> {
 		public:
 			Graphics();
 			
@@ -26,7 +26,6 @@ namespace ice
 			
 			sf::Window& getWindow(){return m_window;}
 			
-			virtual ice::core::SubSystemType getType();
 		private:
 			std::vector<WindowEventCallback*> m_windowCallbacks;
 			sf::Window m_window;
