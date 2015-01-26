@@ -12,7 +12,9 @@ namespace ice
 		{
 		public:
 
-			void init(int argc, char *argv[]);
+			FileSystem(int argc, char *argv[]);
+
+			void init();
 			void update();
 			void shutdown();
 

@@ -32,6 +32,8 @@ namespace ice
 
 			void shutdown();
 			
+			void setWindowTitle(const char* title);
+
 			void registerWindowCallback(WindowEventCallback* callback);
 			
 			bool isOpen();

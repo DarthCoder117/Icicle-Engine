@@ -20,10 +20,13 @@ Engine::Engine() : m_window()
 	registerSubSystem(&m_window);
 }
 
-void Engine::startGame()
+void Engine::startGame(LaunchParameters& params)
 {
-	//m_graphics.render();
+	m_launchParams = params;//Store launch params before init so that subsystems can use them.
 
+	init();
+
+	//Main game loop
 	while (m_window.isOpen())
 	{
 		std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
@@ -45,7 +48,7 @@ void Engine::registerSubSystem(ISubSystem* system)
 {
 	#ifdef ICE_DEBUG
 	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter = m_systemMap.find(system->getType());
-	assert(iter != m_systemMap.end());
+	assert(iter == m_systemMap.end());
 	#endif
 
 	m_systemMap[system->getType()] = system;
@@ -70,4 +73,15 @@ void Engine::onWindowEvent(const sf::Event& evt) {
 	{
 		m_window.close();
 	}
+}
+
+int ice::core::engineMain(Engine& engine, int argc, char *argv[])
+{
+	LaunchParameters params;
+	params.argc = argc;
+	params.argv = argv;
+
+	engine.startGame(params);
+
+	return 0;
 }

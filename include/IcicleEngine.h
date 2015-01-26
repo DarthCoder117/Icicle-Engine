@@ -3,4 +3,6 @@
 
 #include <IcicleConfig.h>
 
+#include "core/Engine.h"
+
 #endif

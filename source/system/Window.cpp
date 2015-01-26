@@ -13,6 +13,10 @@ void Window::init()
 {
 }
 
+void Window::setWindowTitle(const char* title)
+{
+	m_window.setTitle(title);
+}
 
 void Window::update()
 {

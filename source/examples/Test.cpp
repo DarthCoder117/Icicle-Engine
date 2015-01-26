@@ -15,20 +15,9 @@ using namespace test;
 
 using namespace std;
 
-Test::Test() {
-	
-}
-
-void Test::start() {	
-	Engine engine;
-	
-	engine.startGame();
-	
+void Test::init() 
+{	
 	cout << "Hello World!\n";
 }
 
-
-int main() {
-	Test t;
-	t.start();
-}
+START_ENGINE(Test)

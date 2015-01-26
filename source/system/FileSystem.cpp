@@ -5,9 +5,14 @@ using namespace ice;
 using namespace core;
 using namespace system;
 
-void FileSystem::init(int argc, char *argv[])
+FileSystem::FileSystem(int argc, char *argv[])
 {
 	PHYSFS_init(argv[0]);
+}
+
+void FileSystem::init()
+{
+	
 }
 
 void FileSystem::update()
