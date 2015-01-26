@@ -37,20 +37,35 @@ if ( NOT WIN32 )
 set( CMAKE_CXX_FLAGS "-Wall -g -std=gnu++0x" )
 endif ( NOT WIN32 )
 
+file(GLOB ICE_INCLUDES
+	"${CMAKE_SOURCE_DIR}/include/core/*.h"
+	"${CMAKE_SOURCE_DIR}/include/system/*.h"
+	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+	)
+
 #icicle-core
 file(GLOB CORE_SOURCES 
-	"${CMAKE_SOURCE_DIR}/include/core/*.h"
-	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+	${ICE_INCLUDES}
+
 	"${CMAKE_SOURCE_DIR}/source/core/*.h"
 	"${CMAKE_SOURCE_DIR}/source/core/*.cpp"
 	)
 	
 add_library(icicle-core ${CORE_SOURCES})
 
+#icicle-system
+file(GLOB SYSTEM_SOURCES 
+	${ICE_INCLUDES}
+	
+	"${CMAKE_SOURCE_DIR}/source/system/*.h" 
+	"${CMAKE_SOURCE_DIR}/source/system/*.cpp"
+	)
+add_library(icicle-system ${SYSTEM_SOURCES})
+
 #icicle-graphics
-file(GLOB GRAPHICS_SOURCES 
-	"${CMAKE_SOURCE_DIR}/include/core/*.h" 
-	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+file(GLOB GRAPHICS_SOURCES
+	${ICE_INCLUDES}
+	
 	"${CMAKE_SOURCE_DIR}/source/graphics/*.h" 
 	"${CMAKE_SOURCE_DIR}/source/graphics/*.cpp"
 	)
@@ -58,11 +73,11 @@ add_library(icicle-graphics ${GRAPHICS_SOURCES})
 
 #icicle-examples
 file(GLOB EXAMPLES_SOURCES 
-	"${CMAKE_SOURCE_DIR}/include/core/*.h" 
-	"${CMAKE_SOURCE_DIR}/include/test/*.h"
+	${ICE_INCLUDES}
+	
 	"${CMAKE_SOURCE_DIR}/source/examples/*.h"
 	"${CMAKE_SOURCE_DIR}/source/examples/*.cpp"
 	)
 
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
-target_link_libraries (icicle-examples icicle-core icicle-graphics sfml-graphics sfml-window sfml-system physfs)
+target_link_libraries (icicle-examples icicle-core icicle-graphics icicle-system sfml-graphics sfml-window sfml-system physfs)

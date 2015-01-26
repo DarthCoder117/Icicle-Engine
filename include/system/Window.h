@@ -1,12 +1,13 @@
 #ifndef WINDOW_H
 #define WINDOW_H
+
 #include "core/SubSystem.h"
 #include <vector>
 #include <SFML/Window.hpp>
 
 namespace ice
 {
-	namespace core
+	namespace system
 	{
 		class WindowEventCallback
 		{
@@ -18,7 +19,7 @@ namespace ice
 		};
 
 		///@brief Manages the application window and sends window events to any subscribed callback listeners.
-		class Window : public SubSystem<Window>
+		class Window : public core::SubSystem<Window>
 		{
 		public:
 

@@ -1,8 +1,9 @@
-#include "core/FileSystem.h"
+#include "system/FileSystem.h"
 #include <../3rd-party/physfs/physfs.h>
 
 using namespace ice;
 using namespace core;
+using namespace system;
 
 void FileSystem::init(int argc, char *argv[])
 {

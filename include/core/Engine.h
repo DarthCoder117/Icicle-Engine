@@ -3,7 +3,7 @@
 #include "core/Uncopyable.h"
 #include "core/SubSystem.h"
 #include "graphics/Graphics.h"
-#include "core/Window.h"
+#include "system/Window.h"
 #include <SFML/Window.hpp>
 #include <vector>
 #include <unordered_map>
@@ -13,7 +13,7 @@ namespace ice
 	namespace core
 	{
 		///@brief The Engine manages the game loop and SubSystems.
-		class Engine : public Uncopyable, public WindowEventCallback
+		class Engine : public Uncopyable, public system::WindowEventCallback
 		{
 		public:
 		
@@ -31,13 +31,13 @@ namespace ice
 			///@brief Starts the game loop and initializes all registered sub-systems.
 			void startGame();
 
-			Window& getWindow(){ return m_window; }
+			system::Window& getWindow(){ return m_window; }
 
 		private:
 			virtual void onWindowEvent(const sf::Event& evt);
 			
 		private:
-			Window m_window;
+			system::Window m_window;
 			std::unordered_map<SubSystemType, ISubSystem*> m_systemMap;
 		};
 	}

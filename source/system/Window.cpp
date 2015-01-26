@@ -1,7 +1,8 @@
-#include "core/Window.h"
+#include "system/Window.h"
 
 using namespace ice;
 using namespace core;
+using namespace system;
 
 Window::Window(const sf::VideoMode& videoMode, const char* windowName)
 {
