@@ -5,7 +5,7 @@
 #include "graphics/Graphics.h"
 #include "system/Window.h"
 #include "system/FileSystem.h"
-#include <SFML/Window.hpp>
+#include "system/InputSystem.h"
 #include <vector>
 #include <memory>
 #include <unordered_map>
@@ -15,7 +15,7 @@ namespace ice
 	namespace core
 	{
 		///@brief The Engine manages the game loop and SubSystems and serves as the base class for Icicle Engine applications.
-		class Engine : public Uncopyable, public system::WindowEventCallback
+		class Engine : public Uncopyable, public system::WindowEventListener, public system::KeyEventListener
 		{
 		public:
 
@@ -42,13 +42,10 @@ namespace ice
 			graphics::Graphics& getGraphics() { return m_graphics; }
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
-
-		protected:
-
-			virtual void onWindowEvent(const sf::Event& evt);
+		private:
+			virtual void onWindowEvent(system::WindowEvent event);
+			virtual void onKeyEvent(system::KeyEvent event);
 			
-		protected:
-
 			LaunchParameters m_launchParams;
 
 			system::Window m_window;
@@ -56,7 +53,7 @@ namespace ice
 			graphics::Graphics m_graphics;
 
 			system::FileSystem m_fileSystem;
-
+			
 			std::unordered_map<SubSystemType, ISubSystem*> m_systemMap;
 		};
 	}

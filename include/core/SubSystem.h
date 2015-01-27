@@ -1,5 +1,6 @@
 #ifndef SUB_SYSTEM_H
 #define SUB_SYSTEM_H
+
 #include "core/Uncopyable.h"
 #include "core/LaunchParameters.h"
 #include <typeinfo>
@@ -51,7 +52,6 @@ namespace ice
 		class SubSystem : public ISubSystem
 		{
 		public:
-
 			static SubSystemType getClassType(){ return typeid(T).hash_code(); }
 
 			SubSystemType getType(){ return T::getClassType(); }

@@ -3,14 +3,12 @@
 #include <iostream>
 #include <cassert>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-
 #include <IcicleConfig.h>
 
 using namespace ice;
 using namespace core;
 using namespace graphics;
+using namespace system;
 
 using namespace std;
 
@@ -20,14 +18,9 @@ Engine::Engine(const LaunchParameters& params)
 	m_graphics(&m_window),
 	m_fileSystem(params)
 {
-	m_window.registerWindowCallback(this);
-	m_window.registerWindowCallback(&m_graphics);
-
 	registerSubSystem(&m_window);
 	registerSubSystem(&m_graphics);
 	registerSubSystem(&m_fileSystem);
-
-	
 }
 
 void Engine::startGame()
@@ -40,7 +33,7 @@ void Engine::startGame()
 	}
 
 	//Main game loop
-	while (m_window.isOpen())
+	while (!glfwWindowShouldClose(m_window.getWindow()))
 	{
 		std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
 		for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
@@ -72,10 +65,16 @@ ISubSystem* Engine::getSubSystem(SubSystemType type)
 	return NULL;
 }
 
-void Engine::onWindowEvent(const sf::Event& evt) 
+void Engine::onWindowEvent(WindowEvent event)
+{	
+	
+}
+
+void Engine::onKeyEvent(KeyEvent event)
 {
-	if (evt.type == sf::Event::Closed)
+	if (event.key == GLFW_KEY_ESCAPE && event.action == GLFW_PRESS) 
 	{
-		m_window.close();
+		glfwSetWindowShouldClose(event.window, GL_TRUE);
 	}
 }
+
