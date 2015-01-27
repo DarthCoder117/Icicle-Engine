@@ -32,12 +32,14 @@ namespace ice
 			void startGame();
 
 			system::Window& getWindow(){ return m_window; }
+			graphics::Graphics& getGraphics() { return m_graphics; }
 
 		private:
 			virtual void onWindowEvent(const sf::Event& evt);
 			
 		private:
 			system::Window m_window;
+			graphics::Graphics m_graphics;
 			std::unordered_map<SubSystemType, ISubSystem*> m_systemMap;
 		};
 	}

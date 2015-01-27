@@ -36,11 +36,13 @@ namespace ice
 			
 			bool isOpen();
 			void close();
-
+			
+			const sf::Vector2u getSize() const;
+			
+			sf::WindowHandle getSystemHandle() const;
 		private:
-
 			std::vector<WindowEventCallback*> m_windowCallbacks;
-
+			
 			sf::Window m_window;
 		};
 	}

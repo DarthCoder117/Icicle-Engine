@@ -14,10 +14,13 @@ using namespace graphics;
 
 using namespace std;
 
-Engine::Engine() : m_window()
+Engine::Engine() : m_window(), m_graphics(&m_window)
 {
 	m_window.registerWindowCallback(this);
+	m_window.registerWindowCallback(&m_graphics);
+	
 	registerSubSystem(&m_window);
+	registerSubSystem(&m_graphics);
 }
 
 void Engine::startGame()
