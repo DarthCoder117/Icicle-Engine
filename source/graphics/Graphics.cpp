@@ -2,7 +2,7 @@
 
 #include <bgfx.h>
 #include <bgfxplatform.h>
-
+#include <bgfxdefines.h>
 
 #include <iostream>
 using namespace ice;
@@ -14,8 +14,8 @@ using namespace bgfx;
 
 using namespace std;
 
-#include <SFML/OpenGL.hpp>
-
+#include <GL/gl.h>
+#define ICE_DEBUG
 
 Graphics::Graphics(system::Window* window) : m_window(window)
 {
@@ -32,8 +32,8 @@ void Graphics::start()
 	#endif
 		
 	bgfx::init();
-	bgfx::reset(renderWidth, renderHeight, reset);
-// 	bgfx::reset(800,480,BGFX_RESET_VSYNC);
+// 	bgfx::reset(renderWidth, renderHeight, reset);
+	bgfx::reset(800,480,BGFX_RESET_VSYNC);
 	
 	#ifdef ICE_DEBUG
 	// Enable debug text.
@@ -41,7 +41,7 @@ void Graphics::start()
 	#endif
 	
 	// Set view 0 clear state.
-	bgfx::setViewClear(0,BGFX_CLEAR_COLOR_BIT | BGFX_CLEAR_DEPTH_BIT,0x303030FF,1.0f,0);
+	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,0x303030FF,1.0f,0);
 }
 
 void Graphics::update()
@@ -81,8 +81,11 @@ void Graphics::onWindowEvent(const sf::Event& evt) {
 	{
 		renderWidth = evt.size.width;
 		renderHeight = evt.size.height;
-		std::cout << "Resized: " << evt.size.width << ":" << evt.size.height << std::endl;
 		
+		#ifdef ICE_DEBUG
+			std::cout << "Window resized to: " << evt.size.width << ":" << evt.size.height << std::endl;
+		#endif
+			
 		shutdown();
 		init();
 	}

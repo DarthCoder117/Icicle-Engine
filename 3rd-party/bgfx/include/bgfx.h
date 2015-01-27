@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Branimir Karadzic. All rights reserved.
+ * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 
@@ -14,7 +14,7 @@
 ///
 #define BGFX_HANDLE(_name) \
 			struct _name { uint16_t idx; }; \
-			inline bool isValid(_name _handle) { return bgfx::invalidHandle != _handle.idx; }
+			inline bool isValid(_name _handle)   { return bgfx::invalidHandle != _handle.idx; }
 
 #define BGFX_INVALID_HANDLE { bgfx::invalidHandle }
 
@@ -161,7 +161,7 @@ namespace bgfx
 			D24F,
 			D32F,
 			D0S8,
-			
+
 			Count
 		};
 	};
@@ -324,8 +324,8 @@ namespace bgfx
 	{
 		uint8_t* data;
 		uint32_t size;
-		IndexBufferHandle handle;
 		uint32_t startIndex;
+		IndexBufferHandle handle;
 	};
 
 	///
@@ -345,8 +345,8 @@ namespace bgfx
 		uint8_t* data;             //!< Pointer to data.
 		uint32_t size;             //!< Data size.
 		uint32_t offset;           //!< Offset in vertex buffer.
+		uint32_t num;              //!< Number of instances.
 		uint16_t stride;           //!< Vertex buffer stride.
-		uint16_t num;              //!< Number of instances.
 		VertexBufferHandle handle; //!< Vertex buffer object handle.
 	};
 
@@ -379,7 +379,7 @@ namespace bgfx
 			float translation[3];       //!< Eye translation.
 			float fov[4];               //!< Field of view (up, down, left, right).
 			float viewOffset[3];        //!< Eye view matrix translation adjustment.
-			float pixelsPerTanAngle[2]; //!< 
+			float pixelsPerTanAngle[2]; //!<
 		};
 
 		Eye eye[2];
@@ -599,12 +599,23 @@ namespace bgfx
 	/// Print into internal debug text buffer.
 	void dbgTextPrintf(uint16_t _x, uint16_t _y, uint8_t _attr, const char* _format, ...);
 
+	/// Draw image into internal debug text buffer.
+	///
+	/// @param _x      X position from top-left.
+	/// @param _y      Y position from top-left.
+	/// @param _width  Image width.
+	/// @param _height Image height.
+	/// @param _data   Raw image data (character/attribute raw encoding).
+	/// @param _pitch  Image pitch in bytes.
+	///
+	void dbgTextImage(uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, const void* _data, uint16_t _pitch);
+
 	/// Create static index buffer.
 	///
 	/// @remarks
 	///   Only 16-bit index buffer is supported.
 	///
-	IndexBufferHandle createIndexBuffer(const Memory* _mem);
+	IndexBufferHandle createIndexBuffer(const Memory* _mem, uint8_t _flags = BGFX_BUFFER_COMPUTE_NONE);
 
 	/// Destroy static index buffer.
 	void destroyIndexBuffer(IndexBufferHandle _handle);
@@ -615,7 +626,7 @@ namespace bgfx
 	/// @param _decl Vertex declaration.
 	/// @returns Static vertex buffer handle.
 	///
-	VertexBufferHandle createVertexBuffer(const Memory* _mem, const VertexDecl& _decl);
+	VertexBufferHandle createVertexBuffer(const Memory* _mem, const VertexDecl& _decl, uint8_t _flags = BGFX_BUFFER_COMPUTE_NONE);
 
 	/// Destroy static vertex buffer.
 	///
@@ -626,11 +637,12 @@ namespace bgfx
 	/// Create empty dynamic index buffer.
 	///
 	/// @param _num Number of indices.
+	/// @param _flags `BGFX_BUFFER_*` flags.
 	///
 	/// @remarks
 	///   Only 16-bit index buffer is supported.
 	///
-	DynamicIndexBufferHandle createDynamicIndexBuffer(uint32_t _num);
+	DynamicIndexBufferHandle createDynamicIndexBuffer(uint32_t _num, uint8_t _flags = BGFX_BUFFER_COMPUTE_NONE);
 
 	/// Create dynamic index buffer and initialized it.
 	///
@@ -658,8 +670,9 @@ namespace bgfx
 	///
 	/// @param _num Number of vertices.
 	/// @param _decl Vertex declaration.
+	/// @param _flags `BGFX_BUFFER_*` flags.
 	///
-	DynamicVertexBufferHandle createDynamicVertexBuffer(uint16_t _num, const VertexDecl& _decl);
+	DynamicVertexBufferHandle createDynamicVertexBuffer(uint16_t _num, const VertexDecl& _decl, uint8_t _flags = BGFX_BUFFER_COMPUTE_NONE);
 
 	/// Create dynamic vertex buffer and initialize it.
 	///
@@ -777,6 +790,15 @@ namespace bgfx
 	///   input are matching, otherwise returns invalid program handle.
 	///
 	ProgramHandle createProgram(ShaderHandle _vsh, ShaderHandle _fsh, bool _destroyShaders = false);
+
+	/// Create program with compute shader.
+	///
+	/// @param _csh Compute shader.
+	/// @param _destroyShader If true, shader will be destroyed when
+	///   program is destroyed.
+	/// @returns Program handle.
+	///
+	ProgramHandle createProgram(ShaderHandle _csh, bool _destroyShader = false);
 
 	/// Destroy program.
 	void destroyProgram(ProgramHandle _handle);
@@ -911,7 +933,7 @@ namespace bgfx
 	///
 	/// @param _num Number of texture attachments.
 	/// @param _handles Texture attachments.
-	/// @param _destroyTextures If true, textures will be destroyed when 
+	/// @param _destroyTextures If true, textures will be destroyed when
 	///   frame buffer is destroyed.
 	///
 	FrameBufferHandle createFrameBuffer(uint8_t _num, TextureHandle* _handles, bool _destroyTextures = false);
@@ -1027,7 +1049,7 @@ namespace bgfx
 	/// @param _depth Depth clear value.
 	/// @param _stencil Stencil clear value.
 	///
-	void setViewClear(uint8_t _id, uint8_t _flags, uint32_t _rgba = 0x000000ff, float _depth = 1.0f, uint8_t _stencil = 0);
+	void setViewClear(uint8_t _id, uint16_t _flags, uint32_t _rgba = 0x000000ff, float _depth = 1.0f, uint8_t _stencil = 0);
 
 	/// Set view clear flags with different clear color for each
 	/// frame buffer texture. Must use setClearColor to setup clear color
@@ -1039,7 +1061,7 @@ namespace bgfx
 	/// @param _depth Depth clear value.
 	/// @param _stencil Stencil clear value.
 	///
-	void setViewClear(uint8_t _id, uint8_t _flags, float _depth, uint8_t _stencil, uint8_t _0 = UINT8_MAX, uint8_t _1 = UINT8_MAX, uint8_t _2 = UINT8_MAX, uint8_t _3 = UINT8_MAX, uint8_t _4 = UINT8_MAX, uint8_t _5 = UINT8_MAX, uint8_t _6 = UINT8_MAX, uint8_t _7 = UINT8_MAX);
+	void setViewClear(uint8_t _id, uint16_t _flags, float _depth, uint8_t _stencil, uint8_t _0 = UINT8_MAX, uint8_t _1 = UINT8_MAX, uint8_t _2 = UINT8_MAX, uint8_t _3 = UINT8_MAX, uint8_t _4 = UINT8_MAX, uint8_t _5 = UINT8_MAX, uint8_t _6 = UINT8_MAX, uint8_t _7 = UINT8_MAX);
 
 	/// Set view into sequential mode. Draw calls will be sorted in the same
 	/// order in which submit calls were called.
@@ -1172,7 +1194,13 @@ namespace bgfx
 	void setVertexBuffer(const TransientVertexBuffer* _tvb, uint32_t _startVertex, uint32_t _numVertices);
 
 	/// Set instance data buffer for draw primitive.
-	void setInstanceDataBuffer(const InstanceDataBuffer* _idb, uint16_t _num = UINT16_MAX);
+	void setInstanceDataBuffer(const InstanceDataBuffer* _idb, uint32_t _num = UINT32_MAX);
+
+	/// Set instance data buffer for draw primitive.
+	void setInstanceDataBuffer(VertexBufferHandle _handle, uint32_t _offset, uint32_t _num, uint16_t _stride);
+
+	/// Set instance data buffer for draw primitive.
+	void setInstanceDataBuffer(DynamicVertexBufferHandle _handle, uint32_t _offset, uint32_t _num);
 
 	/// Set program for draw primitive.
 	void setProgram(ProgramHandle _handle);
@@ -1218,13 +1246,25 @@ namespace bgfx
 	uint32_t submit(uint8_t _id, int32_t _depth = 0);
 
 	///
+	void setBuffer(uint8_t _stage, IndexBufferHandle _handle, Access::Enum _access);
+
+	///
+	void setBuffer(uint8_t _stage, VertexBufferHandle _handle, Access::Enum _access);
+
+	///
+	void setBuffer(uint8_t _stage, DynamicIndexBufferHandle _handle, Access::Enum _access);
+
+	///
+	void setBuffer(uint8_t _stage, DynamicVertexBufferHandle _handle, Access::Enum _access);
+
+	///
 	void setImage(uint8_t _stage, UniformHandle _sampler, TextureHandle _handle, uint8_t _mip, TextureFormat::Enum _format, Access::Enum _access);
 
 	///
 	void setImage(uint8_t _stage, UniformHandle _sampler, FrameBufferHandle _handle, uint8_t _attachment, TextureFormat::Enum _format, Access::Enum _access);
 
 	/// Dispatch compute.
-	void dispatch(uint8_t _id, ProgramHandle _handle, uint16_t _numX = 1, uint16_t _numY = 1, uint16_t _numZ = 1);
+	void dispatch(uint8_t _id, ProgramHandle _handle, uint16_t _numX = 1, uint16_t _numY = 1, uint16_t _numZ = 1, uint8_t _flags = BGFX_SUBMIT_EYE_FIRST);
 
 	/// Discard all previously set state for draw or compute call.
 	void discard();

@@ -46,7 +46,7 @@ include_directories(${OPENGL_INCLUDE_DIR})
 FIND_PACKAGE ( X11 REQUIRED )
 include_directories(${X11_INCLUDE_DIR})
 set( CMAKE_CXX_FLAGS "-Wall -g -std=gnu++0x" )
-find_package(GLIB)
+find_package(GLIB REQUIRED)
 include_directories(${GLIB2_LIBRARIES})
 endif ( NOT WIN32 )
 
@@ -93,4 +93,4 @@ file(GLOB EXAMPLES_SOURCES
 	)
 
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
-target_link_libraries (icicle-examples icicle-core icicle-graphics icicle-system sfml-graphics sfml-window sfml-system physfs bgfxRelease GL X11 glib-2.0 pthread)
+target_link_libraries (icicle-examples GL icicle-core icicle-graphics icicle-system sfml-graphics sfml-window sfml-system physfs bgfxDebug X11 glib-2.0 pthread dl)
