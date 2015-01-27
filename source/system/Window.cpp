@@ -14,6 +14,11 @@ void Window::setWindowTitle(const char* title)
 	m_window.setTitle(title);
 }
 
+sf::WindowHandle Window::getSystemHandle()
+{
+	return m_window.getSystemHandle();
+}
+
 void Window::update()
 {
 	if (m_window.isOpen())
@@ -23,9 +28,10 @@ void Window::update()
 		while (m_window.pollEvent(evt))
 		{
 			//Send window event to all callbacks
-			for (unsigned int i = 0; i < m_windowCallbacks.size(); ++i)
+			std::list<WindowEventCallback*>::iterator iter;
+			for (iter = m_windowCallbacks.begin(); iter != m_windowCallbacks.end(); ++iter)
 			{
-				m_windowCallbacks[i]->onWindowEvent(evt);
+				(*iter)->onWindowEvent(evt);
 			}
 		}
 		
@@ -46,4 +52,22 @@ void Window::close()
 void Window::registerWindowCallback(WindowEventCallback* callback)
 {
 	m_windowCallbacks.push_back(callback);
+}
+
+void Window::unregisterWindowCallback(WindowEventCallback* callback)
+{
+	std::list<WindowEventCallback*>::iterator iter;
+	for (iter = m_windowCallbacks.begin(); iter != m_windowCallbacks.end(); ++iter)
+	{
+		if (*iter == callback)
+		{
+			m_windowCallbacks.erase(iter);
+			return;
+		}
+	}
+}
+
+sf::Vector2u Window::getWindowSize()
+{
+	return m_window.getSize();
 }

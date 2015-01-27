@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include "core/SubSystem.h"
-#include <vector>
+#include <list>
 #include <SFML/Window.hpp>
 
 namespace ice
@@ -28,16 +28,25 @@ namespace ice
 			///@brief Called periodically to poll for window events and ensure that the window is running.
 			void update();
 
+			///@brief Changes the text displayed in the window title bar.
 			void setWindowTitle(const char* title);
 
+			///@brief Registers a callback to recieve window events.
 			void registerWindowCallback(WindowEventCallback* callback);
+			///@brief Unregisters a window event callback.
+			void unregisterWindowCallback(WindowEventCallback* callback);
 			
+			///@return The size of the client area (excluding the title bar and borders)
+			sf::Vector2u getWindowSize();
+			///@return The OS window handle.
+			sf::WindowHandle getSystemHandle();
+
 			bool isOpen();
 			void close();
 
 		private:
 
-			std::vector<WindowEventCallback*> m_windowCallbacks;
+			std::list<WindowEventCallback*> m_windowCallbacks;///< pointers will end up scattered around in memory anyways so list makes deletions more efficient.
 
 			sf::Window m_window;
 		};
