@@ -15,7 +15,6 @@ using namespace system;
 using namespace bgfx;
 
 using namespace std;
-
 #define ICE_DEBUG
 
 Graphics::Graphics(system::Window* window) : m_window(window)
@@ -38,7 +37,7 @@ void Graphics::start()
 	#endif
 	
 	// Set view 0 clear state.
-	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,0x303030FF,1.0f,0);
+	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xFFFFFFFF, 1.0f, 0);
 }
 
 void Graphics::update()

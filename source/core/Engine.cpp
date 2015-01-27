@@ -41,6 +41,8 @@ void Engine::startGame()
 			iter->second->update();
 		}
 	}
+	
+	shutdown();
 }
 
 void Engine::registerSubSystem(ISubSystem* system)
@@ -52,6 +54,15 @@ void Engine::registerSubSystem(ISubSystem* system)
 
 	m_systemMap[system->getType()] = system;
 	system->onRegistered(this);
+}
+
+void Engine::shutdown()
+{
+	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
+	{
+		iter->second->shutdown();
+	}
 }
 
 ISubSystem* Engine::getSubSystem(SubSystemType type) 
@@ -67,7 +78,6 @@ ISubSystem* Engine::getSubSystem(SubSystemType type)
 
 void Engine::onWindowEvent(WindowEvent event)
 {	
-	
 }
 
 void Engine::onKeyEvent(KeyEvent event)

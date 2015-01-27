@@ -33,6 +33,7 @@ namespace ice
 
 			///@brief Starts the game loop.
 			void startGame();
+			void shutdown();
 
 			///@return The parameters used when the engine starts up.
 			LaunchParameters& getLaunchParameters(){ return m_launchParams; }
