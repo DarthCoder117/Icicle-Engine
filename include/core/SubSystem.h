@@ -1,6 +1,7 @@
 #ifndef SUB_SYSTEM_H
 #define SUB_SYSTEM_H
 #include "core/Uncopyable.h"
+#include "core/LaunchParameters.h"
 #include <typeinfo>
 
 #ifdef __linux
@@ -21,20 +22,23 @@ namespace ice
 		{
 		public:
 
-			///@brief Called when the SubSystem is registered with the Engine.
-			virtual void init() = 0;
+			virtual ~ISubSystem(){}
+
+			///@brief Called before the game starts after all SubSystems have been registered.
+			virtual void start(){}
 			
 			///@brief Called to update the SubSystem
-			virtual void update() = 0;
+			virtual void update(){}
 			
 			///@brief Called for each SubSystem before the Engine is shutdown.
-			virtual void shutdown() = 0;
+			virtual void shutdown(){}
 
+			///@return The Engine instance that this SubSystem is attached to.
 			Engine* getEngine(){ return m_engine; }
 
 			virtual SubSystemType getType() = 0;
 
-			void onInit(Engine* engine);
+			void onRegistered(Engine* engine);
 
 		protected:
 

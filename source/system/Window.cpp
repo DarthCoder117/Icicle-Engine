@@ -4,13 +4,9 @@ using namespace ice;
 using namespace core;
 using namespace system;
 
-Window::Window(const sf::VideoMode& videoMode, const char* windowName)
+Window::Window(const core::LaunchParameters& params)
 {
-	m_window.create(videoMode, windowName);
-}
-
-void Window::init()
-{
+	m_window.create(params.m_windowSize, params.m_windowName);
 }
 
 void Window::setWindowTitle(const char* title)
@@ -36,11 +32,6 @@ void Window::update()
 		m_window.display();
 	}
 }
-
-void Window::shutdown()
-{
-}
-
 
 bool Window::isOpen()
 {

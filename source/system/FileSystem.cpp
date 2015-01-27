@@ -1,26 +1,23 @@
 #include "system/FileSystem.h"
+#include "core/Engine.h"
 #include <../3rd-party/physfs/physfs.h>
 
 using namespace ice;
 using namespace core;
 using namespace system;
 
-FileSystem::FileSystem(int argc, char *argv[])
+FileSystem::FileSystem(const core::LaunchParameters& params)
 {
-	PHYSFS_init(argv[0]);
+	const char* argv = NULL;
+	if (params.m_argc > 0)
+	{
+		argv = params.m_argv[0];
+	}
+
+	PHYSFS_init(argv);
 }
 
-void FileSystem::init()
-{
-	
-}
-
-void FileSystem::update()
-{
-
-}
-
-void FileSystem::shutdown()
+FileSystem::~FileSystem()
 {
 	PHYSFS_deinit();
 }

@@ -1,16 +1,16 @@
 #ifndef TEST_H
 #define TEST_H
-#include <IcicleEngine.h>
+#include <core/Uncopyable.h>
 
 namespace ice 
 {
 	namespace test
 	{
-		class Test : public core::Engine 
+		class Test : public core::Uncopyable
 		{
 		public:
-			
-			void init();
+
+			int start(int argc, char* argv[]);
 		};
 	}
 }

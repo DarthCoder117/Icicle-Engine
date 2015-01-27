@@ -15,9 +15,27 @@ using namespace test;
 
 using namespace std;
 
-void Test::init() 
-{	
+int Test::start(int argc, char* argv[])
+{
 	cout << "Hello World!\n";
+
+	core::LaunchParameters params;
+	params.m_argc = argc;
+	params.m_argv = argv;
+
+	Engine engine(params);
+
+	//This is where custom sub-systems would be created and registered...
+
+	engine.startGame();
+
+	return 0;
 }
 
-START_ENGINE(Test)
+int main(int argc, char* argv[])
+{
+	Test test;
+	return test.start(argc, argv);
+}
+
+//START_ENGINE(Test)

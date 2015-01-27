@@ -14,17 +14,25 @@ using namespace graphics;
 
 using namespace std;
 
-Engine::Engine() : m_window()
+Engine::Engine(const LaunchParameters& params)
+	:m_launchParams(params),
+	m_window(params),
+	m_fileSystem(params)
 {
 	m_window.registerWindowCallback(this);
+
 	registerSubSystem(&m_window);
+	registerSubSystem(&m_fileSystem);
 }
 
-void Engine::startGame(LaunchParameters& params)
+void Engine::startGame()
 {
-	m_launchParams = params;//Store launch params before init so that subsystems can use them.
-
-	init();
+	//Call start on all SubSystems
+	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
+	{
+		iter->second->start();
+	}
 
 	//Main game loop
 	while (m_window.isOpen())
@@ -34,13 +42,6 @@ void Engine::startGame(LaunchParameters& params)
 		{
 			iter->second->update();
 		}
-	}
-
-	//Shutdown all SubSystems
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
-	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
-	{
-		iter->second->shutdown();
 	}
 }
 
@@ -52,9 +53,7 @@ void Engine::registerSubSystem(ISubSystem* system)
 	#endif
 
 	m_systemMap[system->getType()] = system;
-
-	//Allow subsystem to initialize itself
-	system->onInit(this);
+	system->onRegistered(this);
 }
 
 ISubSystem* Engine::getSubSystem(SubSystemType type) 
@@ -68,20 +67,10 @@ ISubSystem* Engine::getSubSystem(SubSystemType type)
 	return NULL;
 }
 
-void Engine::onWindowEvent(const sf::Event& evt) {
+void Engine::onWindowEvent(const sf::Event& evt) 
+{
 	if (evt.type == sf::Event::Closed)
 	{
 		m_window.close();
 	}
-}
-
-int ice::core::engineMain(Engine& engine, int argc, char *argv[])
-{
-	LaunchParameters params;
-	params.argc = argc;
-	params.argv = argv;
-
-	engine.startGame(params);
-
-	return 0;
 }
