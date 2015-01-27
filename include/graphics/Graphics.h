@@ -15,7 +15,7 @@ namespace ice
 		public:
 			Graphics(system::Window* window);
 			
-			void init();
+			void start();
 			void update();
 			void shutdown();
 			

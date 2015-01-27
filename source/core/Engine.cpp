@@ -14,19 +14,32 @@ using namespace graphics;
 
 using namespace std;
 
-Engine::Engine() : m_window(), m_graphics(&m_window)
+Engine::Engine(const LaunchParameters& params)
+	:m_launchParams(params),
+	m_window(params),
+	m_graphics(&m_window),
+	m_fileSystem(params)
 {
 	m_window.registerWindowCallback(this);
 	m_window.registerWindowCallback(&m_graphics);
-	
+
 	registerSubSystem(&m_window);
 	registerSubSystem(&m_graphics);
+	registerSubSystem(&m_fileSystem);
+
+	
 }
 
 void Engine::startGame()
 {
-	//m_graphics.render();
+	//Call start on all SubSystems
+	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
+	{
+		iter->second->start();
+	}
 
+	//Main game loop
 	while (m_window.isOpen())
 	{
 		std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
@@ -35,26 +48,17 @@ void Engine::startGame()
 			iter->second->update();
 		}
 	}
-
-	//Shutdown all SubSystems
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
-	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
-	{
-		iter->second->shutdown();
-	}
 }
 
 void Engine::registerSubSystem(ISubSystem* system)
 {
 	#ifdef ICE_DEBUG
 	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter = m_systemMap.find(system->getType());
-	assert(iter != m_systemMap.end());
+	assert(iter == m_systemMap.end());
 	#endif
 
 	m_systemMap[system->getType()] = system;
-
-	//Allow subsystem to initialize itself
-	system->onInit(this);
+	system->onRegistered(this);
 }
 
 ISubSystem* Engine::getSubSystem(SubSystemType type) 
@@ -68,7 +72,8 @@ ISubSystem* Engine::getSubSystem(SubSystemType type)
 	return NULL;
 }
 
-void Engine::onWindowEvent(const sf::Event& evt) {
+void Engine::onWindowEvent(const sf::Event& evt) 
+{
 	if (evt.type == sf::Event::Closed)
 	{
 		m_window.close();

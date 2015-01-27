@@ -6,15 +6,15 @@ using namespace ice;
 using namespace core;
 using namespace system;
 
-Window::Window(const sf::VideoMode& videoMode, const char* windowName)
+Window::Window(const core::LaunchParameters& params)
 {
-	m_window.create(videoMode, windowName, sf::Style::Default);
+	m_window.create(params.m_windowSize, params.m_windowName);
 }
 
-void Window::init()
+void Window::setWindowTitle(const char* title)
 {
+	m_window.setTitle(title);
 }
-
 
 void Window::update()
 {
@@ -25,18 +25,14 @@ void Window::update()
 		while (m_window.pollEvent(evt))
 		{
 			//Send window event to all callbacks
-			for (unsigned int i = 0; i < m_windowCallbacks.size(); ++i)
+			std::list<WindowEventCallback*>::iterator iter;
+			for (iter = m_windowCallbacks.begin(); iter != m_windowCallbacks.end(); ++iter)
 			{
-				m_windowCallbacks[i]->onWindowEvent(evt);
+				(*iter)->onWindowEvent(evt);
 			}
 		}
 	}
 }
-
-void Window::shutdown()
-{
-}
-
 
 bool Window::isOpen()
 {
@@ -59,4 +55,22 @@ void Window::registerWindowCallback(WindowEventCallback* callback)
 
 sf::WindowHandle Window::getSystemHandle() const {
 	return m_window.getSystemHandle();
+}
+
+void Window::unregisterWindowCallback(WindowEventCallback* callback)
+{
+	std::list<WindowEventCallback*>::iterator iter;
+	for (iter = m_windowCallbacks.begin(); iter != m_windowCallbacks.end(); ++iter)
+	{
+		if (*iter == callback)
+		{
+			m_windowCallbacks.erase(iter);
+			return;
+		}
+	}
+}
+
+sf::Vector2u Window::getWindowSize()
+{
+	return m_window.getSize();
 }

@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include "core/SubSystem.h"
-#include <vector>
+#include <list>
 #include <SFML/Window.hpp>
 
 namespace ice
@@ -23,26 +23,30 @@ namespace ice
 		{
 		public:
 
-			Window(const sf::VideoMode& videoMode = sf::VideoMode(800, 600), const char* windowName = "Icicle Engine Window");
+			Window(const core::LaunchParameters& params);
 
-			void init();
-			
 			///@brief Called periodically to poll for window events and ensure that the window is running.
 			void update();
 
-			void shutdown();
-			
+			///@brief Changes the text displayed in the window title bar.
+			void setWindowTitle(const char* title);
+
+			///@brief Registers a callback to recieve window events.
 			void registerWindowCallback(WindowEventCallback* callback);
+			///@brief Unregisters a window event callback.
+			void unregisterWindowCallback(WindowEventCallback* callback);
 			
+			///@return The size of the client area (excluding the title bar and borders)
+			sf::Vector2u getWindowSize();
+			///@return The OS window handle.
+			sf::WindowHandle getSystemHandle() const;
+
 			bool isOpen();
 			void close();
 			
 			const sf::Vector2u getSize() const;
-			
-			sf::WindowHandle getSystemHandle() const;
-		private:
-			std::vector<WindowEventCallback*> m_windowCallbacks;
-			
+		private:	
+			std::list<WindowEventCallback*> m_windowCallbacks;///< pointers will end up scattered around in memory anyways so list makes deletions more efficient.
 			sf::Window m_window;
 		};
 	}

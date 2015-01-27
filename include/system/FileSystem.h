@@ -12,10 +12,10 @@ namespace ice
 		{
 		public:
 
-			void init(int argc, char *argv[]);
-			void update();
-			void shutdown();
+			FileSystem(const core::LaunchParameters& params);
 
+			~FileSystem();
+			
 			void mount(const char* path, const char* mountPoint = "");
 
 			void setWriteDir(const char* writeDir);

@@ -23,7 +23,7 @@ Graphics::Graphics(system::Window* window) : m_window(window)
 	renderHeight = m_window->getSize().y;
 }
 
-void Graphics::init()
+void Graphics::start()
 {
 	#ifdef __linux
 		bgfx::x11SetDisplayWindow(XOpenDisplay(0), m_window->getSystemHandle());
