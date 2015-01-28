@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "core/Engine.h"
+#include "core/Debug.h"
 #include "SFML/System.hpp"
 
 using namespace ice;
@@ -31,17 +32,15 @@ void test2(){
 
 int Test::start(int argc, char* argv[])
 {
-// 	cout << "Hello World!\n";
-// 
-// 	core::LaunchParameters params;
-// 	params.m_argc = argc;
-// 	params.m_argv = argv;
-// 
-// 	Engine engine(params);
-// 	
-// 	//This is where custom sub-systems would be created and registered...
-// 
-// 	engine.startGame();
+ 	/*core::LaunchParameters params;
+	params.m_argc = argc;
+ 	params.m_argv = argv;
+
+ 	Engine engine(params);
+ 	
+ 	//This is where custom sub-systems would be created and registered...
+ 
+ 	engine.startGame();*/
 
 	sf::Thread t(test1);
 	sf::Thread t2(test2);

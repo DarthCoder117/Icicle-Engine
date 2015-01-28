@@ -3,6 +3,9 @@
 
 #include <IcicleCommon.h>
 
+#include "core/Debug.h"
+#include "core/Error.h"
+
 #include "core/Engine.h"
 
 #endif

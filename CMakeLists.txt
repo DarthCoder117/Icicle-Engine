@@ -101,7 +101,7 @@ file(GLOB EXAMPLES_SOURCES
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
 
 if ( WIN32 )
-target_link_libraries (icicle-examples opengl32 icicle-core icicle-graphics icicle-system glfw3 physfs psapi bgfxDebug)
+target_link_libraries (icicle-examples opengl32 icicle-core icicle-graphics icicle-system sfml-system sfml-network glfw3 physfs psapi bgfxDebug)
 endif ( WIN32 )
 if ( NOT WIN32 )
 target_link_libraries (icicle-examples GL icicle-core icicle-graphics icicle-system sfml-system sfml-network glfw physfs bgfxDebug X11 glib-2.0 pthread dl)
