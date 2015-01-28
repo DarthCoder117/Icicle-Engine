@@ -2,10 +2,7 @@
 
 #include <iostream>
 
-#include <SFML/Window.hpp>
-
 #include "core/Engine.h"
-#include <SFML/Window.hpp>
 
 
 using namespace ice;
