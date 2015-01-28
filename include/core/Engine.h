@@ -1,14 +1,12 @@
 #ifndef ENGINE_H
 #define ENGINE_H
+#include <IcicleCommon.h>
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
 #include "graphics/Graphics.h"
 #include "system/Window.h"
 #include "system/FileSystem.h"
 #include "system/InputSystem.h"
-#include <vector>
-#include <memory>
-#include <unordered_map>
 
 namespace ice
 {
@@ -55,7 +53,7 @@ namespace ice
 
 			system::FileSystem m_fileSystem;
 			
-			std::unordered_map<EngineSystemType, IEngineSystem*> m_systemMap;
+			UnorderedMap<EngineSystemType, IEngineSystem*> m_systemMap;
 		};
 	}
 }

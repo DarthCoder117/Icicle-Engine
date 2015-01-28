@@ -15,7 +15,7 @@ Window::Window(const core::LaunchParameters& params)
 	}
 	
 	/* Create a windowed mode window and its OpenGL context */
-	m_window = glfwCreateWindow(params.m_windowSize.x, params.m_windowSize.y, params.m_windowName, NULL, NULL);
+	m_window = glfwCreateWindow(params.m_windowSize.x, params.m_windowSize.y, params.m_windowName.c_str(), NULL, NULL);
 	
 	if (!m_window) {
 		glfwTerminate();
