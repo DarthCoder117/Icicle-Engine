@@ -1,5 +1,10 @@
 #include "graphics/Graphics.h"
+#include <IcicleConfig.h>
 
+#include <GLFW/glfw3.h>
+#ifdef ICE_WIN32
+#include <Windows.h>
+#endif
 #include <bgfx.h>
 #include <bgfxplatform.h>
 #include <bgfxdefines.h>
@@ -13,35 +18,28 @@ using namespace system;
 using namespace bgfx;
 
 using namespace std;
-
-#include <GL/gl.h>
 #define ICE_DEBUG
 
 Graphics::Graphics(system::Window* window) : m_window(window)
 {
-	renderWidth = m_window->getSize().x;
-	renderHeight = m_window->getSize().y;
+	glfwGetWindowSize(window->getWindow(), &renderWidth, &renderHeight);
 }
 
 void Graphics::start()
 {
-	#ifdef __linux
-		bgfx::x11SetDisplayWindow(XOpenDisplay(0), m_window->getSystemHandle());
-	#else
-		bgfx::winSetHwnd(m_window->getSystemHandle());
-	#endif
-		
+	bgfx::glfwSetWindow(m_window->getWindow());
+
 	bgfx::init();
-// 	bgfx::reset(renderWidth, renderHeight, reset);
-	bgfx::reset(800,480,BGFX_RESET_VSYNC);
 	
+	bgfx::reset(renderWidth, renderHeight, reset);
+
 	#ifdef ICE_DEBUG
 	// Enable debug text.
 	bgfx::setDebug(debug);
 	#endif
 	
 	// Set view 0 clear state.
-	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,0x303030FF,1.0f,0);
+	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xFFFFFFFF, 1.0f, 0);
 }
 
 void Graphics::update()
@@ -76,17 +74,13 @@ void Graphics::render() {
 	bgfx::frame();
 }
 
-void Graphics::onWindowEvent(const sf::Event& evt) {
-	if (evt.type == sf::Event::Resized)
-	{
-		renderWidth = evt.size.width;
-		renderHeight = evt.size.height;
+void Graphics::onWindowEvent(WindowEvent event) {
+	if (event.type == WindowEventType::WINDOWSIZE) {
+		renderWidth = event.data.size.width;
+		renderHeight = event.data.size.height;
 		
 		#ifdef ICE_DEBUG
-			std::cout << "Window resized to: " << evt.size.width << ":" << evt.size.height << std::endl;
+		std::cout << "Window resized to: " << renderWidth << ":" << renderHeight << std::endl;
 		#endif
-			
-		shutdown();
-		init();
 	}
 }
