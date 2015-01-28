@@ -1,7 +1,10 @@
 #include "graphics/Graphics.h"
+#include <IcicleConfig.h>
 
 #include <GLFW/glfw3.h>
-
+#ifdef ICE_WIN32
+#include <Windows.h>
+#endif
 #include <bgfx.h>
 #include <bgfxplatform.h>
 #include <bgfxdefines.h>
@@ -30,10 +33,9 @@ void Graphics::start()
 	
 	bgfx::reset(renderWidth, renderHeight, reset);
 
-	
 	#ifdef ICE_DEBUG
-		// Enable debug text.
-		bgfx::setDebug(debug);
+	// Enable debug text.
+	bgfx::setDebug(debug);
 	#endif
 	
 	// Set view 0 clear state.
