@@ -3,7 +3,6 @@ The Icicle Engine is a cross-platform, open source ZLIB licensed 3D game engine.
 It's currently a work in progress, so any pull requests will most likely be merged if we find them useful.
 
 # Todo
-* Replace SFML with SDL (apparently can't use DirectX or BGFX with SFML because it automatically creates a context...)
 * Thread pool
 * Memory allocators
 * Resource manager
