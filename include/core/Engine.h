@@ -1,7 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 #include "core/Uncopyable.h"
-#include "core/SubSystem.h"
+#include "core/EngineSystem.h"
 #include "graphics/Graphics.h"
 #include "system/Window.h"
 #include "system/FileSystem.h"
@@ -24,10 +24,10 @@ namespace ice
 			///@brief Registers a SubSystem with the Engine.
 			///Any registered SubSystem can be accessed by type later using getSubSystem().
 			///The caller is responsible for managing the SubSystem's memory.
-			void registerSubSystem(ISubSystem* system);
+			void registerSubSystem(IEngineSystem* system);
 
 			///@return A pointer to the SubSystem of the specified type, or NULL if the SubSystem was never registered.
-			ISubSystem* getSubSystem(SubSystemType type);
+			IEngineSystem* getEngineSystem(EngineSystemType type);
 			template <typename T>
 			T* getSubSystem(){ return (T*)getSubSystem( T::getClassType()); }
 
@@ -55,7 +55,7 @@ namespace ice
 
 			system::FileSystem m_fileSystem;
 			
-			std::unordered_map<SubSystemType, ISubSystem*> m_systemMap;
+			std::unordered_map<EngineSystemType, IEngineSystem*> m_systemMap;
 		};
 	}
 }

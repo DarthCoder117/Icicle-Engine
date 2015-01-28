@@ -15,15 +15,16 @@ namespace ice
 	{
 		class Engine;
 
-		typedef size_t SubSystemType;
+		typedef size_t EngineSystemType;
 
 		///@brief Interface for sub-systems within the engine.
 		///It is recommended to inherit from SubSystem<T> instead of this interface.
-		class ISubSystem
+		class IEngineSystem
 		{
 		public:
 
-			virtual ~ISubSystem(){}
+			IEngineSystem(){}
+			virtual ~IEngineSystem(){}
 
 			///@brief Called before the game starts after all SubSystems have been registered.
 			virtual void start(){}
@@ -37,7 +38,7 @@ namespace ice
 			///@return The Engine instance that this SubSystem is attached to.
 			Engine* getEngine(){ return m_engine; }
 
-			virtual SubSystemType getType() = 0;
+			virtual EngineSystemType getType() = 0;
 
 			void onRegistered(Engine* engine);
 
@@ -49,12 +50,12 @@ namespace ice
 		///@brief Base class for engine sub-systems. Provides automatic typing support.
 		///Usage: class MySubSystem : public SubSystem<MySubSystem>
 		template <typename T>
-		class SubSystem : public ISubSystem
+		class EngineSystem : public IEngineSystem
 		{
 		public:
-			static SubSystemType getClassType(){ return typeid(T).hash_code(); }
+			static EngineSystemType getClassType(){ return typeid(T).hash_code(); }
 
-			SubSystemType getType(){ return T::getClassType(); }
+			EngineSystemType getType(){ return T::getClassType(); }
 		};
 	}
 }

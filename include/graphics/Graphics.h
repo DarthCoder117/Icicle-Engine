@@ -2,7 +2,7 @@
 #define GRAPHICS_H
 
 #include <vector>
-#include "core/SubSystem.h"
+#include "core/EngineSystem.h"
 #include "system/Window.h"
 #include <bgfxdefines.h>
 #include "system/InputSystem.h"
@@ -12,7 +12,7 @@ namespace ice
 {
 	namespace graphics
 	{
-		class Graphics : public core::SubSystem<Graphics>,  public system::WindowEventListener {
+		class Graphics : public core::EngineSystem<Graphics>, public system::WindowEventListener {
 		public:
 			Graphics(system::Window* window);
 			

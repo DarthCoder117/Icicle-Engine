@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "core/SubSystem.h"
+#include "core/EngineSystem.h"
 #include <list>
 #include <GLFW/glfw3.h>
 
@@ -10,7 +10,7 @@ namespace ice
 	namespace system
 	{
 		///@brief Manages the application window and sends window events to any subscribed callback listeners.
-		class Window : public core::SubSystem<Window>
+		class Window : public core::EngineSystem<Window>
 		{
 		public:
 

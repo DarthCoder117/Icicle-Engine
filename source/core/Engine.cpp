@@ -26,7 +26,7 @@ Engine::Engine(const LaunchParameters& params)
 void Engine::startGame()
 {
 	//Call start on all SubSystems
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+	std::unordered_map<EngineSystemType, IEngineSystem*>::iterator iter;
 	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
 	{
 		iter->second->start();
@@ -35,7 +35,7 @@ void Engine::startGame()
 	//Main game loop
 	while (!glfwWindowShouldClose(m_window.getWindow()))
 	{
-		std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+		std::unordered_map<EngineSystemType, IEngineSystem*>::iterator iter;
 		for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
 		{
 			iter->second->update();
@@ -45,10 +45,10 @@ void Engine::startGame()
 	shutdown();
 }
 
-void Engine::registerSubSystem(ISubSystem* system)
+void Engine::registerSubSystem(IEngineSystem* system)
 {
 	#ifdef ICE_DEBUG
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter = m_systemMap.find(system->getType());
+	std::unordered_map<EngineSystemType, IEngineSystem*>::iterator iter = m_systemMap.find(system->getType());
 	assert(iter == m_systemMap.end());
 	#endif
 
@@ -58,16 +58,16 @@ void Engine::registerSubSystem(ISubSystem* system)
 
 void Engine::shutdown()
 {
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter;
+	std::unordered_map<EngineSystemType, IEngineSystem*>::iterator iter;
 	for (iter = m_systemMap.begin(); iter != m_systemMap.end(); ++iter)
 	{
 		iter->second->shutdown();
 	}
 }
 
-ISubSystem* Engine::getSubSystem(SubSystemType type) 
+IEngineSystem* Engine::getEngineSystem(EngineSystemType type)
 {
-	std::unordered_map<SubSystemType, ISubSystem*>::iterator iter = m_systemMap.find(type);
+	std::unordered_map<EngineSystemType, IEngineSystem*>::iterator iter = m_systemMap.find(type);
 	if (iter != m_systemMap.end())
 	{
 		return iter->second;
