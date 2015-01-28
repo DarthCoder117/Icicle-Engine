@@ -13,35 +13,20 @@ using namespace test;
 
 using namespace std;
 
-void test1(){
-	for(int i = 0; i < 10; i++) {
-		sf::sleep(sf::milliseconds(i));
-		cout << "THREAD 1 \n";
-	}
-}
-
-
-void test2(){
-	for(int i = 0; i < 10; i++){
-		sf::sleep(sf::milliseconds(i));
-		cout << "THREAD 2 \n";
-	}
-}
-
 
 int Test::start(int argc, char* argv[])
 {
-// 	cout << "Hello World!\n";
-// 
-// 	core::LaunchParameters params;
-// 	params.m_argc = argc;
-// 	params.m_argv = argv;
-// 
-// 	Engine engine(params);
-// 	
-// 	//This is where custom sub-systems would be created and registered...
-// 
-// 	engine.startGame();
+	cout << "Hello World!\n";
+
+	core::LaunchParameters params;
+	params.m_argc = argc;
+	params.m_argv = argv;
+
+	Engine engine(params);
+	
+	//This is where custom sub-systems would be created and registered...
+
+	engine.startGame();
 
 	sf::Thread t(test1);
 	sf::Thread t2(test2);
