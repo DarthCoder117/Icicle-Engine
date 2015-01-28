@@ -20,6 +20,8 @@ namespace ice
 
 			const char* getMessage();
 
+			void print();
+
 		private:
 
 			ERROR_CODE m_errorCode;

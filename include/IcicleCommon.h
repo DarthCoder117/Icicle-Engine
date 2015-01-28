@@ -7,6 +7,12 @@
 #include <list>
 #include <unordered_map>
 #include <map>
+#include <queue>
+#include <thread>
+#include <future>
+#include <mutex>
+#include <condition_variable>
+#include <memory>
 #include <glm/glm.hpp>
 
 namespace ice
@@ -35,11 +41,29 @@ namespace ice
 	
 	template <typename T> using Vector = std::vector<T>;
 	template <typename T> using List = std::list<T>;
+	template <typename T> using Queue = std::queue<T>;
+	template <typename T> using PriorityQueue = std::priority_queue<T>;
 	template <typename T, typename U> using Map = std::map<T, U>;
 	template <typename T, typename U> using UnorderedMap = std::unordered_map<T, U>;
 
 	typedef std::string String;
 	typedef std::wstring Stringw;
+	
+	template <typename T> using SharedPtr = std::shared_ptr<T>;
+	template <typename T> using UniquePtr = std::unique_ptr<T>;
+	
+	template <typename T> using Function = std::function<T>;
+	
+	typedef std::thread Thread;
+	
+	template <typename T> using Promise = std::promise<T>;
+	template <typename T> using Future = std::future<T>;
+	
+	typedef std::mutex Mutex;
+
+	template <typename T> using ScopedLock = std::unique_lock<T>;
+
+	typedef std::condition_variable ConditionVariable;
 }
 
 #endif

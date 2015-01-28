@@ -1,4 +1,5 @@
 #include "core/Error.h"
+#include "core/Debug.h"
 
 using namespace ice;
 using namespace core;
@@ -23,4 +24,9 @@ ERROR_CODE Error::getCode()
 const char* Error::getMessage()
 {
 	return g_errorMessages[m_errorCode];
+}
+
+void Error::print()
+{
+	Debug::log(LL_ERROR, getMessage());
 }

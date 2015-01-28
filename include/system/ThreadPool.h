@@ -1,38 +1,43 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 #include <core/Uncopyable.h>
-#include <vector>
-#include <queue>
-#include <SFML/System.hpp>
+#include <IcicleCommon.h>
+#include "core/Error.h"
 
 namespace ice
 {
 	namespace system
 	{
-		enum TaskPriority {
-			LOWEST = 0, LOW = 1, NORMAL = 2, HIGH = 3, HIGHEST = 4
-		};
-		
-		class Task 
-		{
-			Task(sf::Thread task, TaskPriority priority = NORMAL);		
-			
-			bool operator()(Task& t1, Task& t2);
-		private:
-			sf::Thread m_thread;
-			TaskPriority m_priority;
-		};
-		
 		class ThreadPool : core::Uncopyable
 		{
 		public:
-			ThreadPool(uint16_t maxThreads);
-			
-			
+
+			ThreadPool(u32 maxThreads);
+			~ThreadPool();
+
+			///@brief Runs a task on the thread pool.
+			Future<void> run(Function<void()> func);
+
 		private:
-			std::priority_queue m_taskQueue;
-			std::vector<sf::Thread> m_threads;
-		}
+
+			struct Task
+			{
+			public:
+
+				Promise<void> m_completionPromise;
+				Function<void()> m_task;
+			};
+
+
+			void workerThread();
+			
+			Mutex m_queueLock;
+			Queue<Task*> m_taskQueue;///@todo This would be faster if it was a lock-free queue.
+
+			Vector<UniquePtr<Thread> > m_threads;
+
+			bool m_terminationFlag;
+		};
 	}
 }
 
