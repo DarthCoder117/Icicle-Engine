@@ -10,10 +10,10 @@ option (BUILD_TESTS "Build Icicle Engine tests" ON)
 
 #3rd party library directories
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/bgfx/lib/linux")
-link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/glfw/lib/linux")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/physfs/lib/${CMAKE_CXX_COMPILER_ID}")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/bgfx/lib/${CMAKE_CXX_COMPILER_ID}")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/glfw/lib/${CMAKE_CXX_COMPILER_ID}")
+link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/sfml/lib/${CMAKE_CXX_COMPILER_ID}")
 
 
 # Generate configuration header
@@ -23,10 +23,13 @@ configure_file("${CMAKE_SOURCE_DIR}/include/IcicleConfig.h.in" "${CMAKE_SOURCE_D
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/3rd-party/cmake/modules/")
 
 #Directories
-set (ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+file (GLOB ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include"
+			     "${CMAKE_SOURCE_DIR}/source"
+)
 
 include_directories (
 	"${ENGINE_INCLUDE_DIR}"
+	"${CMAKE_SOURCE_DIR}/3rd-party/sfml/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/bgfx/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glfw/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glm")
@@ -71,6 +74,8 @@ add_library(icicle-core ${CORE_SOURCES})
 file(GLOB SYSTEM_SOURCES 
 	${ICE_INCLUDES}
 	
+	"${CMAKE_SOURCE_DIR}/source/system/unix/*.h"
+	"${CMAKE_SOURCE_DIR}/source/system/unix/*.cpp"
 	"${CMAKE_SOURCE_DIR}/source/system/*.h" 
 	"${CMAKE_SOURCE_DIR}/source/system/*.cpp"
 	)
@@ -99,5 +104,5 @@ if ( WIN32 )
 target_link_libraries (icicle-examples opengl32 icicle-core icicle-graphics icicle-system glfw3 physfs psapi bgfxDebug)
 endif ( WIN32 )
 if ( NOT WIN32 )
-target_link_libraries (icicle-examples GL icicle-core icicle-graphics icicle-system glfw physfs bgfxDebug X11 glib-2.0 pthread dl)
+target_link_libraries (icicle-examples GL icicle-core icicle-graphics icicle-system sfml-system sfml-network glfw physfs bgfxDebug X11 glib-2.0 pthread dl)
 endif ( NOT WIN32 )
