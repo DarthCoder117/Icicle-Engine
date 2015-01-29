@@ -10,7 +10,7 @@ namespace ice
 	namespace system
 	{
 		///@brief Manages the application window and sends window events to any subscribed callback listeners.
-		class Window : public core::EngineSystem<Window>
+		class Window : public core::IEngineSystem
 		{
 		public:
 

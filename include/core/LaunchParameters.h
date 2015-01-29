@@ -2,8 +2,6 @@
 #define LAUNCH_PARAMETERS_H
 
 #include <IcicleCommon.h>
-#include <glm/vec2.hpp>
-
 
 namespace ice
 {

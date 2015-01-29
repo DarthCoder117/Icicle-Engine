@@ -30,7 +30,7 @@ file (GLOB ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include"
 
 include_directories (
 	"${ENGINE_INCLUDE_DIR}"
-	"${CMAKE_SOURCE_DIR}/3rd-party/mygui/include"
+	"${CMAKE_SOURCE_DIR}/3rd-party/cegui/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/sfml/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/bgfx/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glfw/include"
@@ -54,12 +54,15 @@ find_package(GLIB REQUIRED)
 
 include_directories(${GLIB2_LIBRARIES})
 
+add_definitions(-DICE_DEBUG)
+
 endif ( NOT WIN32 )
 
 file(GLOB ICE_INCLUDES
 	"${CMAKE_SOURCE_DIR}/include/core/*.h"
 	"${CMAKE_SOURCE_DIR}/include/system/*.h"
 	"${CMAKE_SOURCE_DIR}/include/graphics/*.h"
+	"${CMAKE_SOURCE_DIR}/include/gui/*.h"
 	)
 
 #icicle-core
@@ -92,6 +95,15 @@ file(GLOB GRAPHICS_SOURCES
 	)
 add_library(icicle-graphics ${GRAPHICS_SOURCES})
 
+#icicle-gui
+file(GLOB GRAPHICS_SOURCES
+	${ICE_INCLUDES}
+	
+	"${CMAKE_SOURCE_DIR}/source/gui/*.h" 
+	"${CMAKE_SOURCE_DIR}/source/gui/*.cpp"
+	)
+add_library(icicle-gui ${GRAPHICS_SOURCES})
+
 #icicle-examples
 file(GLOB EXAMPLES_SOURCES 
 	${ICE_INCLUDES}
@@ -103,8 +115,8 @@ file(GLOB EXAMPLES_SOURCES
 add_executable(icicle-examples ${EXAMPLES_SOURCES})
 
 if ( WIN32 )
-target_link_libraries (icicle-examples opengl32 icicle-core icicle-graphics icicle-system sfml-system sfml-network glfw3 physfs psapi bgfxDebug)
+target_link_libraries (icicle-examples opengl32 icicle-core icicle-gui icicle-graphics icicle-system sfml-system sfml-network glfw3 physfs psapi bgfxDebug)
 endif ( WIN32 )
 if ( NOT WIN32 )
-target_link_libraries (icicle-examples GL icicle-core icicle-graphics icicle-system sfml-system sfml-network glfw physfs bgfxDebug X11 glib-2.0 pthread dl)
+target_link_libraries (icicle-examples GL icicle-core icicle-gui icicle-graphics icicle-system sfml-system sfml-network glfw physfs bgfxDebug X11 glib-2.0 pthread dl CEGUIBase-0 CEGUIOpenGLRenderer-0)
 endif ( NOT WIN32 )

@@ -1,5 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
+
 #include <IcicleCommon.h>
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
@@ -7,6 +8,7 @@
 #include "system/Window.h"
 #include "system/FileSystem.h"
 #include "system/InputSystem.h"
+#include <gui/Gui.h>
 
 namespace ice
 {
@@ -24,11 +26,6 @@ namespace ice
 			///The caller is responsible for managing the SubSystem's memory.
 			void registerSubSystem(IEngineSystem* system);
 
-			///@return A pointer to the SubSystem of the specified type, or NULL if the SubSystem was never registered.
-			IEngineSystem* getEngineSystem(EngineSystemType type);
-			template <typename T>
-			T* getSubSystem(){ return (T*)getSubSystem( T::getClassType()); }
-
 			///@brief Starts the game loop.
 			void startGame();
 			void shutdown();
@@ -41,6 +38,8 @@ namespace ice
 			graphics::Graphics& getGraphics() { return m_graphics; }
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
+			
+			gui::Gui& getGui() { return m_gui; }
 		private:
 			virtual void onWindowEvent(system::WindowEvent event);
 			virtual void onKeyEvent(system::KeyEvent event);
@@ -50,10 +49,12 @@ namespace ice
 			system::Window m_window;
 
 			graphics::Graphics m_graphics;
-
+			
+			gui::Gui m_gui;
+			
 			system::FileSystem m_fileSystem;
 			
-			UnorderedMap<EngineSystemType, IEngineSystem*> m_systemMap;
+			Vector<IEngineSystem*> m_engineSystems;
 		};
 	}
 }

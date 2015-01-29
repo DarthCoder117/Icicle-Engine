@@ -10,7 +10,7 @@ namespace ice
 	namespace system
 	{
 		///@brief The FileSystem sub-system manages a virtual filesystem based on PhysicsFS.
-		class FileSystem : public core::EngineSystem<FileSystem>
+		class FileSystem : public core::IEngineSystem
 		{
 		public:
 

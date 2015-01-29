@@ -6,7 +6,6 @@
 #include "core/Debug.h"
 #include "SFML/System.hpp"
 
-#include 
 
 using namespace ice;
 using namespace core;

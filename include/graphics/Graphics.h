@@ -1,10 +1,11 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <vector>
+#include "IcicleCommon.h"
+#include <bgfxdefines.h>
+
 #include "core/EngineSystem.h"
 #include "system/Window.h"
-#include <bgfxdefines.h>
 #include "system/InputSystem.h"
 
 
@@ -12,7 +13,7 @@ namespace ice
 {
 	namespace graphics
 	{
-		class Graphics : public core::EngineSystem<Graphics>, public system::WindowEventListener {
+		class Graphics : public core::IEngineSystem, public system::WindowEventListener {
 		public:
 			Graphics(system::Window* window);
 			

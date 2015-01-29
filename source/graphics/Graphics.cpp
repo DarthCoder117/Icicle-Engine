@@ -2,14 +2,17 @@
 #include <IcicleConfig.h>
 
 #include <GLFW/glfw3.h>
+
 #ifdef ICE_WIN32
 #include <Windows.h>
 #endif
+
 #include <bgfx.h>
 #include <bgfxplatform.h>
 #include <bgfxdefines.h>
 
-#include <iostream>
+#include "core/Debug.h"
+
 using namespace ice;
 using namespace graphics;
 using namespace core;
@@ -18,7 +21,6 @@ using namespace system;
 using namespace bgfx;
 
 using namespace std;
-#define ICE_DEBUG
 
 Graphics::Graphics(system::Window* window) : m_window(window)
 {
@@ -28,11 +30,14 @@ Graphics::Graphics(system::Window* window) : m_window(window)
 void Graphics::start()
 {
 	bgfx::glfwSetWindow(m_window->getWindow());
-
+	
 	bgfx::init();
 	
+	Debug::info("Initilised bgfx");
+	
 	bgfx::reset(renderWidth, renderHeight, reset);
-
+	Debug::info("Setting bgfx rendersize to ", renderWidth, ":", renderHeight);
+	
 	#ifdef ICE_DEBUG
 	// Enable debug text.
 	bgfx::setDebug(debug);
@@ -79,8 +84,6 @@ void Graphics::onWindowEvent(WindowEvent event) {
 		renderWidth = event.data.size.width;
 		renderHeight = event.data.size.height;
 		
-		#ifdef ICE_DEBUG
-		std::cout << "Window resized to: " << renderWidth << ":" << renderHeight << std::endl;
-		#endif
+		Debug::info("Setting bgfx rendersize to ", renderWidth, ":", renderHeight);
 	}
 }
