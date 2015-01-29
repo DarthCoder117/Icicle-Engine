@@ -21,7 +21,9 @@ Engine::Engine(const LaunchParameters& params)
 	registerSubSystem(&m_window);
 	registerSubSystem(&m_graphics);
 	//Gui must be registered after m_graphics
+	#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
 	registerSubSystem(&m_gui);
+	#endif
 	registerSubSystem(&m_fileSystem);
 }
 

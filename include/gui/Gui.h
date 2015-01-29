@@ -1,7 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "IcicleCommon.h"
+#include <IcicleCommon.h>
 
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
@@ -37,11 +37,11 @@ namespace ice
 			sf::Clock m_clock;
 			
 		private:
-			#ifdef ICE_LINUX
+			//#ifdef ICE_LINUX
 			CEGUI::OpenGL3Renderer* m_renderer;
-			#elif ICE_WINDOWS
+			/*#elif defined(ICE_WINDOWS)
 			CEGUI::DirectX9Renderer* m_renderer;
-			#endif
+			#endif*/
 			CEGUI::GUIContext* m_context;
 		};
 	}

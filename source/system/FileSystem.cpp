@@ -28,7 +28,9 @@ private:
 	int_type underflow()
 	{
 		if (gptr() < egptr())
+		{
 			return traits_type::to_int_type(*gptr());
+		}
 
 		char* base = &m_buffer.front();
 		char* start = base;
@@ -49,6 +51,16 @@ private:
 
 		return traits_type::to_int_type(*gptr());
 	}
+
+	std::streamsize xsputn(const char* s, std::streamsize n)
+	{
+		return PHYSFS_write(m_file, s, 1, (PHYSFS_uint32)n);
+	}
+
+	/*int overflow(int c)
+	{
+		return std::traits_type::to_int_type(c);
+	}*/
 
 private:
 
@@ -84,6 +96,11 @@ FileSystem::FileSystem(const core::LaunchParameters& params)
 FileSystem::~FileSystem()
 {
 	PHYSFS_deinit();
+}
+
+void FileSystem::mount(const String& path, const String& mountPoint)
+{
+	PHYSFS_mount(path.c_str(), mountPoint.c_str(), 1);
 }
 
 void FileSystem::setWriteDir(const String& writeDir)

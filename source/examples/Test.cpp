@@ -28,8 +28,6 @@ int Test::start(int argc, char* argv[])
  
  	engine.startGame();
 	
-	
-	
 /*
 	sf::Thread t(test1);
 	sf::Thread t2(test2);

@@ -38,7 +38,9 @@ namespace ice
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
 			
+			#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
 			gui::Gui& getGui() { return m_gui; }
+			#endif
 
 		private:
 
@@ -51,7 +53,9 @@ namespace ice
 
 			graphics::Graphics m_graphics;
 			
+			#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
 			gui::Gui m_gui;
+			#endif
 			
 			system::FileSystem m_fileSystem;
 			

@@ -7,7 +7,7 @@
 
 //Platform detection
 #ifdef _WIN32
-#define ICE_WIN32
+#define ICE_WINDOWS
 #endif
 
 #ifdef __linux
