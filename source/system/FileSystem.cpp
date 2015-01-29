@@ -1,10 +1,13 @@
 #include "system/FileSystem.h"
 #include "core/Engine.h"
-#include <../3rd-party/physfs/physfs.h>
+#include <iostream>
+#include <string>
 
 using namespace ice;
 using namespace core;
 using namespace system;
+
+using namespace std;
 
 FileSystem::FileSystem(const core::LaunchParameters& params)
 {
@@ -15,6 +18,18 @@ FileSystem::FileSystem(const core::LaunchParameters& params)
 	}
 
 	PHYSFS_init(argv);
+	
+	//Mount Engine resource dir
+	string basePath = PHYSFS_getBaseDir();
+	basePath = basePath.substr(0, basePath.rfind(PHYSFS_getDirSeparator()));
+	basePath = basePath.substr(0, basePath.rfind(PHYSFS_getDirSeparator()));
+	basePath = basePath.substr(0, basePath.rfind(PHYSFS_getDirSeparator()));
+	basePath += PHYSFS_getDirSeparator();
+	basePath += "resources";
+	
+	cout << basePath << endl;
+	
+	setWriteDir(basePath);
 }
 
 FileSystem::~FileSystem()
@@ -22,22 +37,28 @@ FileSystem::~FileSystem()
 	PHYSFS_deinit();
 }
 
-void FileSystem::mount(const char* path, const char* mountPoint)
+PHYSFS_File* FileSystem::readFile(string filename)
 {
-	PHYSFS_mount(path, mountPoint, 1);
+	
+	return PHYSFS_openRead(filename.c_str());
 }
 
-void FileSystem::setWriteDir(const char* writeDir)
+void FileSystem::mount(string path, string mountPoint)
 {
-	PHYSFS_setWriteDir(writeDir);
+	PHYSFS_mount(path.c_str(), mountPoint.c_str(), 1);
 }
 
-bool FileSystem::exists(const char* file)
+void FileSystem::setWriteDir(string writeDir)
 {
-	return PHYSFS_exists(file) != 0;
+	PHYSFS_setWriteDir(writeDir.c_str());
 }
 
-bool FileSystem::isDirectory(const char* path)
+bool FileSystem::exists(string file)
 {
-	return PHYSFS_isDirectory(path) != 0;
+	return PHYSFS_exists(file.c_str()) != 0;
+}
+
+bool FileSystem::isDirectory(string path)
+{
+	return PHYSFS_isDirectory(path.c_str()) != 0;
 }

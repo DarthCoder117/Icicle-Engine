@@ -6,6 +6,8 @@
 #include "core/Debug.h"
 #include "SFML/System.hpp"
 
+#include 
+
 using namespace ice;
 using namespace core;
 using namespace graphics;
@@ -26,6 +28,9 @@ int Test::start(int argc, char* argv[])
  	//This is where custom sub-systems would be created and registered...
  
  	engine.startGame();
+	
+	
+	
 /*
 	sf::Thread t(test1);
 	sf::Thread t2(test2);
@@ -36,6 +41,9 @@ int Test::start(int argc, char* argv[])
 	for(int i = 0; i < 10; i++)
 		cout << "THREAD Main \n";
 	*/
+	engine.getFileSystem().mount("test.zip");
+	
+
 	return 0;
 }
 

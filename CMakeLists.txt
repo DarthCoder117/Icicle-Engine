@@ -10,6 +10,7 @@ option (BUILD_TESTS "Build Icicle Engine tests" ON)
 
 #3rd party library directories
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/bgfx/lib/linux")
+link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/mygui/lib/${CMAKE_CXX_COMPILER_ID}")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/physfs/lib/${CMAKE_CXX_COMPILER_ID}")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/bgfx/lib/${CMAKE_CXX_COMPILER_ID}")
 link_directories ("${CMAKE_SOURCE_DIR}/3rd-party/glfw/lib/${CMAKE_CXX_COMPILER_ID}")
@@ -29,6 +30,7 @@ file (GLOB ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include"
 
 include_directories (
 	"${ENGINE_INCLUDE_DIR}"
+	"${CMAKE_SOURCE_DIR}/3rd-party/mygui/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/sfml/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/bgfx/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glfw/include"
