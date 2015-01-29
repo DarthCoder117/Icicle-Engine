@@ -1,6 +1,5 @@
 #include "system/FileSystem.h"
 #include "core/Engine.h"
-#include <physfs.h>
 #include <iostream>
 
 using namespace ice;
@@ -8,6 +7,29 @@ using namespace core;
 using namespace system;
 
 using namespace std;
+
+class PhysFSBuf : public std::streambuf
+{
+public:
+
+	//explicit PhysFSBuf(PHYSFS_ *fptr, std::size_t buff_sz = 256, std::size_t put_back = 8);
+
+private:
+	// overrides base class underflow()
+	//int_type underflow();
+
+	// copy ctor and assignment not implemented;
+	// copying not allowed
+	//FILE_buffer(const FILE_buffer &);
+	//FILE_buffer &operator= (const FILE_buffer &);
+
+private:
+
+	//FILE *fptr_;
+	//const std::size_t put_back_;
+	//std::vector<char> buffer_;
+};
+
 
 FileSystem::FileSystem(const core::LaunchParameters& params)
 {
@@ -35,17 +57,6 @@ FileSystem::FileSystem(const core::LaunchParameters& params)
 FileSystem::~FileSystem()
 {
 	PHYSFS_deinit();
-}
-
-PHYSFS_File* FileSystem::readFile(const String& filename)
-{
-	
-	return PHYSFS_openRead(filename.c_str());
-}
-
-void FileSystem::mount(const String& path, const String& mountPoint)
-{
-	PHYSFS_mount(path.c_str(), mountPoint.c_str(), 1);
 }
 
 void FileSystem::setWriteDir(const String& writeDir)

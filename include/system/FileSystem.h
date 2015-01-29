@@ -2,11 +2,20 @@
 #define FILE_SYSTEM_H
 #include <IcicleCommon.h>
 #include "core/EngineSystem.h"
+#include <iostream>
+#include <physfs.h>
 
 namespace ice
 {
 	namespace system
 	{
+		enum OPEN_MODE
+		{
+			OM_READ = 0x01,
+			OM_WRITE = 0x02,
+			OM_BOTH = OM_READ | OM_WRITE
+		};
+
 		///@brief The FileSystem sub-system manages a virtual filesystem based on PhysicsFS.
 		class FileSystem : public core::IEngineSystem
 		{
@@ -18,8 +27,7 @@ namespace ice
 			
 			void mount(const String& path, const String& mountPoint = "");
 			
-			PHYSFS_File* readFile(const String& filename);
-			PHYSFS_File* writeToFile(const String& filename);
+			std::iostream openFile(const String& filename, u8 openMode=OM_READ);
 
 			void setWriteDir(const String& writeDir);
 
