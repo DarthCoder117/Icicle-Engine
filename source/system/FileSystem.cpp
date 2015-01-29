@@ -1,6 +1,8 @@
 #include "system/FileSystem.h"
 #include "core/Engine.h"
+#include "core/Uncopyable.h"
 #include <iostream>
+#include <cmath>
 
 using namespace ice;
 using namespace core;
@@ -8,26 +10,51 @@ using namespace system;
 
 using namespace std;
 
-class PhysFSBuf : public std::streambuf
+class PhysFSBuf : public std::streambuf, public core::Uncopyable
 {
 public:
 
-	//explicit PhysFSBuf(PHYSFS_ *fptr, std::size_t buff_sz = 256, std::size_t put_back = 8);
+	explicit PhysFSBuf(PHYSFS_file* file, size_t buffSz = 256, size_t putBack = 8)
+		:m_file(file),
+		m_putBack(std::max(putBack, size_t(1))),
+		m_buffer(std::max(buffSz, putBack) + putBack)
+	{
+		char* end = &m_buffer.front() + m_buffer.size();
+		setg(end, end, end);
+	}
 
 private:
-	// overrides base class underflow()
-	//int_type underflow();
 
-	// copy ctor and assignment not implemented;
-	// copying not allowed
-	//FILE_buffer(const FILE_buffer &);
-	//FILE_buffer &operator= (const FILE_buffer &);
+	int_type underflow()
+	{
+		if (gptr() < egptr())
+			return traits_type::to_int_type(*gptr());
+
+		char* base = &m_buffer.front();
+		char* start = base;
+
+		if (eback() == base)
+		{
+			std::memmove(base, egptr() - m_putBack, m_putBack);
+			start += m_putBack;
+		}
+
+		PHYSFS_sint64 n = PHYSFS_read(m_file, start, 1, m_buffer.size() - (start - base));
+		if (n == 0)
+		{
+			return traits_type::eof();
+		}
+
+		setg(base, start, start + n);
+
+		return traits_type::to_int_type(*gptr());
+	}
 
 private:
 
-	//FILE *fptr_;
-	//const std::size_t put_back_;
-	//std::vector<char> buffer_;
+	PHYSFS_file* m_file;
+	const size_t m_putBack;
+	Vector<char> m_buffer;
 };
 
 

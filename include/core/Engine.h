@@ -1,6 +1,5 @@
 #ifndef ENGINE_H
 #define ENGINE_H
-
 #include <IcicleCommon.h>
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
@@ -40,7 +39,9 @@ namespace ice
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
 			
 			gui::Gui& getGui() { return m_gui; }
+
 		private:
+
 			virtual void onWindowEvent(system::WindowEvent event);
 			virtual void onKeyEvent(system::KeyEvent event);
 			
