@@ -34,6 +34,7 @@ include_directories (
 	"${CMAKE_SOURCE_DIR}/3rd-party/sfml/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/bgfx/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glfw/include"
+	"${CMAKE_SOURCE_DIR}/3rd-party/physfs"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glm")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/${CMAKE_CXX_COMPILER_ID})
