@@ -1,7 +1,7 @@
 #include "system/FileSystem.h"
 #include "core/Engine.h"
+#include <physfs.h>
 #include <iostream>
-#include <string>
 
 using namespace ice;
 using namespace core;
@@ -37,28 +37,28 @@ FileSystem::~FileSystem()
 	PHYSFS_deinit();
 }
 
-PHYSFS_File* FileSystem::readFile(string filename)
+PHYSFS_File* FileSystem::readFile(const String& filename)
 {
 	
 	return PHYSFS_openRead(filename.c_str());
 }
 
-void FileSystem::mount(string path, string mountPoint)
+void FileSystem::mount(const String& path, const String& mountPoint)
 {
 	PHYSFS_mount(path.c_str(), mountPoint.c_str(), 1);
 }
 
-void FileSystem::setWriteDir(string writeDir)
+void FileSystem::setWriteDir(const String& writeDir)
 {
 	PHYSFS_setWriteDir(writeDir.c_str());
 }
 
-bool FileSystem::exists(string file)
+bool FileSystem::exists(const String& file)
 {
 	return PHYSFS_exists(file.c_str()) != 0;
 }
 
-bool FileSystem::isDirectory(string path)
+bool FileSystem::isDirectory(const String& path)
 {
 	return PHYSFS_isDirectory(path.c_str()) != 0;
 }

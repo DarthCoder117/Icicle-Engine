@@ -1,9 +1,7 @@
 #ifndef FILE_SYSTEM_H
 #define FILE_SYSTEM_H
-
+#include <IcicleCommon.h>
 #include "core/EngineSystem.h"
-#include <string>
-#include "physfs.h"
 
 namespace ice
 {
@@ -18,16 +16,16 @@ namespace ice
 
 			~FileSystem();
 			
-			void mount(std::string path, std::string mountPoint = "");
+			void mount(const String& path, const String& mountPoint = "");
 			
-			PHYSFS_File* readFile(std::string filename);
-			PHYSFS_File* writeToFile(std::string filename);
+			PHYSFS_File* readFile(const String& filename);
+			PHYSFS_File* writeToFile(const String& filename);
 
-			void setWriteDir(std::string writeDir);
+			void setWriteDir(const String& writeDir);
 
-			bool exists(std::string filename);
+			bool exists(const String& filename);
 
-			bool isDirectory(std::string path);
+			bool isDirectory(const String& path);
 		};
 	}
 }
