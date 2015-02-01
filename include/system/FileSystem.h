@@ -2,20 +2,14 @@
 #define FILE_SYSTEM_H
 #include <IcicleCommon.h>
 #include "core/EngineSystem.h"
+#include "core/DataStream.h"
+#include "system/IFileLocation.h"
 #include <iostream>
-#include <physfs.h>
 
 namespace ice
 {
 	namespace system
 	{
-		enum OPEN_MODE
-		{
-			OM_READ = 0x01,
-			OM_WRITE = 0x02,
-			OM_BOTH = OM_READ | OM_WRITE
-		};
-
 		///@brief The FileSystem sub-system manages a virtual filesystem based on PhysicsFS.
 		class FileSystem : public core::IEngineSystem
 		{
@@ -25,15 +19,29 @@ namespace ice
 
 			~FileSystem();
 			
-			void mount(const String& path, const String& mountPoint = "");
+			static FileSystem* instance()
+			{
+				return m_inst;
+			}
+
+			SharedPtr<core::DataStream> openFile(const String& path, u8 streamMode = core::SM_READ);
+
+			///@brief Adds a new file location based on the path.
+			void mount(const String& path);
+			///@brief Adds a new file location manually based on the type and the parameters passed.
+			template <typename T, typename... P>
+			void mount(P... p)
+			{
+				m_fileLocations.push_back(new T(p...));
+			}
 			
-			std::iostream openFile(const String& filename, u8 openMode=OM_READ);
-
-			void setWriteDir(const String& writeDir);
-
 			bool exists(const String& filename);
 
-			bool isDirectory(const String& path);
+		private:
+
+			static FileSystem* m_inst;
+
+			List<IFileLocation*> m_fileLocations;
 		};
 	}
 }

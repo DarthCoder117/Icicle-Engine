@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-#include "core/Engine.h"
-#include "core/Debug.h"
+#include <core/Engine.h>
+#include <core/Debug.h>
+#include <core/FileStream.h>
 #include "SFML/System.hpp"
 
 
@@ -26,6 +27,16 @@ int Test::start(int argc, char* argv[])
  	
  	//This is where custom sub-systems would be created and registered...
  
+	engine.getFileSystem().mount("test");
+	SharedPtr<core::DataStream> stream = engine.getFileSystem().openFile("test-text.txt");
+
+	size_t streamSz = stream->getSize();
+	char* buffer = (char*)malloc(streamSz+1);
+	stream->read((void*)buffer, streamSz);
+	buffer[streamSz] = NULL;
+
+	stream->close();
+
  	engine.startGame();
 	
 /*
@@ -38,8 +49,6 @@ int Test::start(int argc, char* argv[])
 	for(int i = 0; i < 10; i++)
 		cout << "THREAD Main \n";
 	*/
-	engine.getFileSystem().mount("test.zip");
-	
 
 	return 0;
 }
