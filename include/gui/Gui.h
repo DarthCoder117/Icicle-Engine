@@ -6,6 +6,7 @@
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
 #include "system/InputSystem.h"
+#include "system/Window.h"
 
 #include "SFML/System.hpp"
 

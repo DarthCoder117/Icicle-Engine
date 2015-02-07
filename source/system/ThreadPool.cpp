@@ -1,18 +1,16 @@
 #include "system/ThreadPool.h"
+#include "core/ScopedLock.h"
 
 using namespace ice;
 using namespace system;
-
-//TODO: Implement the worker threads...
 
 ThreadPool::ThreadPool(u32 maxThreads)
 	:m_threads(maxThreads),
 	m_terminationFlag(false)
 {
-	Vector<UniquePtr<Thread> >::iterator iter;
-	for (iter = m_threads.begin(); iter != m_threads.end(); ++iter)
+	for (unsigned int i = 0; i < m_threads.size(); ++i)
 	{
-		iter->reset(new Thread(&ThreadPool::workerThread, this));
+		m_threads[i].init(&ThreadPool::workerThread, this);
 	}
 }
 
@@ -20,51 +18,57 @@ ThreadPool::~ThreadPool()
 {
 	m_terminationFlag = true;
 
+	//Wake up threads
+	m_tasksAvailable.set();
+
 	//Wait for all threads to finish.
-	Vector<UniquePtr<Thread> >::iterator iter;
-	for (iter = m_threads.begin(); iter != m_threads.end(); ++iter)
+	for (unsigned int i = 0; i < m_threads.size(); ++i)
 	{
-		(*iter)->join();
+		m_threads[i].join();
 	}
 }
 
-Future<void> ThreadPool::run(Function<void()> func)
+SharedPtr<core::ThreadEvent> ThreadPool::run(Function<void()> func)
 {
-	Promise<void> promise = Promise<void>{};
-	Future<void> future = promise.get_future();
-
 	Task* task = new Task();
-	task->m_completionPromise = std::move(promise);
+	task->m_completionEvent = makeShared<core::ThreadEvent>();
 	task->m_task = func;
 
 	{
-		ScopedLock<Mutex> lock(m_queueLock);
+		core::ScopedLock<core::Mutex> lock(m_queueLock);
 		m_taskQueue.push(task);
+		m_tasksAvailable.set();
 	}
 
-	return future;
+	return task->m_completionEvent;
 }
 
 void ThreadPool::workerThread()
 {
 	while (!m_terminationFlag)
 	{
-		Task* task = NULL;
+		//Wait for tasks to become available
+		m_tasksAvailable.wait();
+		m_tasksAvailable.unset();
+
+		//Pop tasks from queue
+		core::ScopedLock<core::Mutex> lock(m_queueLock);
+		while (!m_taskQueue.empty())
 		{
-			ScopedLock<Mutex> lock(m_queueLock);
-			task = m_taskQueue.front();
+			Task* task = m_taskQueue.front();
 			m_taskQueue.pop();
-		}
 
-		if (task)
-		{
-			task->m_task();
-
-			try
+			//Execute task
+			if (task)
 			{
-				task->m_completionPromise.set_value();
+				task->m_task();
+
+				try
+				{
+					task->m_completionEvent->set();
+				}
+				catch (std::future_error){}
 			}
-			catch (std::future_error){}
 		}
 	}
 }

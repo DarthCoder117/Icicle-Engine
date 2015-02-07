@@ -12,13 +12,17 @@ using namespace system;
 
 using namespace std;
 
-Engine::Engine(const LaunchParameters& params)
+Engine::Engine(const LaunchParameters& params, system::Window& window)
 	:m_launchParams(params),
-	m_window(params),
+	m_window(window),
 	m_graphics(&m_window),
-	m_fileSystem(params)
+	m_fileSystem(params),
+	m_threadPool(6),
+	m_quit(false)
 {
 	registerSubSystem(&m_window);
+	m_window.registerWindowEventListener(this);
+
 	registerSubSystem(&m_graphics);
 	//Gui must be registered after m_graphics
 	#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
@@ -35,16 +39,44 @@ void Engine::startGame()
 		iter->start();
 	}
 
-	//Main game loop
-	while (!glfwWindowShouldClose(m_window.getWindow()))
+	m_updateFinished.set();
+
+	//Run game loop
+	while (!m_quit)
 	{
-		for (auto iter : m_engineSystems)
-		{
-			iter->update();
-		}
+		//Update the window
+		m_quit = !m_window.run();
+
+		//Start next game logic update after last one finishes
+		m_updateFinished.wait();
+		m_updateFinished.unset();
+		m_threadPool.run(std::bind(&Engine::update, this));
+
+		//Create resources in main thread 
+		m_resourceMgr.onPostLoad();
+
+		//Render last simulated frame
+		render();
 	}
 	
 	shutdown();
+}
+
+void Engine::update()
+{	
+	for (auto iter : m_updateListeners)
+	{
+		iter->update();
+	}
+
+	//Notify threads that update is finished
+	m_updateFinished.set();
+}
+
+void Engine::render()
+{
+	//Begin rendering
+	m_graphics.render();
 }
 
 void Engine::registerSubSystem(IEngineSystem* system)
@@ -61,15 +93,19 @@ void Engine::shutdown()
 	}
 }
 
-void Engine::onWindowEvent(WindowEvent event)
-{	
+void Engine::onWindowEvent(const system::WindowEvent& evt)
+{
+	if (evt.type == WindowEvent::CLOSED)
+	{
+		evt.window->close();
+	}
 }
 
 void Engine::onKeyEvent(KeyEvent event)
 {
 	if (event.key == GLFW_KEY_ESCAPE && event.action == GLFW_PRESS) 
 	{
-		glfwSetWindowShouldClose(event.window, GL_TRUE);
+		m_window.close();
 	}
 }
 

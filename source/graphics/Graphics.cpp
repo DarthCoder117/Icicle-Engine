@@ -1,10 +1,10 @@
 #include "graphics/Graphics.h"
 #include <IcicleConfig.h>
 
-#include <GLFW/glfw3.h>
-
 #ifdef ICE_WIN32
 #include <Windows.h>
+#else
+#include <GLFW/glfw3.h>
 #endif
 
 #include <bgfx.h>
@@ -22,21 +22,27 @@ using namespace bgfx;
 
 using namespace std;
 
-Graphics::Graphics(system::Window* window) : m_window(window)
+Graphics::Graphics(system::Window* window) 
+	:m_window(window)
 {
-	glfwGetWindowSize(window->getWindow(), &renderWidth, &renderHeight);
+	m_windowSize = m_window->getWindowSize();
+	m_window->registerWindowEventListener(this);
 }
 
 void Graphics::start()
 {
-	bgfx::glfwSetWindow(m_window->getWindow());
-	
+	#if defined(ICE_WINDOWS)
+	bgfx::winSetHwnd(m_window->getSystemHandle());
+	#elif defined(ICE_LINUX)
+	bgfx::glfwSetWindow(m_window->getSystemHandle());
+	#endif
+
 	bgfx::init();
 	
 	Debug::info("Initilised bgfx");
 	
-	bgfx::reset(renderWidth, renderHeight, reset);
-	Debug::info("Setting bgfx rendersize to ", renderWidth, ":", renderHeight);
+	bgfx::reset(m_windowSize.x, m_windowSize.y, reset);
+	Debug::info("Setting bgfx rendersize to ", m_windowSize.x, ":", m_windowSize.y);
 	
 	#ifdef ICE_DEBUG
 	// Enable debug text.
@@ -47,16 +53,6 @@ void Graphics::start()
 	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xFFFFFFFF, 1.0f, 0);
 }
 
-void Graphics::update()
-{
-	// Set view 0 default viewport.
-	bgfx::setViewRect(0, 0, 0, renderWidth, renderHeight);
-	// This dummy draw call is here to make sure that view 0 is cleared
-	// if no other draw calls are submitted to view 0.
-	bgfx::submit(0);
-	render();
-}
-
 void Graphics::shutdown()
 {
 	// Shutdown bgfx.
@@ -64,7 +60,14 @@ void Graphics::shutdown()
 }
 
 
-void Graphics::render() {
+void Graphics::render() 
+{
+	// Set view 0 default viewport.
+	bgfx::setViewRect(0, 0, 0, m_windowSize.x, m_windowSize.y);
+	// This dummy draw call is here to make sure that view 0 is cleared
+	// if no other draw calls are submitted to view 0.
+	bgfx::submit(0);
+	
 	// Use debug font to print information about this example.
 	
 	bgfx::dbgTextClear();
@@ -79,11 +82,13 @@ void Graphics::render() {
 	bgfx::frame();
 }
 
-void Graphics::onWindowEvent(WindowEvent event) {
-	if (event.type == WindowEventType::WINDOWSIZE) {
-		renderWidth = event.data.size.width;
-		renderHeight = event.data.size.height;
+void Graphics::onWindowEvent(const system::WindowEvent& evt)
+{
+	if (evt.type == WindowEvent::RESIZED) 
+	{
+		m_windowSize = evt.size;
+		bgfx::reset(m_windowSize.x, m_windowSize.y, reset);
 		
-		Debug::info("Setting bgfx rendersize to ", renderWidth, ":", renderHeight);
+		Debug::info("Setting bgfx rendersize to ", m_windowSize.x, ":", m_windowSize.y);
 	}
 }

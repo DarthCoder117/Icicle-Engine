@@ -13,25 +13,26 @@ namespace ice
 {
 	namespace graphics
 	{
-		class Graphics : public core::IEngineSystem, public system::WindowEventListener {
+		class Graphics : public core::IEngineSystem, public system::WindowEventListener
+		{
 		public:
+
 			Graphics(system::Window* window);
 			
 			void start();
-			void update();
+
 			void shutdown();
 			
 			void render();
 			
-			void onWindowEvent(system::WindowEvent event);
+			void onWindowEvent(const system::WindowEvent& evt);
 			
 		private:
 			static const uint32_t debug = BGFX_DEBUG_TEXT;
 			static const uint32_t reset = BGFX_RESET_VSYNC;
 			
-			int32_t renderWidth;
-			int32_t renderHeight;
-			
+			Vec2u m_windowSize;
+
 			system::Window* m_window;
 		};
 	}

@@ -74,19 +74,7 @@ namespace ice
 	template <typename T> using Function = std::function<T>;
 	
 	//Thread management types
-
-	typedef std::thread Thread;
-	
-	template <typename T> using Promise = std::promise<T>;
-	template <typename T> using Future = std::future<T>;
-	
 	template <typename T> using Atomic = std::atomic<T>;
-
-	typedef std::mutex Mutex;
-
-	template <typename T> using ScopedLock = std::unique_lock<T>;
-
-	typedef std::condition_variable ConditionVariable;
 }
 
 

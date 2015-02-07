@@ -5,7 +5,8 @@
 #include <core/Engine.h>
 #include <core/Debug.h>
 #include <core/FileStream.h>
-#include "SFML/System.hpp"
+#include <system/LinuxWindow.h>
+#include <system/Win32Window.h>
 
 
 using namespace ice;
@@ -23,7 +24,12 @@ int Test::start(int argc, char* argv[])
 	params.m_argc = argc;
  	params.m_argv = argv;
 
- 	Engine engine(params);
+	#if defined(ICE_WINDOWS)
+	Win32Window window;
+	#elif defined(ICE_LINUX)
+	LinuxWindow window;
+	#endif
+ 	Engine engine(params, window);
  	
  	//This is where custom sub-systems would be created and registered...
  

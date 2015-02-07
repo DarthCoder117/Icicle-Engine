@@ -30,9 +30,9 @@ namespace ice
 			///@brief Should load the resource from the specified path.
 			///Usually this is just a path to open a stream from the FileSystem, but if some resource types need to use weird path types, then they can.
 			///This method is usually called from a seperate loading thread, so creation of graphics objects, or anything else that must be done synchronously can be done in onPostLoad.
-			virtual bool load(const String& path) = 0;
+			virtual void load(const String& path) = 0;
 
-			///@brief Called from the main thread when the resource is finished loading.
+			///@brief Called from the rendering thread when the resource is finished loading.
 			virtual void onPostLoad(){}
 
 			///@brief Unloads the resource from memory.
@@ -77,11 +77,11 @@ namespace ice
 
 			Atomic<RESOURCE_LOAD_STATE> m_state;
 
-			UniquePtr<Promise<void> > m_partiallyLoadedPromise;
-			Future<void> m_partiallyLoadedFuture;
+			//UniquePtr<Promise<void> > m_partiallyLoadedPromise;
+			//Future<void> m_partiallyLoadedFuture;
 
-			UniquePtr<Promise<void> > m_loadedPromise;
-			Future<void> m_loadedFuture;
+			//UniquePtr<Promise<void> > m_loadedPromise;
+			//Future<void> m_loadedFuture;
 
 			Atomic<unsigned int> m_refCount;
 

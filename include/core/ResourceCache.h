@@ -2,6 +2,7 @@
 #define RESOURCE_CACHE_H
 #include <IcicleCommon.h>
 #include "core/Resource.h"
+#include "core/Mutex.h"
 #include <map>
 
 namespace ice
@@ -41,7 +42,7 @@ namespace ice
 
 			Map<String, ResourceHandle<IResource> > m_cache;
 
-			Mutex m_cacheLock;
+			core::Mutex m_cacheLock;
 		};
 	}
 }

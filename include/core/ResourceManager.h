@@ -4,6 +4,8 @@
 #include "core/EngineSystem.h"
 #include "core/ResourceCache.h"
 #include "core/ResourceFactory.h"
+#include "core/Thread.h"
+#include "core/ThreadEvent.h"
 
 namespace ice
 {
@@ -19,10 +21,9 @@ namespace ice
 				return m_inst;
 			}
 
-			ResourceManager()
-			{
-				m_inst = this;
-			}
+			ResourceManager();
+
+			~ResourceManager();
 
 			///@brief Creates a resource and loads it resource into memory asynchronously.
 			///@warning The type of resource returned may differ from the type passed to the function:
@@ -34,11 +35,19 @@ namespace ice
 				return (T*)load(T::getClassType(), path);
 			}
 
+			///@brief Registers a resource factory with the manager.
 			void registerFactory(IResourceFactory* factory);
+
+			///@brief Called internally to create graphics resources from the rendering thread.
+			void onPostLoad();
 
 			ResourceCache& getResourceCache(){ return m_cache; }
 
 		private:
+
+			//Thread m_loadThread;
+			void loadingThread();
+			bool m_exitFlag;
 
 			static ResourceManager* m_inst;
 
@@ -47,6 +56,10 @@ namespace ice
 			Queue<ResourceHandle<IResource> > m_mainThreadCallbacks;
 
 			List<IResourceFactory*> m_factories;
+
+			//Mutex m_loadQueueLock;
+			//ThreadEvent m_queueConditionVar;
+			//Queue<Function<void()> > m_loadQueue;
 		};
 	}
 }
