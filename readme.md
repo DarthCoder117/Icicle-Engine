@@ -4,11 +4,11 @@ It's currently a work in progress, so any pull requests will most likely be merg
 
 # Todo
 
-* Fix dependency management
-* Thread pool
-* Memory allocators
 * Resource manager
 * Graphics system
+* Fix dependency management
+* Memory allocators
+* Redesign input system with action mapping and no GLFW dependency
 * Network system
 
 # ZLIB License
