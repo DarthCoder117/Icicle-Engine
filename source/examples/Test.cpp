@@ -5,9 +5,11 @@
 #include <core/Engine.h>
 #include <core/Debug.h>
 #include <core/FileStream.h>
+
+#include <core/Reflection.h>
+
 #include <system/LinuxWindow.h>
 #include <system/Win32Window.h>
-
 
 using namespace ice;
 using namespace core;
@@ -16,7 +18,6 @@ using namespace system;
 using namespace test;
 
 using namespace std;
-
 
 int Test::start(int argc, char* argv[])
 {
@@ -42,6 +43,11 @@ int Test::start(int argc, char* argv[])
 	buffer[streamSz] = NULL;
 
 	stream->close();
+
+	std::cout << "Reflection test:\n";
+	std::cout << "Type name - " << ReflectTest::staticReflect()->name() << "\n";
+	std::cout << "Type size - " << ReflectTest::staticReflect()->size() << "\n";
+	std::cout << "Type ID - " << ReflectTest::staticReflect()->type() << "\n";
 
  	engine.startGame();
 	

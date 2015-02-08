@@ -37,9 +37,21 @@ namespace ice
 			///The caller is responsible for managing the SubSystem's memory.
 			void registerSubSystem(IEngineSystem* system);
 
-			///@brief Starts the game loop.
-			void startGame();
+			///@brief Initializes all registered subsystems.
+			void init();
+
+			///@brief Updates the engine's game world simulation.
+			void update();
+
+			///@brief Render the last simulated frame.
+			void render();
+
+			///@brief Cleans up all registered systems after the game is finished.
 			void shutdown();
+
+			///@brief Starts a game loop with the engine.
+			///If using a manually created window, then use update() and render() from within your own window loop.
+			void startGame();
 
 			///@return The parameters used when the engine starts up.
 			LaunchParameters& getLaunchParameters(){ return m_launchParams; }
@@ -69,9 +81,8 @@ namespace ice
 
 			graphics::Graphics m_graphics;
 
-			void update();
+			void updateTask();
 			ThreadEvent m_updateFinished;
-			void render();
 			
 			#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
 			gui::Gui m_gui;

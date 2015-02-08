@@ -31,7 +31,7 @@ Engine::Engine(const LaunchParameters& params, system::Window& window)
 	registerSubSystem(&m_fileSystem);
 }
 
-void Engine::startGame()
+void Engine::init()
 {
 	//Call start on all SubSystems
 	for (auto iter : m_engineSystems)
@@ -39,30 +39,24 @@ void Engine::startGame()
 		iter->start();
 	}
 
+	//This must be set before the game loop can start
 	m_updateFinished.set();
+}
 
-	//Run game loop
+void Engine::startGame()
+{
+	init();
+
 	while (!m_quit)
 	{
-		//Update the window
-		m_quit = !m_window.run();
-
-		//Start next game logic update after last one finishes
-		m_updateFinished.wait();
-		m_updateFinished.unset();
-		m_threadPool.run(std::bind(&Engine::update, this));
-
-		//Create resources in main thread 
-		m_resourceMgr.onPostLoad();
-
-		//Render last simulated frame
+		update();
 		render();
 	}
 	
 	shutdown();
 }
 
-void Engine::update()
+void Engine::updateTask()
 {	
 	for (auto iter : m_updateListeners)
 	{
@@ -73,9 +67,23 @@ void Engine::update()
 	m_updateFinished.set();
 }
 
+void Engine::update()
+{
+	//Update the window
+	m_quit = !m_window.run();
+
+	//Start next game logic update after last one finishes
+	m_updateFinished.wait();
+	m_updateFinished.unset();
+	m_threadPool.run(std::bind(&Engine::updateTask, this));
+
+	//Create resources in main thread 
+	m_resourceMgr.onPostLoad();
+}
+
 void Engine::render()
 {
-	//Begin rendering
+	//Render last simulated frame
 	m_graphics.render();
 }
 
