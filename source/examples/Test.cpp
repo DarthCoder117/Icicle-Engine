@@ -48,6 +48,19 @@ int Test::start(int argc, char* argv[])
 	std::cout << "Type name - " << ReflectTest::staticReflect()->name() << "\n";
 	std::cout << "Type size - " << ReflectTest::staticReflect()->size() << "\n";
 	std::cout << "Type ID - " << ReflectTest::staticReflect()->type() << "\n";
+	std::cout << "Parent class name - " << ReflectTest::staticReflect()->parent()->name() << "\n";
+	if (ReflectTest::staticReflect()->inheritsFrom(ReflectParent::staticReflect()))
+	{
+		std::cout << "ReflectTest inherits from ReflectParent\n";
+	}
+	if (!ReflectParent::staticReflect()->inheritsFrom(ReflectTest::staticReflect()))
+	{
+		std::cout << "ReflectParent does not inherit from ReflectTest\n";
+	}
+	if (!ReflectTest::staticReflect()->inheritsFrom(ReflectTest::staticReflect()))
+	{
+		std::cout << "ReflectTest does not inherit from itself\n";
+	}
 
  	engine.startGame();
 	

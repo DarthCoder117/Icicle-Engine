@@ -34,7 +34,3 @@ void Reflection::registerType(ClassInfo* reflect)
 	m_typeList.push_back(reflect);
 	m_typeHashMap[typeID] = reflect;
 }
-
-BeginReflect(ReflectTest)
-
-EndReflect(ReflectTest)

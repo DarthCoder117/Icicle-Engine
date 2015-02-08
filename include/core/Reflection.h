@@ -10,7 +10,7 @@ namespace ice
 		typedef u64 TypeID;
 
 		class ClassInfo;
-		class IReflectable;
+		class Reflectable;
 
 		class Reflection
 		{
@@ -32,73 +32,95 @@ namespace ice
 			static UnorderedMap<TypeID, ClassInfo*> m_typeHashMap;
 		};
 
-		template <typename T>
-		class TypeRegistry
-		{
-		public:
-
-			static ClassInfo* const info;
-		};
-
 		class ClassInfo
 		{
 		public:
+
+			ClassInfo()
+				:m_parentClass(NULL)
+			{}
 
 			virtual const char* name() = 0;
 
 			virtual TypeID type() = 0;
 
 			virtual size_t size() = 0;
+
+			ClassInfo* parent(){ return m_parentClass; }
+
+			bool inheritsFrom(ClassInfo* parentClass)
+			{
+				ClassInfo* p = parent();
+				while (p)
+				{
+					if (p == parentClass)
+					{
+						return true;
+					}
+
+					p = p->parent();
+				}
+
+				return false;
+			}
+
+			template <typename T>
+			bool inheritsFrom()
+			{
+				return inheritsFrom(T::staticReflect());
+			}
+
+		protected:
+
+			ClassInfo* m_parentClass;
 		};
 
 		///@brief Begins a reflection block
 		#define BeginReflect(ClassType)\
-		class ClassType##_MetaClass : public ice::core::ClassInfo\
+		static ice::core::ClassInfo* staticReflect(){ return ClassType::MetaClass::instance(); }\
+		ice::core::ClassInfo* reflect(){ return ClassType::staticReflect(); }\
+		class MetaClass : public ice::core::ClassInfo\
 		{\
 		public:\
+		static MetaClass* instance(){ static MetaClass* inst = new MetaClass(); return inst; }\
 		const char* name(){ return #ClassType; }\
 		ice::core::TypeID type(){ static ice::core::TypeID hashID = ice::core::StringUtils::stringHash(#ClassType); return hashID; }\
 		size_t size(){ return sizeof(ClassType); }\
-		ClassType##_MetaClass(){
+		private:\
+		MetaClass(){
+
+		#define ParentClass(ClassType) m_parentClass = ClassType::MetaClass::instance();
 
 		///@brief Ends a reflection block
-		#define EndReflect(ClassType)\
-		}}; \
-		ClassType##_MetaClass g_##ClassType##_instance;\
-		ClassInfo* const ice::core::TypeRegistry<ClassType>::info = &g_##ClassType##_instance;
+		#define EndReflect(ClassType)}}; public:
 
 		///@brief Reflectable object interface.
-		///@warning Inherit from Reflectable<T> instead of this interface.
-		class IReflectable
+		class Reflectable
 		{
 		public:
 
-			virtual ~IReflectable(){}
+			virtual ~Reflectable(){}
 
 			virtual ClassInfo* reflect() = 0;
 		};
 
-		///@brief Base class for types that need to be reflectable.
-		template <typename T>
-		class Reflectable : public IReflectable
+		//TEST
+		class ReflectParent : public Reflectable
 		{
 		public:
 
-			static ClassInfo* staticReflect()
-			{
-				return TypeRegistry<T>::info;
-			}
-
-			ClassInfo* reflect()
-			{
-				return T::staticReflect();
-			}
+			BeginReflect(ReflectParent);
+			
+			EndReflect(ReflectParent);
 		};
 
-		//TEST
-		class ReflectTest : public Reflectable<ReflectTest>
+		class ReflectTest : public ReflectParent
 		{
 		public:
+
+			BeginReflect(ReflectTest);
+			ParentClass(ReflectParent);
+			EndReflect(ReflectTest);
 
 		private:
 
