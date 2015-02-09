@@ -45,7 +45,7 @@ namespace ice
 
 		private:
 
-			//Thread m_loadThread;
+			Thread m_loadThread;
 			void loadingThread();
 			bool m_exitFlag;
 
@@ -53,13 +53,21 @@ namespace ice
 
 			ResourceCache m_cache;
 
+			Mutex m_mainThreadCallbackLock;
 			Queue<ResourceHandle<IResource> > m_mainThreadCallbacks;
 
 			List<IResourceFactory*> m_factories;
 
-			//Mutex m_loadQueueLock;
-			//ThreadEvent m_queueConditionVar;
-			//Queue<Function<void()> > m_loadQueue;
+			ThreadEvent m_resourceWaitingToLoad;
+			Mutex m_loadQueueLock;
+
+			struct LoadTaskPackage
+			{
+				ResourceHandle<IResource> m_resource;
+				String m_path;
+			};
+
+			Queue<LoadTaskPackage> m_loadQueue;
 		};
 	}
 }

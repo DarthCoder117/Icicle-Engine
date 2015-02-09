@@ -3,6 +3,7 @@
 #include <IcicleCommon.h>
 #include "core/Resource.h"
 #include "core/Mutex.h"
+#include "core/ReadWriteLock.h"
 #include <map>
 
 namespace ice

@@ -26,6 +26,48 @@ namespace ice
 
 			T* m_syncObj;
 		};
+
+		template <typename T>
+		class ScopedReadLock
+		{
+		public:
+
+			ScopedReadLock(T& syncObj)
+				:m_syncObj(&syncObj)
+			{
+				m_syncObj->lockRead();
+			}
+
+			~ScopedReadLock()
+			{
+				m_syncObj->unlockRead();
+			}
+
+		private:
+
+			T* m_syncObj;
+		};
+
+		template <typename T>
+		class ScopedWriteLock
+		{
+		public:
+
+			ScopedWriteLock(T& syncObj)
+				:m_syncObj(&syncObj)
+			{
+				m_syncObj->lockWrite();
+			}
+
+			~ScopedWriteLock()
+			{
+				m_syncObj->unlockWrite();
+			}
+
+		private:
+
+			T* m_syncObj;
+		};
 	}
 }
 

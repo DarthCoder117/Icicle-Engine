@@ -11,12 +11,15 @@ ResourceManager::ResourceManager()
 {
 	m_inst = this;
 
-	//m_loadThread.init(&ResourceManager::loadingThread, this);
+	m_loadThread.init(&ResourceManager::loadingThread, this);
 }
 
 ResourceManager::~ResourceManager()
 {
-	//m_loadThread.join();
+	m_exitFlag = true;
+	m_resourceWaitingToLoad.set();
+
+	m_loadThread.join();
 }
 
 IResource* ResourceManager::load(ResourceType type, const String& path)
@@ -47,18 +50,30 @@ IResource* ResourceManager::load(ResourceType type, const String& path)
 	m_cache.cacheResource(res);
 
 	//Queue loading task
-	//ScopedLock<Mutex> lock(m_loadQueueLock);
-	//m_loadQueue.push(std::bind(&IResource::load, res, path));
+	{
+		ScopedLock<Mutex> lock(m_loadQueueLock);
+
+		LoadTaskPackage taskPackage;
+		taskPackage.m_resource = res;
+		taskPackage.m_path = path;
+
+		m_loadQueue.push(taskPackage);
+	}
 
 	//Notify loading thread
-	//m_queueConditionVar.set();
+	m_resourceWaitingToLoad.set();
 
 	return res;
 }
 
 void ResourceManager::onPostLoad()
 {
-
+	while (!m_mainThreadCallbacks.empty())
+	{
+		ScopedLock<Mutex> lock(m_mainThreadCallbackLock);
+		m_mainThreadCallbacks.front()->onPostLoad();
+		m_mainThreadCallbacks.pop();
+	}
 }
 
 void ResourceManager::registerFactory(IResourceFactory* factory)
@@ -70,17 +85,23 @@ void ResourceManager::loadingThread()
 {
 	while (!m_exitFlag)
 	{
-		//Pop load task from queue
-		//m_loadQueueLock.lock();
-		//m_loadQueue.front()();
-		//m_loadQueue.pop();
-
-		//if (m_loadQueue.empty())
+		if (!m_loadQueue.empty() && m_loadQueueLock.tryLock())
 		{
-			//m_loadQueueLock.unlock();
-			//m_queueConditionVar.wait();
-		}
+			//Execute loading task
+			LoadTaskPackage taskPackage = m_loadQueue.front();
+			taskPackage.m_resource->load(taskPackage.m_path);
+			m_loadQueue.pop();
 
-		//m_loadQueueLock.unlock();
+			m_loadQueueLock.unlock();
+
+			//Add to main thread callback list
+			ScopedLock<Mutex> lock(m_mainThreadCallbackLock);
+			m_mainThreadCallbacks.push(taskPackage.m_resource);
+		}
+		else
+		{
+			m_resourceWaitingToLoad.wait();
+			m_resourceWaitingToLoad.unset();
+		}
 	}
 }
