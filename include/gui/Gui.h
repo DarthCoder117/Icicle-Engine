@@ -9,9 +9,6 @@
 
 #include "SFML/System.hpp"
 
-#include "CEGUI/CEGUI.h"
-#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
-
 namespace ice
 {
 	namespace gui
