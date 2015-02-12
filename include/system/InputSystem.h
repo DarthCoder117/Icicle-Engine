@@ -8,26 +8,7 @@
 namespace ice
 {
 	namespace system
-	{
-		enum WindowEventType {
-			FOCUS, REFRESH, ICONIFIED, WINDOWPOSITION, FRAMBUFFERSIZE, WINDOWSIZE, CLOSE
-		};
-		
-		struct WindowEvent {
-			GLFWwindow* window;
-			WindowEventType type;
-			union {
-				struct{
-					int width, height;
-				} size;
-				struct{
-					int x, y;
-				} position;
-				bool iconified;
-				bool focused;
-			} data;
-		};
-		
+	{		
 		struct KeyEvent {
 			GLFWwindow* window;
 			int key;
@@ -78,15 +59,6 @@ namespace ice
 		public:
 			static void initialise(GLFWwindow* window);
 			
-			static void registerWindowListener(WindowEventListener* listener);
-			static void registerWindowFocusCallback(GLFWwindow* window, int focused);
-			static void registerWindowIconifiedCallback(GLFWwindow* window, int iconified);
-			static void registerWindowPositionCallback(GLFWwindow* window, int xpos, int ypos);
-			static void registerWindowFrameBufferSizeCallback(GLFWwindow* window, int width, int height);
-			static void registerWindowSizeCallback(GLFWwindow* window, int width, int height);
-			static void registerWindowCloseCallback(GLFWwindow* window);
-			static void registerWindowRefreshCallback(GLFWwindow* window);
-			
 			static void registerKeyListener(KeyEventListener* listener);
 			static void registerKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 			
@@ -100,21 +72,16 @@ namespace ice
 			static void registerMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 			
 		private:
-			static void transmitWindowEvent(WindowEvent event);
+			
 			static void transmitKeyEvent(KeyEvent event);
 			static void transmitTextEvent(TextEvent event);
 			static void transmitMouseEvent(MouseEvent event);
+
 		private:
-			static std::vector<WindowEventListener*> m_windowListener;
+			
 			static std::vector<KeyEventListener*> m_keyListener;
 			static std::vector<TextEventListener*> m_textListener;
 			static std::vector<MouseEventListener*> m_mouseListener;
-		};
-		
-		class WindowEventListener {
-		public :
-			WindowEventListener() { InputSystem::registerWindowListener(this); }
-			virtual void onWindowEvent(WindowEvent event) = 0;
 		};
 		
 		class KeyEventListener {

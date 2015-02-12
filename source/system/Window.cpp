@@ -7,35 +7,28 @@ using namespace ice;
 using namespace core;
 using namespace system;
 
-Window::Window(const core::LaunchParameters& params)
+void Window::registerWindowEventListener(WindowEventListener* listener)
 {
-	/* Initialize the library */
-	if (!glfwInit()) {
-		std::cout << "Failed to create glfw context\n";
+	m_windowEventListeners.push_back(listener);
+}
+
+void Window::unregisterWindowEventListener(WindowEventListener* listener)
+{
+	List<WindowEventListener*>::iterator iter;
+	for (iter = m_windowEventListeners.begin(); iter != m_windowEventListeners.end(); ++iter)
+	{
+		if (*iter == listener)
+		{
+			m_windowEventListeners.erase(iter);
+			return;
+		}
 	}
-	
-	/* Create a windowed mode window and its OpenGL context */
-	m_window = glfwCreateWindow(params.m_windowSize.x, params.m_windowSize.y, params.m_windowName.c_str(), NULL, NULL);
-	
-	if (!m_window) {
-		glfwTerminate();
-		std::cout << "Failed to create an window\n";
+}
+
+void Window::transmitWindowEvent(const WindowEvent& evt)
+{
+	for (auto listener : m_windowEventListeners)
+	{
+		listener->onWindowEvent(evt);
 	}
-	
-	InputSystem::initialise(m_window);
-}
-
-void Window::start() {
-	/* Make the window's context current */
-	glfwMakeContextCurrent(m_window);
-}
-
-void Window::update()
-{
-	glfwPollEvents();
-}
-
-GLFWwindow* Window::getWindow() const
-{
-	return m_window;
 }

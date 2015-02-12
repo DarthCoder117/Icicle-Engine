@@ -119,11 +119,11 @@ void Gui::onTextEvent(system::TextEvent event)
 {
 	m_context->injectChar(event.codepoint);
 }
-
+/*
 void Gui::onWindowEvent(system::WindowEvent event)
 {
 
-}
+}*/
 
 void Gui::shutdown()
 {

@@ -4,11 +4,11 @@ It's currently a work in progress, so any pull requests will most likely be merg
 
 # Todo
 
-* Fix dependency management
-* Thread pool
-* Memory allocators
 * Resource manager
 * Graphics system
+* Fix dependency management
+* Memory allocators
+* Redesign input system with action mapping and no GLFW dependency
 * Network system
 
 # ZLIB License
@@ -31,6 +31,4 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 
 # 3rd-party libraries
-* SFML - Simple and Fast Multimedia Library http://www.sfml-dev.org/
 * GLM - OpenGL Mathematics (GLM) http://glm.g-truc.net/
-* PhysicsFS - virtual filesystem library http://icculus.org/physfs/
