@@ -1,5 +1,7 @@
 #include "graphics/Graphics.h"
 #include <IcicleConfig.h>
+#include <core/ResourceManager.h>
+#include "graphics/Texture.h"
 
 #ifdef ICE_WIN32
 #include <Windows.h>
@@ -31,6 +33,8 @@ Graphics::Graphics(system::Window* window)
 
 void Graphics::start()
 {
+	core::ResourceManager::instance()->registerFactory(new core::ResourceFactory<Texture>());
+
 	#if defined(ICE_WINDOWS)
 	bgfx::winSetHwnd(m_window->getSystemHandle());
 	#elif defined(ICE_LINUX)

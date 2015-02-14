@@ -11,6 +11,9 @@
 #include <system/LinuxWindow.h>
 #include <system/Win32Window.h>
 
+#include <core/ResourceManager.h>
+#include <graphics/Texture.h>
+
 using namespace ice;
 using namespace core;
 using namespace graphics;
@@ -61,6 +64,10 @@ int Test::start(int argc, char* argv[])
 	{
 		std::cout << "ReflectTest does not inherit from itself\n";
 	}
+
+	engine.init();
+
+	//ice::core::ResourceHandle<ice::graphics::Texture> tex = ice::core::ResourceManager::instance()->load<ice::graphics::Texture>("test.dds");
 
  	engine.startGame();
 	

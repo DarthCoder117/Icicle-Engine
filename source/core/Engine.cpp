@@ -45,8 +45,6 @@ void Engine::init()
 
 void Engine::startGame()
 {
-	init();
-
 	while (!m_quit)
 	{
 		update();

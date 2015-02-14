@@ -37,7 +37,7 @@ namespace ice
 			///The caller is responsible for managing the SubSystem's memory.
 			void registerSubSystem(IEngineSystem* system);
 
-			///@brief Initializes all registered subsystems.
+			///@brief Initializes all registered subsystems. This must be called before startGame().
 			void init();
 
 			///@brief Updates the engine's game world simulation.

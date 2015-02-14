@@ -1,6 +1,7 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 #include <IcicleCommon.h>
+#include "core/Reflection.h"
 #include "core/Uncopyable.h"
 
 namespace ice
@@ -98,7 +99,7 @@ namespace ice
 
 			static ResourceType getClassType()
 			{
-				static ResourceType type = typeid(T).hash_code;
+				static ResourceType type = typeid(T).hash_code();
 				return type;
 			}
 
