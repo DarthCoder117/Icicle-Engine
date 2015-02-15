@@ -62,11 +62,7 @@ namespace ice
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
 
-			system::ThreadPool& getThreadPool(){return m_threadPool;}
-			
-			#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
-			gui::Gui& getGui() { return m_gui; }
-			#endif
+			system::ThreadPool& getThreadPool(){ return m_threadPool; }
 
 		private:
 
@@ -83,10 +79,6 @@ namespace ice
 
 			void updateTask();
 			ThreadEvent m_updateFinished;
-			
-			#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
-			gui::Gui m_gui;
-			#endif
 			
 			system::FileSystem m_fileSystem;
 			core::ResourceManager m_resourceMgr;

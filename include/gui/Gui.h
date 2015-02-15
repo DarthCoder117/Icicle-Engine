@@ -35,12 +35,6 @@ namespace ice
 			sf::Clock m_clock;
 			
 		private:
-			//#ifdef ICE_LINUX
-			CEGUI::OpenGL3Renderer* m_renderer;
-			/*#elif defined(ICE_WINDOWS)
-			CEGUI::DirectX9Renderer* m_renderer;
-			#endif*/
-			CEGUI::GUIContext* m_context;
 		};
 	}
 }

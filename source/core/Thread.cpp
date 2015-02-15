@@ -7,7 +7,7 @@ u32 Thread::getID()
 {
 	if (m_thread)
 	{
-		return (u32)m_thread->get_id().hash();
+		return (u32)std::hash<std::thread::id>()(std::this_thread::get_id());
 	}
 
 	return 0;
@@ -23,7 +23,7 @@ void Thread::join(u32 waitTimeMs)
 
 u32 Thread::Current::getCurrentThreadID()
 {
-	return std::this_thread::get_id().hash();
+	return (u32)std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 void Thread::Current::sleep(u32 timeMs)

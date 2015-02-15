@@ -31,7 +31,7 @@ bool Mutex::tryLock()
 	#ifdef ICE_WINDOWS
 	return TryEnterCriticalSection(&m_mutex) == TRUE;
 	#else
-	m_mutex.try_lock();
+	return m_mutex.try_lock();
 	#endif
 }
 

@@ -1,10 +1,12 @@
+#ifdef ICE_WINDOWS
+
 #include "system/Win32Window.h"
 #include <core/Debug.h>
 
 using namespace ice;
 using namespace system;
 
-#ifdef ICE_WINDOWS
+
 struct WindowInstanceData
 {
 	WindowInstanceData()
@@ -175,39 +177,4 @@ WindowHandle Win32Window::getSystemHandle()
 {
 	return m_window;
 }
-#else
-Win32Window::Win32Window(const Vec2u& size, const String& windowTitle)
-{
-	assert(0 && "Win32 window is not supported on this platform.");
-}
-
-void Win32Window::start()
-{
-
-}
-
-void Win32Window::close()
-{
-
-}
-
-bool Win32Window::run()
-{
-	return false;
-}
-
-void Win32Window::setWindowTitle(const String& title)
-{
-
-}
-
-Vec2u Win32Window::getWindowSize()
-{
-	return Vec2u(0, 0);
-}
-
-WindowHandle Win32Window::getSystemHandle()
-{
-	return NULL;
-}
-#endif
+#endif //ICE_WINDOWS
