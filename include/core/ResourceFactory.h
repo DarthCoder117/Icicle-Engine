@@ -20,16 +20,16 @@ namespace ice
 		};
 
 		///@brief Template version of resource factory with support for default parameters passed to constructor.
-		template <typename T, typename... P>
+		template <typename T, typename P>
 		class ResourceFactory : public IResourceFactory
 		{
 		public:
-
+			
 			IResource* create(ResourceType type)
 			{
 				if (type == T::getClassType())
 				{
-					return new T(P...);
+					return new T;
 				}
 
 				return NULL;

@@ -12,22 +12,20 @@ using namespace system;
 
 using namespace std;
 
-Engine::Engine(const LaunchParameters& params, system::Window& window)
-	:m_launchParams(params),
+Engine::Engine(const LaunchParameters& params, system::Window& window) :
+	m_quit(false),
+	m_launchParams(params),
 	m_window(window),
 	m_graphics(&m_window),
 	m_fileSystem(params),
-	m_threadPool(6),
-	m_quit(false)
+	m_threadPool(6)
 {
 	registerSubSystem(&m_window);
 	m_window.registerWindowEventListener(this);
 
 	registerSubSystem(&m_graphics);
-	//Gui must be registered after m_graphics
-	#ifndef ICE_WINDOWS//Temporarily disabled on windows so other things can be tested before I build the CEGUI binaries...
-	registerSubSystem(&m_gui);
-	#endif
+
+	
 	registerSubSystem(&m_fileSystem);
 }
 

@@ -2,6 +2,8 @@
 #define LINUX_WINDOW_H
 #include "system/Window.h"
 
+#include "system/InputSystem.h"
+
 namespace ice
 {
 	namespace system

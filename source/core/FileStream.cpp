@@ -5,14 +5,13 @@ using namespace ice;
 using namespace core;
 
 FileStream::FileStream()
-	:m_streamMode(0),
-	m_file(NULL)
+	:m_file(NULL),
+	m_streamMode(0)
 {
 
 }
 
-FileStream::FileStream(const String& path, u8 streamMode)
-	:FileStream()
+FileStream::FileStream(const String& path, u8 streamMode) : FileStream()
 {
 	open(path, streamMode);
 }

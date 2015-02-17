@@ -1,5 +1,8 @@
 #ifndef WIN32_WINDOW_H
 #define WIN32_WINDOW_H
+
+#ifdef ICE_WINDOWS
+
 #include "system/Window.h"
 
 namespace ice
@@ -21,16 +24,15 @@ namespace ice
 			Vec2u getWindowSize();
 
 			WindowHandle getSystemHandle();
-
-			#ifdef ICE_WINDOWS
+			
 			void windowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 		private:
 
 			HWND m_window;
-			#endif
 		};
 	}
 }
 
+#endif
 #endif

@@ -30,7 +30,8 @@ file (GLOB ENGINE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include"
 
 include_directories (
 	"${ENGINE_INCLUDE_DIR}"
-	"${CMAKE_SOURCE_DIR}/3rd-party/cegui/include"
+	
+	"${CMAKE_SOURCE_DIR}/3rd-party/libRocket/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/sfml/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/bgfx/include"
 	"${CMAKE_SOURCE_DIR}/3rd-party/glfw/include"
@@ -80,12 +81,11 @@ add_library(icicle-core ${CORE_SOURCES})
 file(GLOB SYSTEM_SOURCES 
 	${ICE_INCLUDES}
 	
-	"${CMAKE_SOURCE_DIR}/source/system/unix/*.h"
-	"${CMAKE_SOURCE_DIR}/source/system/unix/*.cpp"
 	"${CMAKE_SOURCE_DIR}/source/system/*.h" 
 	"${CMAKE_SOURCE_DIR}/source/system/*.cpp"
 	)
 add_library(icicle-system ${SYSTEM_SOURCES})
+target_link_libraries (icicle-system "icicle-core")
 
 #icicle-graphics
 file(GLOB GRAPHICS_SOURCES
@@ -97,13 +97,13 @@ file(GLOB GRAPHICS_SOURCES
 add_library(icicle-graphics ${GRAPHICS_SOURCES})
 
 #icicle-gui
-file(GLOB GRAPHICS_SOURCES
+file(GLOB GUI_SOURCES
 	${ICE_INCLUDES}
 	
 	"${CMAKE_SOURCE_DIR}/source/gui/*.h" 
 	"${CMAKE_SOURCE_DIR}/source/gui/*.cpp"
 	)
-add_library(icicle-gui ${GRAPHICS_SOURCES})
+add_library(icicle-gui ${GUI_SOURCES})
 
 #icicle-examples
 file(GLOB EXAMPLES_SOURCES 

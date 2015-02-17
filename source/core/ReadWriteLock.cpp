@@ -21,6 +21,8 @@ bool ReadWriteLock::tryLockWrite()
 {
 	#ifdef ICE_WINDOWS
 	return TryAcquireSRWLockExclusive(m_lock) != 0;
+	#else
+	return 0;
 	#endif
 }
 
@@ -43,6 +45,8 @@ bool ReadWriteLock::tryLockRead()
 {
 	#ifdef ICE_WINDOWS
 	return TryAcquireSRWLockShared(m_lock) != 0;
+	#else
+	return 0;
 	#endif
 }
 
