@@ -20,15 +20,13 @@ namespace ice
 
 			~DX11InputLayout();
 
-			void init(unsigned int vertexFormat);
+			void init(InputElementDesc elements[], unsigned int numElements);
 
 			ID3D11InputLayout* getD3DLayout(){ return m_layout; }
 
 		protected:
 
-			void addInputLayoutElement(VERTEX_ELEMENT element, unsigned int vertexFormat, unsigned int& idx, Vector<D3D11_INPUT_ELEMENT_DESC>& out);
-
-			void generateShaderSignature(unsigned int vertexFormat);
+			void generateShaderSignature();
 
 			GraphicsDriver* m_driver;
 

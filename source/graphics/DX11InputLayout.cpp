@@ -6,6 +6,28 @@
 using namespace ice;
 using namespace graphics;
 
+DXGI_FORMAT icicleFormatToD3DFormat(INPUT_ELEMENT_FORMAT format)
+{
+	if (format == IEF_FLOAT4)
+	{
+		return DXGI_FORMAT_R32G32B32A32_FLOAT;
+	}
+	else if (format == IEF_FLOAT3)
+	{
+		return DXGI_FORMAT_R32G32B32_FLOAT;
+	}
+	else if (format == IEF_FLOAT2)
+	{
+		return DXGI_FORMAT_R32G32_FLOAT;
+	}
+	else if (format == IEF_FLOAT)
+	{
+		return DXGI_FORMAT_R32_FLOAT;
+	}
+
+	return DXGI_FORMAT_R32G32B32_FLOAT;
+}
+
 DX11InputLayout::~DX11InputLayout()
 {
 	m_layout->Release();
@@ -13,34 +35,29 @@ DX11InputLayout::~DX11InputLayout()
 
 ID3DBlob* g_shaderSignature = NULL;
 
-void DX11InputLayout::init(unsigned int vertexFormat)
+void DX11InputLayout::init(InputElementDesc elements[], unsigned int numElements)
 {
 	//Build list of D3D input elements
 	Vector<D3D11_INPUT_ELEMENT_DESC> d3dElements;
-	unsigned int idx = 0;
+	for (unsigned int i = 0; i < numElements; ++i)
+	{
+		D3D11_INPUT_ELEMENT_DESC el;
+		ZeroMemory(&el, sizeof(el));
 
-	addInputLayoutElement(VE_POSITION, vertexFormat, idx, d3dElements);
+		el.SemanticName = elements[i].m_semanticName.c_str();
+		el.SemanticIndex = elements[i].m_semanticIdx;
+		el.Format = icicleFormatToD3DFormat(elements[i].m_format);
+		el.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		el.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		el.InputSlot = elements[i].m_inputSlot;
 
-	addInputLayoutElement(VE_TEXCOORD0, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD1, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD2, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD3, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD4, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD5, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD6, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_TEXCOORD7, vertexFormat, idx, d3dElements);
-
-	addInputLayoutElement(VE_NORMAL, vertexFormat, idx, d3dElements);
-
-	addInputLayoutElement(VE_DIFFUSE_COLOR, vertexFormat, idx, d3dElements);
-	addInputLayoutElement(VE_SPECULAR_COLOR, vertexFormat, idx, d3dElements);
+		d3dElements.push_back(el);
+	}
 
 	//Get vertex shader signature.
-	ID3DBlob* vsBlob = NULL;
-
 	if (!g_shaderSignature)
 	{
-		generateShaderSignature(vertexFormat);
+		generateShaderSignature();
 	}
 
 	//Create input layout
@@ -53,7 +70,7 @@ void DX11InputLayout::init(unsigned int vertexFormat)
 	m_layout->AddRef();
 }
 
-void DX11InputLayout::generateShaderSignature(unsigned int vertexFormat)
+void DX11InputLayout::generateShaderSignature()
 {
 	ID3DBlob* vsBlob;
 	ID3DBlob* errorBlob;
@@ -71,95 +88,6 @@ void DX11InputLayout::generateShaderSignature(unsigned int vertexFormat)
 	}
 
 	g_shaderSignature = vsBlob;
-}
-
-void DX11InputLayout::addInputLayoutElement(VERTEX_ELEMENT element, unsigned int vertexFormat, unsigned int& idx, Vector<D3D11_INPUT_ELEMENT_DESC>& out)
-{
-	if (vertexFormat & element)
-	{
-		D3D11_INPUT_ELEMENT_DESC el;
-		ZeroMemory(&el, sizeof(el));
-
-		if (element == VE_POSITION)
-		{
-			el.SemanticName = "POSITION";
-			el.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		}
-
-		else if (element == VE_TEXCOORD0)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 0;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD1)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 1;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD2)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 2;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD3)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 3;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD4)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 4;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD5)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 5;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD6)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 6;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (element == VE_TEXCOORD7)
-		{
-			el.SemanticName = "TEXCOORD";
-			el.SemanticIndex = 7;
-			el.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-
-		else if (element == VE_NORMAL)
-		{
-			el.SemanticName = "NORMAL";
-			el.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		}
-
-		else if (element == VE_DIFFUSE_COLOR)
-		{
-			el.SemanticName = "DIFFUSE_COLOR";
-			el.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		}
-		else if (element == VE_SPECULAR_COLOR)
-		{
-			el.SemanticName = "SPECULAR_COLOR";
-			el.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		}
-
-		el.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		el.AlignedByteOffset = 0;
-		el.InputSlot = idx;
-
-		out.push_back(el);
-
-		idx++;
-	}
 }
 
 #endif
