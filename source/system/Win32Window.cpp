@@ -94,7 +94,7 @@ Win32Window::Win32Window(const Vec2u& size, const String& windowTitle, HWND exis
 		wcex.hInstance = hInstance;
 		wcex.hIcon = NULL;
 		wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-		wcex.hbrBackground = NULL;
+		wcex.hbrBackground = (HBRUSH)COLOR_WINDOW;
 		wcex.lpszMenuName = 0;
 		wcex.lpszClassName = ClassName;
 		wcex.hIconSm = 0;

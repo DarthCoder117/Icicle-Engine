@@ -12,7 +12,7 @@
 #include <system/Win32Window.h>
 
 #include <core/ResourceManager.h>
-#include <graphics/Texture.h>
+#include <graphics/Texture2D.h>
 
 using namespace ice;
 using namespace core;
@@ -67,21 +67,10 @@ int Test::start(int argc, char* argv[])
 
 	engine.init();
 
-	//ice::core::ResourceHandle<ice::graphics::Texture> tex = ice::core::ResourceManager::instance()->load<ice::graphics::Texture>("test.dds");
+	ice::core::ResourceHandle<ice::graphics::Texture2D> tex = ice::core::ResourceManager::instance()->load<ice::graphics::Texture2D>("test.png");
 
  	engine.startGame();
 	
-/*
-	sf::Thread t(test1);
-	sf::Thread t2(test2);
-	
-	t.launch();
-	t2.launch();
-	
-	for(int i = 0; i < 10; i++)
-		cout << "THREAD Main \n";
-	*/
-
 	return 0;
 }
 
@@ -90,5 +79,3 @@ int main(int argc, char* argv[])
 	Test test;
 	return test.start(argc, argv);
 }
-
-//START_ENGINE(Test)

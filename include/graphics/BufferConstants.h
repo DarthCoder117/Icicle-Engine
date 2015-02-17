@@ -1,0 +1,36 @@
+#ifndef BUFFER_CONSTANTS_H
+#define BUFFER_CONSTANTS_H
+
+namespace ice
+{
+	namespace graphics
+	{
+		enum PRIMITIVE_TOPOLOGY
+		{
+			PT_UNDEFINED,
+			PT_POINTLIST,
+			PT_LINELIST,
+			PT_LINESTRIP,
+			PT_TRIANGLELIST,
+			PT_TRIANGLESTRIP
+		};
+
+		enum LOCK_MODE
+		{
+			LM_READ = 1,
+			LM_WRITE = 2
+		};
+
+		enum BUFFER_FLAGS
+		{
+			BF_DEFAULT_USAGE = 0x01,
+			BF_STATIC_USAGE = 0x02,
+			BF_DYNAMIC_USAGE = 0x04,
+			BF_CPU_ACCESS_WRITE = 0x08,
+			BF_CPU_ACCESS_READ = 0x10,
+			BF_WITH_STREAM_OUT = 0x20
+		};
+	}
+}
+
+#endif
