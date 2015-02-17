@@ -1,6 +1,8 @@
 #include "graphics/DX11Texture2D.h"
 #include <core/Debug.h>
 
+#ifdef ICE_WINDOWS
+
 using namespace ice;
 using namespace graphics;
 
@@ -244,3 +246,5 @@ void DX11Texture2D::unload()
 		m_texture->Release();
 	}
 }
+
+#endif

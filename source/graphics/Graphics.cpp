@@ -51,13 +51,8 @@ void Graphics::start()
 
 	#if defined(ICE_WINDOWS)
 	m_driver.reset(new DX11GraphicsDriver(m_window));
-	//bgfx::winSetHwnd(m_window->getSystemHandle());
 	#elif defined(ICE_LINUX)
-	//bgfx::glfwSetWindow(m_window->getSystemHandle());
-	#endif
-	
-	#ifdef ICE_DEBUG
-	
+
 	#endif
 }
 
@@ -87,7 +82,5 @@ void Graphics::onWindowEvent(const system::WindowEvent& evt)
 			m_driver->reset(m_windowSize);
 			m_driver->setViewport(m_windowSize);
 		}
-
-		core::Debug::info("Setting bgfx rendersize to ", m_windowSize.x, ":", m_windowSize.y);
 	}
 }

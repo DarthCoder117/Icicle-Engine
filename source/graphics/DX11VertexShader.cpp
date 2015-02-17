@@ -1,5 +1,7 @@
 #include "graphics/DX11VertexShader.h"
 
+#ifdef ICE_WINDOWS
+
 using namespace ice;
 using namespace graphics;
 
@@ -17,3 +19,5 @@ void DX11VertexShader::init(void* shaderByteCode, size_t shaderByteCodeSz)
 	if (FAILED(hr))
 		return;
 }
+
+#endif

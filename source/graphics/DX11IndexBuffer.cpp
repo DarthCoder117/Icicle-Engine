@@ -1,5 +1,7 @@
 #include "graphics/DX11IndexBuffer.h"
 
+#ifdef ICE_WINDOWS
+
 using namespace ice;
 using namespace graphics;
 
@@ -143,3 +145,5 @@ void DX11IndexBuffer::unlock()
 
 	//Read mode is implemented as a system RAM buffer, so no unlocking is required.
 }
+
+#endif

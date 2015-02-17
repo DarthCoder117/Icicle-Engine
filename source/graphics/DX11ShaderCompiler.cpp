@@ -1,5 +1,6 @@
 #include "graphics/DX11ShaderCompiler.h"
 #include <core/Debug.h>
+#ifdef ICE_WINDOWS
 #include <D3Dcompiler.h>
 
 using namespace ice;
@@ -47,3 +48,5 @@ SharedPtr<ShaderBlob> DX11ShaderCompiler::compileShader(const String& shaderSour
 
 	return makeShared<ShaderBlob>(buffer, bufferSz);
 }
+
+#endif

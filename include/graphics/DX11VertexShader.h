@@ -1,6 +1,7 @@
 #ifndef DX11_VERTEX_SHADER_H
 #define DX11_VERTEX_SHADER_H
 #include "graphics/VertexShader.h"
+#ifdef ICE_WINDOWS
 #include <d3d11.h>
 #include "graphics/DX11GraphicsDriver.h"
 
@@ -31,5 +32,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

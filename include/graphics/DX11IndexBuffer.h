@@ -1,6 +1,7 @@
 #ifndef DX11_INDEX_BUFFER_H
 #define DX11_INDEX_BUFFER_H
 #include "graphics/IndexBuffer.h"
+#ifdef ICE_WINDOWS
 #include <d3d11.h>
 #include "graphics/DX11GraphicsDriver.h"
 
@@ -43,5 +44,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

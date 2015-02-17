@@ -1,6 +1,7 @@
 #ifndef DX11_TEXTURE_H
 #define DX11_TEXTURE_H
 #include "graphics/Texture2D.h"
+#ifdef ICE_WINDOWS
 #include <d3d11.h>
 #include "graphics/DX11GraphicsDriver.h"
 
@@ -40,5 +41,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

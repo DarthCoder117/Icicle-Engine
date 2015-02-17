@@ -1,5 +1,7 @@
 #include "graphics/DX11VertexBuffer.h"
 
+#ifdef ICE_WINDOWS
+
 using namespace ice;
 using namespace graphics;
 
@@ -153,3 +155,5 @@ void DX11VertexBuffer::unlock()
 
 	//Read mode is implemented as a system RAM buffer, so no unlocking is required.
 }
+
+#endif

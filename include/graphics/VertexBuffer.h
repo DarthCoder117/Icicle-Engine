@@ -1,5 +1,6 @@
 #ifndef VERTEX_BUFFER_H
 #define VERTEX_BUFFER_H
+#include <IcicleCommon.h>
 #include "graphics/BufferConstants.h"
 
 namespace ice

@@ -1,6 +1,7 @@
 #ifndef DX11_SHADER_COMPILER_H
 #define DX11_SHADER_COMPILER_H
 #include "graphics/ShaderCompiler.h"
+#ifdef ICE_WINDOWS
 #include <d3d11.h>
 
 namespace ice
@@ -23,5 +24,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

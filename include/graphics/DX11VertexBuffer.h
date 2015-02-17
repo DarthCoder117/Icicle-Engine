@@ -1,6 +1,7 @@
 #ifndef DX11_VERTEX_BUFFER_H
 #define DX11_VERTEX_BUFFER_H
 #include "graphics/VertexBuffer.h"
+#ifdef ICE_WINDOWS
 #include <d3d11.h>
 #include "graphics/DX11GraphicsDriver.h"
 
@@ -39,5 +40,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef DX11_GRAPHICS_DRIVER_H
 #define DX11_GRAPHICS_DRIVER_H
 #include "graphics/GraphicsDriver.h"
+#ifdef ICE_WINDOWS
 #include <system/Window.h>
 #include <Windows.h>
 #include <d3d11.h>
@@ -74,5 +75,7 @@ namespace ice
 		};
 	}
 }
+
+#endif
 
 #endif

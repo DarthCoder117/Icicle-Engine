@@ -1,5 +1,7 @@
 #include "graphics/DX11GraphicsDriver.h"
 
+#ifdef ICE_WINDOWS
+
 #include "graphics/DX11Texture2D.h"
 #include "graphics/DX11VertexBuffer.h"
 #include "graphics/DX11IndexBuffer.h"
@@ -246,3 +248,5 @@ GRAPHICS_DRIVER_TYPE DX11GraphicsDriver::getDriverType()
 {
 	return GDT_DIRECT3D11;
 }
+
+#endif

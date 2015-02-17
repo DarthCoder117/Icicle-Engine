@@ -1,4 +1,5 @@
 #include "graphics/DX11InputLayout.h"
+#ifdef ICE_WINDOWS
 #include <D3Dcompiler.h>
 #include <core/Debug.h>
 
@@ -160,3 +161,5 @@ void DX11InputLayout::addInputLayoutElement(VERTEX_ELEMENT element, unsigned int
 		idx++;
 	}
 }
+
+#endif
