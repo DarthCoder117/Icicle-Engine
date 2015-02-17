@@ -1,5 +1,6 @@
 #ifndef WIN32_WINDOW_H
 #define WIN32_WINDOW_H
+#include <IcicleCommon.h>
 
 #ifdef ICE_WINDOWS
 

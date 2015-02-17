@@ -12,7 +12,6 @@
 #include <system/Win32Window.h>
 
 #include <core/ResourceManager.h>
-#include <graphics/Texture.h>
 
 using namespace ice;
 using namespace core;

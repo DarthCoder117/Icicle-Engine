@@ -1,8 +1,7 @@
-#ifdef ICE_WINDOWS
-
 #include "system/Win32Window.h"
 #include <core/Debug.h>
 
+#ifdef ICE_WINDOWS
 using namespace ice;
 using namespace system;
 
