@@ -30,6 +30,8 @@ namespace ice
 			const DriverCaps& getCaps();
 
 			ShaderCompiler* getShaderCompiler();
+			void setVertexShader(VertexShader* vs);
+			void setPixelShader(PixelShader* ps);
 
 			void setInputLayout(InputLayout* layout);
 
@@ -37,6 +39,8 @@ namespace ice
 			void unsetVertexBuffers();
 
 			void setIndexBuffer(IndexBuffer* buffer);
+
+			void setTexture(Texture2D* tex, unsigned int slot);
 
 			void draw(unsigned int count, unsigned int offset);
 			void drawIndexed(unsigned int offset);
@@ -63,11 +67,6 @@ namespace ice
 			ID3D11DeviceContext* m_deviceContext;
 			IDXGISwapChain* m_swapChain;
 			ID3D11RenderTargetView* m_backBuffer;
-
-			ID3D11Buffer* m_vertexBuffers[16];
-			UINT m_offsets[16];
-			UINT m_strides[16];
-			bool m_vertexBuffersChanged;
 
 			IndexBuffer* m_currentIndexBuffer;
 

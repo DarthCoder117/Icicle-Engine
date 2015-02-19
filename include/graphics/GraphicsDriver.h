@@ -56,6 +56,10 @@ namespace ice
 
 			///@return The shader compiler.
 			virtual ShaderCompiler* getShaderCompiler() = 0;
+			///@brief Sets the vertex shader that will be used for drawing.
+			virtual void setVertexShader(VertexShader* vs) = 0;
+			///@brief Sets the pixel shader that will be used for drawing.
+			virtual void setPixelShader(PixelShader* ps) = 0;
 
 			///@brief Sets the input layout to use for rendering.
 			virtual void setInputLayout(InputLayout* layout) = 0;
@@ -67,6 +71,9 @@ namespace ice
 
 			///@brief Sets an index buffer for drawing.
 			virtual void setIndexBuffer(IndexBuffer* buffer) = 0;
+
+			///@brief Sets a 2D texture to be used for drawing.
+			virtual void setTexture(Texture2D* tex, unsigned int slot) = 0;
 
 			///@brief Draws the currently set vertex buffer(s).
 			///@param count The number of vertices in the vertex buffer(s) to draw.

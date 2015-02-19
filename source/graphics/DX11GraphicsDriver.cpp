@@ -162,6 +162,16 @@ ShaderCompiler* DX11GraphicsDriver::getShaderCompiler()
 	return m_shaderCompiler.get();
 }
 
+void DX11GraphicsDriver::setVertexShader(VertexShader* vs)
+{
+	m_deviceContext->VSSetShader(((DX11VertexShader*)vs)->getD3DShader(), NULL, 0);
+}
+
+void DX11GraphicsDriver::setPixelShader(PixelShader* ps)
+{
+	m_deviceContext->PSSetShader(((DX11PixelShader*)ps)->getD3DShader(), NULL, 0);
+}
+
 void DX11GraphicsDriver::setInputLayout(InputLayout* layout)
 {
 	m_deviceContext->IASetInputLayout(((DX11InputLayout*)layout)->getD3DLayout());
@@ -169,23 +179,23 @@ void DX11GraphicsDriver::setInputLayout(InputLayout* layout)
 
 void DX11GraphicsDriver::setVertexBuffer(VertexBuffer* vb, unsigned int slot)
 {
-	m_offsets[slot] = 0;
-	m_strides[slot] = vb->getVertexSize();
-	m_vertexBuffers[slot] = ((DX11VertexBuffer*)vb)->getD3DBuffer();
+	ID3D11Buffer* vertexBuffers[] = { ((DX11VertexBuffer*)vb)->getD3DBuffer() };
+	UINT offsets[] = { 0 };
+	UINT strides[] = { vb->getVertexSize() };
 
-	m_vertexBuffersChanged = true;
+	m_deviceContext->IASetVertexBuffers(slot, 1, vertexBuffers, strides, offsets);
 }
 
 void DX11GraphicsDriver::unsetVertexBuffers()
 {
-	for (unsigned int i = 0; i < 15; ++i)
-	{
-		m_vertexBuffers[i] = NULL;
-		m_offsets[i] = 0;
-		m_strides[i] = 0;
-	}
+	ID3D11Buffer* vertexBuffers[16];
+	UINT offsets[16];
+	UINT strides[16];
+	ZeroMemory(vertexBuffers, 16);
+	ZeroMemory(offsets, 16);
+	ZeroMemory(strides, 16);
 
-	m_vertexBuffersChanged = true;
+	m_deviceContext->IASetVertexBuffers(0, 16, vertexBuffers, strides, offsets);
 }
 
 void DX11GraphicsDriver::setIndexBuffer(IndexBuffer* buffer)
@@ -197,25 +207,26 @@ void DX11GraphicsDriver::setIndexBuffer(IndexBuffer* buffer)
 	}
 }
 
-void DX11GraphicsDriver::draw(unsigned int count, unsigned int offset)
+void DX11GraphicsDriver::setTexture(Texture2D* tex, unsigned int slot)
 {
-	if (m_vertexBuffersChanged)
+	ID3D11ShaderResourceView* resourceView = NULL;
+
+	if (tex)
 	{
-		m_deviceContext->IASetVertexBuffers(0, 16, m_vertexBuffers, m_strides, m_offsets);
-		m_vertexBuffersChanged = false;
+		DX11Texture2D* d3dTex = (DX11Texture2D*)tex;
+		resourceView = d3dTex->getShaderResourceView();
 	}
 
+	m_deviceContext->PSSetShaderResources(slot, 1, &resourceView);
+}
+
+void DX11GraphicsDriver::draw(unsigned int count, unsigned int offset)
+{
 	m_deviceContext->Draw(count, offset);
 }
 
 void DX11GraphicsDriver::drawIndexed(unsigned int offset)
 {
-	if (m_vertexBuffersChanged)
-	{
-		m_deviceContext->IASetVertexBuffers(0, 16, m_vertexBuffers, m_strides, m_offsets);
-		m_vertexBuffersChanged = false;
-	}
-
 	m_deviceContext->DrawIndexed(m_currentIndexBuffer->getNumIndices(), offset, 0);
 }
 

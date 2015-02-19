@@ -23,7 +23,7 @@ namespace ice
 
 			void init(void* shaderByteCode, size_t shaderByteCodeSz);
 
-			ID3D11PixelShader* getD3DShadeR(){ return m_PS; }
+			ID3D11PixelShader* getD3DShader(){ return m_PS; }
 
 		private:
 
