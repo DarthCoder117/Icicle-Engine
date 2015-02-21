@@ -46,13 +46,14 @@ namespace ice
 	typedef glm::mat4x4 Mat4x4;
 
 	//Engine types
-	typedef u32 ResourceType;
+	typedef unsigned int ResourceType;
 	
 	//Container types
 
 	template <typename T> using Vector = std::vector<T>;
 	template <typename T> using List = std::list<T>;
 	template <typename T> using Queue = std::queue<T>;
+	template <typename T> using Deque = std::deque<T>;
 	template <typename T> using PriorityQueue = std::priority_queue<T>;
 	template <typename T, typename U> using Map = std::map<T, U>;
 	template <typename T, typename U> using UnorderedMap = std::unordered_map<T, U>;
