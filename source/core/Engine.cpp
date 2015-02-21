@@ -25,7 +25,6 @@ Engine::Engine(const LaunchParameters& params, system::Window& window) :
 
 	registerSubSystem(&m_graphics);
 
-	
 	registerSubSystem(&m_fileSystem);
 }
 
@@ -36,9 +35,6 @@ void Engine::init()
 	{
 		iter->start();
 	}
-
-	//This must be set before the game loop can start
-	m_updateFinished.set();
 }
 
 void Engine::startGame()
@@ -52,34 +48,30 @@ void Engine::startGame()
 	shutdown();
 }
 
-void Engine::updateTask()
-{	
-	for (auto iter : m_updateListeners)
-	{
-		iter->update();
-	}
-
-	//Notify threads that update is finished
-	m_updateFinished.set();
-}
-
 void Engine::update()
 {
 	//Update the window
 	m_quit = !m_window.run();
 
-	//Start next game logic update after last one finishes
-	m_updateFinished.wait();
-	m_updateFinished.unset();
-	m_threadPool.run(std::bind(&Engine::updateTask, this));
+	//Start game logic update.
+	for (auto iter : m_updateListeners)
+	{
+		iter->update();
+	}
 
-	//Create resources in main thread 
+	//Create resources in main thread if needed
 	m_resourceMgr.onPostLoad();
+
+	//Wait for game logic to finish updating.
+	for (auto iter : m_updateListeners)
+	{
+		iter->finalize();
+	}
 }
 
 void Engine::render()
 {
-	//Render last simulated frame
+	//Render frame
 	m_graphics.render();
 }
 

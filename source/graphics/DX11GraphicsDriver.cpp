@@ -88,8 +88,6 @@ DX11GraphicsDriver::DX11GraphicsDriver(system::Window* window, u32 flags)
 	D3D11_FEATURE_DATA_THREADING featureData;
 	m_device->CheckFeatureSupport(D3D11_FEATURE_THREADING, &featureData, sizeof(D3D11_FEATURE_DATA_THREADING));
 	m_caps.concurrentCreation = (featureData.DriverConcurrentCreates == TRUE);
-
-	unsetVertexBuffers();
 }
 
 DX11GraphicsDriver::~DX11GraphicsDriver()

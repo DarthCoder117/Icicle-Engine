@@ -16,13 +16,14 @@ namespace ice
 {
 	namespace core
 	{
-		///@brief Basic game logic update.
-		///This is called synchronously from within the simulation thread immediately after the finalization step.
+		///@brief Game logic/simulation update.
 		class UpdateEventListener
 		{
 		public:
 
 			virtual void update(){}
+
+			virtual void finalize(){}
 		};
 
 		///@brief The Engine manages the game loop and SubSystems and serves as the base class for Icicle Engine applications.
@@ -77,9 +78,6 @@ namespace ice
 
 			graphics::Graphics m_graphics;
 
-			void updateTask();
-			ThreadEvent m_updateFinished;
-			
 			system::FileSystem m_fileSystem;
 			core::ResourceManager m_resourceMgr;
 			
