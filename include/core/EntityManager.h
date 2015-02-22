@@ -3,6 +3,7 @@
 #include <IcicleCommon.h>
 #include "core/EngineSystem.h"
 #include "core/Reflection.h"
+#include "core/ComponentType.h"
 
 namespace ice
 {
@@ -37,44 +38,56 @@ namespace ice
 		};
 
 		class EntityManager;
-		class Entity;
 
-		///@brief Class for managing entities using an object oriented interface.
-		class Entity
+		typedef unsigned int SystemType;
+
+		///@brief Components are just basic structures. The only requirement for components is that they store the ID of their owning object.
+		struct Component
+		{
+			EntityID Owner;
+		};
+
+		///@brief Interface for entity systems.
+		class IEntitySystem
 		{
 		public:
 
-			Entity()
-				:m_id(0),
-				m_entityMgr(NULL)
-			{}
+			virtual SystemType getType() = 0;
 
-			Entity(EntityID id, EntityManager* entityMgr)
-				:m_id(id),
-				m_entityMgr(entityMgr)
-			{}
+		protected:
 
-			bool isAlive();
+			static SystemType getNextSystemType()
+			{
+				static SystemType type = 0;
+				SystemType ret = type;
+				type++;
+				return ret;
+			}
+		};
 
-			void remove();
+		///@brief Base interface for entity systems.
+		template <typename T>
+		class EntitySystem : public IEntitySystem
+		{
+		public:
 
-			EntityID getID(){ return m_id; }
+			SystemType getType()
+			{
+				return EntitySystem<T>::staticGetType();
+			}
 
-			EntityManager* getEntityManager(){ return m_entityMgr; }
-
-		private:
-
-			EntityID m_id;
-			EntityManager* m_entityMgr;
+			SystemType staticGetType()
+			{
+				static type = getNextSystemType();
+				return type;
+			}
 		};
 
 		class EntityManager : public IEngineSystem
 		{
 		public:
 
-			Entity& create();
-
-			Entity& get(EntityID id);
+			EntityID create();
 
 			bool alive(EntityID id);
 
@@ -87,7 +100,10 @@ namespace ice
 			static const unsigned int MIN_FREE_INDICES = 1024;
 			Deque<unsigned int> m_freeIndices;//TODO: Use a thread safe queue
 
-			Vector<Entity> m_entityObjects;
+			List<IEntitySystem*> m_systems;
+			Vector<IEntitySystem*> m_systemLookup;
+
+			static Vector<List<Component*> > m_componentLists;
 		};
 	}
 }
