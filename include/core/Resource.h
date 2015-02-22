@@ -49,11 +49,6 @@ namespace ice
 			///@return True if the resource has been loaded, false otherwise.
 			bool isLoaded();
 
-			///@brief Waits until the resource is fully loaded.
-			void wait();
-			///@brief Waits until the resource is at least partially loaded.
-			void waitPartial();
-
 			virtual ResourceType getType() = 0;
 
 			///@brief Adds a reference to this resource for the resource manager to track.
@@ -74,15 +69,21 @@ namespace ice
 
 			friend class ResourceCache;
 
+		protected:
+
+			void partiallyLoaded()
+			{
+				setLoadState(RLS_PARTIALLY_LOADED);
+			}
+
+			void loaded()
+			{
+				setLoadState(RLS_LOADED);
+			}
+
 		private:
 
 			Atomic<RESOURCE_LOAD_STATE> m_state;
-
-			//UniquePtr<Promise<void> > m_partiallyLoadedPromise;
-			//Future<void> m_partiallyLoadedFuture;
-
-			//UniquePtr<Promise<void> > m_loadedPromise;
-			//Future<void> m_loadedFuture;
 
 			Atomic<unsigned int> m_refCount;
 
