@@ -3,6 +3,7 @@
 #include <IcicleCommon.h>
 #include "core/Uncopyable.h"
 #include "core/EngineSystem.h"
+#include "core/EntityManager.h"
 #include "graphics/Graphics.h"
 #include "system/Window.h"
 #include "system/FileSystem.h"
@@ -59,6 +60,8 @@ namespace ice
 
 			system::Window& getWindow(){ return m_window; }
 
+			EntityManager& getEntityManager(){ return m_entityMgr; }
+
 			graphics::Graphics& getGraphics() { return m_graphics; }
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
@@ -75,6 +78,8 @@ namespace ice
 			LaunchParameters m_launchParams;
 
 			system::Window& m_window;
+
+			EntityManager m_entityMgr;
 
 			graphics::Graphics m_graphics;
 

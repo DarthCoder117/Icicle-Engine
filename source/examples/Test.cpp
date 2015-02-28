@@ -21,6 +21,18 @@ using namespace test;
 
 using namespace std;
 
+class TestComponent : public Component<TestComponent>
+{
+public:
+
+	~TestComponent()
+	{
+		printf("Destroyed\n");
+	}
+
+	unsigned int testNum;
+};
+
 int Test::start(int argc, char* argv[])
 {
 	core::LaunchParameters params;
@@ -34,38 +46,33 @@ int Test::start(int argc, char* argv[])
 	#endif
 	Engine engine(params, window);
 	
-// 	//This is where custom sub-systems would be created and registered...
-// 	engine.getFileSystem().mount("test");
-// 	SharedPtr<core::DataStream> stream = engine.getFileSystem().openFile("test-text.txt");
-// 
-// 	size_t streamSz = stream->getSize();
-// 	char* buffer = (char*)malloc(streamSz+1);
-// 	stream->read((void*)buffer, streamSz);
-// 	buffer[streamSz] = NULL;
-// 
-// 	stream->close();
-
-// 	std::cout << "Reflection test:\n";
-// 	std::cout << "Type name - " << ReflectTest::staticReflect()->name() << "\n";
-// 	std::cout << "Type size - " << ReflectTest::staticReflect()->size() << "\n";
-// 	std::cout << "Type ID - " << ReflectTest::staticReflect()->type() << "\n";
-// 	std::cout << "Parent class name - " << ReflectTest::staticReflect()->parent()->name() << "\n";
-// 	if (ReflectTest::staticReflect()->inheritsFrom(ReflectParent::staticReflect()))
-// 	{
-// 		std::cout << "ReflectTest inherits from ReflectParent\n";
-// 	}
-// 	if (!ReflectParent::staticReflect()->inheritsFrom(ReflectTest::staticReflect()))
-// 	{
-// 		std::cout << "ReflectParent does not inherit from ReflectTest\n";
-// 	}
-// 	if (!ReflectTest::staticReflect()->inheritsFrom(ReflectTest::staticReflect()))
-// 	{
-// 		std::cout << "ReflectTest does not inherit from itself\n";
-// 	}
-
 	engine.init();
 
-	//ice::core::ResourceHandle<ice::graphics::Texture> tex = ice::core::ResourceManager::instance()->load<ice::graphics::Texture>("test.dds");
+	Entity* ent = engine.getEntityManager().create();
+	TestComponent* testComp = ent->attach<TestComponent>();
+	printf("Attached TestComponent\n");
+	testComp->testNum = 10;
+
+	if (!ent->has<TestComponent>())
+	{
+		printf("Does not have TestComponent\n");
+	}
+	if (ent->has<TestComponent>())
+	{
+		printf("Has TestComponent\n");
+	}
+
+	ent->detach<TestComponent>();
+	printf("Detached TestComponent\n");
+
+	if (!ent->has<TestComponent>())
+	{
+		printf("Does not have TestComponent\n");
+	}
+	if (ent->has<TestComponent>())
+	{
+		printf("Has TestComponent\n");
+	}
 
  	engine.startGame();
 
