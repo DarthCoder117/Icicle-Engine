@@ -5,6 +5,7 @@
 #include "core/Reflection.h"
 #include "core/ComponentPool.h"
 #include "core/Component.h"
+#include "core/UpdateEventListener.h"
 #include <cassert>
 
 namespace ice
@@ -132,7 +133,7 @@ namespace ice
 			List<IComponent*> m_componentList;
 		};
 
-		class EntityManager : public IEngineSystem
+		class EntityManager : public IEngineSystem, public UpdateEventListener
 		{
 		public:
 
@@ -163,9 +164,12 @@ namespace ice
 			List<IComponent*>::iterator addToUpdateList(IComponent* c);
 			void removeFromUpdateList(List<IComponent*>::iterator c);
 
+			void update();
+
 		private:
 
 			Vector<List<IComponent*> > m_componentLists;
+			Vector<Queue<IComponent*> > m_initLists;
 
 			Vector<char> m_generations;
 			Vector<Entity> m_entityObjects;

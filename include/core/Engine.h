@@ -11,22 +11,13 @@
 #include "core/ResourceManager.h"
 #include "system/ThreadPool.h"
 #include "system/TaskGroup.h"
+#include "core/UpdateEventListener.h"
 #include <gui/Gui.h>
 
 namespace ice
 {
 	namespace core
 	{
-		///@brief Game logic/simulation update.
-		class UpdateEventListener
-		{
-		public:
-
-			virtual void update(){}
-
-			virtual void finalize(){}
-		};
-
 		///@brief The Engine manages the game loop and SubSystems and serves as the base class for Icicle Engine applications.
 		class Engine : public Uncopyable, public system::WindowEventListener, public system::KeyEventListener
 		{
