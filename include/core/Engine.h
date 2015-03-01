@@ -30,6 +30,9 @@ namespace ice
 			///The caller is responsible for managing the SubSystem's memory.
 			void registerSubSystem(IEngineSystem* system);
 
+			///@brief Registers an update event listener with the engine.
+			void registerUpdateListener(UpdateEventListener* listener);
+
 			///@brief Initializes all registered subsystems. This must be called before startGame().
 			void init();
 

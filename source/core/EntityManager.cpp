@@ -1,4 +1,5 @@
 #include "core/EntityManager.h"
+#include "core/Engine.h"
 
 using namespace ice;
 using namespace core;
@@ -61,6 +62,11 @@ IComponent* Entity::get(ComponentType type)
 EntityManager::~EntityManager()
 {
 	clear();
+}
+
+void EntityManager::start()
+{
+	getEngine()->registerUpdateListener(this);
 }
 
 Entity* EntityManager::create()

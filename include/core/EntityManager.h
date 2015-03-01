@@ -139,6 +139,8 @@ namespace ice
 
 			~EntityManager();
 
+			void start();
+
 			Entity* create();
 
 			Entity* find(EntityID id);

@@ -26,6 +26,9 @@ Engine::Engine(const LaunchParameters& params, system::Window& window) :
 	registerSubSystem(&m_graphics);
 
 	registerSubSystem(&m_fileSystem);
+
+	registerSubSystem(&m_entityMgr);
+	
 }
 
 void Engine::init()
@@ -79,6 +82,11 @@ void Engine::registerSubSystem(IEngineSystem* system)
 {
 	m_engineSystems.push_back(system);
 	system->onRegistered(this);
+}
+
+void Engine::registerUpdateListener(UpdateEventListener* listener)
+{
+	m_updateListeners.push_back(listener);
 }
 
 void Engine::shutdown()
