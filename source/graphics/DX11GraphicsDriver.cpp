@@ -8,6 +8,7 @@
 #include "graphics/DX11InputLayout.h"
 #include "graphics/DX11VertexShader.h"
 #include "graphics/DX11PixelShader.h"
+#include "graphics/DX11ConstantBuffer.h"
 
 using namespace ice;
 using namespace graphics;
@@ -199,6 +200,18 @@ void DX11GraphicsDriver::setVertexBuffer(VertexBuffer* vb, unsigned int slot)
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);//TODO: Read this from vertex buffer
 }
 
+void DX11GraphicsDriver::setConstantBufferPS(ConstantBuffer* cb, unsigned int slot)
+{
+	ID3D11Buffer* d3dBuff = ((DX11ConstantBuffer*)cb)->getD3DBuffer();
+	m_deviceContext->PSSetConstantBuffers(slot, 1, &d3dBuff);
+}
+
+void DX11GraphicsDriver::setConstantBufferVS(ConstantBuffer* cb, unsigned int slot)
+{
+	ID3D11Buffer* d3dBuff = ((DX11ConstantBuffer*)cb)->getD3DBuffer();
+	m_deviceContext->VSSetConstantBuffers(slot, 1, &d3dBuff);
+}
+
 void DX11GraphicsDriver::unsetVertexBuffers()
 {
 	ID3D11Buffer* vertexBuffers[16];
@@ -271,6 +284,11 @@ VertexShader* DX11GraphicsDriver::createVertexShader()
 PixelShader* DX11GraphicsDriver::createPixelShader()
 {
 	return new DX11PixelShader(this);
+}
+
+ConstantBuffer* DX11GraphicsDriver::createConstantBuffer(void* data, size_t sz)
+{
+	return new DX11ConstantBuffer(this, data, sz);
 }
 
 GRAPHICS_DRIVER_TYPE DX11GraphicsDriver::getDriverType()

@@ -9,6 +9,7 @@
 #include "graphics/ShaderCompiler.h"
 #include "graphics/VertexShader.h"
 #include "graphics/PixelShader.h"
+#include "graphics/ConstantBuffer.h"
 
 namespace ice
 {
@@ -61,6 +62,11 @@ namespace ice
 			///@brief Sets the pixel shader that will be used for drawing.
 			virtual void setPixelShader(PixelShader* ps) = 0;
 
+			///@brief Sets a constant buffer to the pixel shader.
+			virtual void setConstantBufferPS(ConstantBuffer* cb, unsigned int slot) = 0;
+			///@brief Sets a constant buffer to the vertex shader.
+			virtual void setConstantBufferVS(ConstantBuffer* cb, unsigned int slot) = 0;
+
 			///@brief Sets the input layout to use for rendering.
 			virtual void setInputLayout(InputLayout* layout) = 0;
 
@@ -101,6 +107,8 @@ namespace ice
 			///@brief Creates a pixel shader.
 			///The pixel shader must be initialized afterwards.
 			virtual PixelShader* createPixelShader() = 0;
+			///@brief Creates a shader constant buffer.
+			virtual ConstantBuffer* createConstantBuffer(void* data, size_t sz) = 0;
 
 			virtual GRAPHICS_DRIVER_TYPE getDriverType() = 0;
 		};

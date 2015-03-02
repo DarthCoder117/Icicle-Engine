@@ -33,6 +33,9 @@ namespace ice
 			void setVertexShader(VertexShader* vs);
 			void setPixelShader(PixelShader* ps);
 
+			void setConstantBufferPS(ConstantBuffer* cb, unsigned int slot);
+			void setConstantBufferVS(ConstantBuffer* cb, unsigned int slot);
+
 			void setInputLayout(InputLayout* layout);
 
 			void setVertexBuffer(VertexBuffer* vb, unsigned int idx);
@@ -51,6 +54,7 @@ namespace ice
 			IndexBuffer* createIndexBuffer();
 			VertexShader* createVertexShader();
 			PixelShader* createPixelShader();
+			ConstantBuffer* createConstantBuffer(void* data, size_t sz);
 
 			GRAPHICS_DRIVER_TYPE getDriverType();
 

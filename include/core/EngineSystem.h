@@ -1,7 +1,6 @@
 #ifndef SUB_SYSTEM_H
 #define SUB_SYSTEM_H
 #include "core/Uncopyable.h"
-#include "core/LaunchParameters.h"
 #include "core/ThreadEvent.h"
 
 namespace ice
