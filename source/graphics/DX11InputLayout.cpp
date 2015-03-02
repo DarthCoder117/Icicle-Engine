@@ -33,7 +33,7 @@ DX11InputLayout::~DX11InputLayout()
 	m_layout->Release();
 }
 
-ID3DBlob* g_shaderSignature = NULL;
+SharedPtr<ShaderBlob> g_shaderSignature = NULL;
 
 void DX11InputLayout::init(InputElementDesc elements[], unsigned int numElements)
 {
@@ -61,7 +61,7 @@ void DX11InputLayout::init(InputElementDesc elements[], unsigned int numElements
 	}
 
 	//Create input layout
-	HRESULT hr = m_device->CreateInputLayout(&d3dElements[0], d3dElements.size(), g_shaderSignature->GetBufferPointer(), g_shaderSignature->GetBufferSize(), &m_layout);
+	HRESULT hr = m_device->CreateInputLayout(&d3dElements[0], d3dElements.size(), g_shaderSignature->getByteCode(), g_shaderSignature->getByteCodeSize(), &m_layout);
 	if (FAILED(hr))
 	{
 		return;
@@ -72,22 +72,12 @@ void DX11InputLayout::init(InputElementDesc elements[], unsigned int numElements
 
 void DX11InputLayout::generateShaderSignature()
 {
-	ID3DBlob* vsBlob;
-	ID3DBlob* errorBlob;
+	String vsSrc = "float4 VS( float4 Pos : POSITION ) : SV_POSITION\n"
+	"{\n"
+	"	return Pos;\n"
+	"}";
 
-	String shaderSrc = "float4 empty_vs(uint i : SV_VertexID) : SV_POSITION{return 0;}";
-
-	HRESULT hr = D3DCompile(&shaderSrc[0], shaderSrc.length(), "signature_verification_vertex_shader", NULL, NULL, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_DEBUG, NULL, &vsBlob, &errorBlob);
-	if (FAILED(hr))
-	{
-		core::Debug::log(core::LL_ERROR, "vertex shader", (const char*)errorBlob->GetBufferPointer());
-
-		errorBlob->Release();
-
-		return;
-	}
-
-	g_shaderSignature = vsBlob;
+	g_shaderSignature = m_driver->getShaderCompiler()->compileShader(vsSrc, ST_VERTEX);
 }
 
 #endif

@@ -12,7 +12,7 @@ namespace ice
 		{
 		public:
 
-			LinuxWindow(const Vec2u& size = Vec2u(1280, 720), const String& windowTitle = "Icicle Engine");
+			LinuxWindow(const glm::uvec2& size = glm::uvec2(1280, 720), const String& windowTitle = "Icicle Engine");
 
 			void start();
 
@@ -22,7 +22,7 @@ namespace ice
 
 			void setWindowTitle(const String& title);
 
-			Vec2u getWindowSize();
+			glm::uvec2 getWindowSize();
 
 			WindowHandle getSystemHandle();
 

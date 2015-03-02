@@ -15,7 +15,7 @@ namespace ice
 		{
 		public:
 
-			FileSystem(const core::LaunchParameters& params);
+			FileSystem();
 
 			~FileSystem();
 			

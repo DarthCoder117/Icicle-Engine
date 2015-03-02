@@ -38,8 +38,8 @@ namespace ice
 			Window* window;
 			Type type;
 			
-			Vec2u size;
-			Vec2u position;
+			glm::uvec2 size;
+			glm::uvec2 position;
 		};
 
 		class WindowEventListener 
@@ -66,7 +66,7 @@ namespace ice
 			virtual void setWindowTitle(const String& title) = 0;
 
 			///@return The size in pixels of the drawable client area of the window.
-			virtual Vec2u getWindowSize() = 0;
+			virtual glm::uvec2 getWindowSize() = 0;
 
 			///@return The operating system's native handle to the window.
 			virtual WindowHandle getSystemHandle() = 0;

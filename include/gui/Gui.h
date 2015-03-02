@@ -26,12 +26,15 @@ namespace ice
 			void shutdown();
 			
 		private:
+
 			virtual void onKeyEvent(system::KeyEvent event);
 			virtual void onMouseEvent(system::MouseEvent event);
 			virtual void onTextEvent(system::TextEvent event);
 			virtual void onWindowEvent(system::WindowEvent event);
+
 		private:
-			Vec2 m_lastMousePos;
+
+			glm::vec2 m_lastMousePos;
 			sf::Clock m_clock;
 			
 		private:

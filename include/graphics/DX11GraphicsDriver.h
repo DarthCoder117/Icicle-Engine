@@ -19,11 +19,11 @@ namespace ice
 
 			~DX11GraphicsDriver();
 
-			void reset(const Vec2u& resolution);
+			void reset(const glm::uvec2& resolution);
 
-			void setViewport(const Vec2& vp);
+			void setViewport(const glm::vec2& vp);
 
-			void clear(const Color3f& color, float depth = 1.0f, char stencil = 0);
+			void clear(const glm::vec3& color, float depth = 1.0f, char stencil = 0);
 
 			void present();
 
@@ -46,6 +46,7 @@ namespace ice
 			void drawIndexed(unsigned int offset);
 
 			Texture2D* createTexture();
+			InputLayout* createInputLayout();
 			VertexBuffer* createVertexBuffer();
 			IndexBuffer* createIndexBuffer();
 			VertexShader* createVertexShader();

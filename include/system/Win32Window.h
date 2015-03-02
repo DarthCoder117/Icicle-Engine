@@ -14,7 +14,7 @@ namespace ice
 		{
 		public:
 
-			Win32Window(const Vec2u& size = Vec2u(1280, 720), const String& windowTitle = "Icicle Engine", HWND existingWindow = NULL);
+			Win32Window(const glm::uvec2& size = glm::uvec2(1280, 720), const String& windowTitle = "Icicle Engine", HWND existingWindow = NULL);
 
 			bool run();
 
@@ -22,7 +22,7 @@ namespace ice
 
 			void setWindowTitle(const String& title);
 
-			Vec2u getWindowSize();
+			glm::uvec2 getWindowSize();
 
 			WindowHandle getSystemHandle();
 			

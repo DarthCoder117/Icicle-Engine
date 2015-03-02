@@ -144,7 +144,7 @@ size_t sizeOfDXGIFormat(DXGI_FORMAT format)
 	}
 }
 
-void DX11Texture2D::init(const Vec2u& size, unsigned char* pixelData, TEXTURE_FORMAT format)
+void DX11Texture2D::init(const glm::uvec2& size, unsigned char* pixelData, TEXTURE_FORMAT format)
 {
 	//Init texture
 	D3D11_TEXTURE2D_DESC td;

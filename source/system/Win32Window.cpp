@@ -64,7 +64,7 @@ void Win32Window::windowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	}
 }
 
-Win32Window::Win32Window(const Vec2u& size, const String& windowTitle, HWND existingWindow)
+Win32Window::Win32Window(const glm::uvec2& size, const String& windowTitle, HWND existingWindow)
 	:m_window(existingWindow)
 {
 	//If an existing window was supplied then we only have to attach the new window procedure to it
@@ -164,12 +164,12 @@ void Win32Window::setWindowTitle(const String& title)
 	SetWindowText(m_window, title.c_str());
 }
 
-Vec2u Win32Window::getWindowSize()
+glm::uvec2 Win32Window::getWindowSize()
 {
 	RECT rect;
 	GetClientRect(m_window, &rect);
 
-	return Vec2u(rect.right, rect.bottom);
+	return glm::uvec2(rect.right, rect.bottom);
 }
 
 WindowHandle Win32Window::getSystemHandle()

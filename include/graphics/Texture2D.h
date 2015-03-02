@@ -27,7 +27,7 @@ namespace ice
 
 			virtual ~Texture2D(){}
 
-			virtual void init(const Vec2u& size, unsigned char* pixelData, TEXTURE_FORMAT format) = 0;
+			virtual void init(const glm::uvec2& size, unsigned char* pixelData, TEXTURE_FORMAT format) = 0;
 
 			virtual void unload() = 0;
 
@@ -41,7 +41,7 @@ namespace ice
 
 			TEXTURE_FORMAT m_format;
 
-			Vec2u m_size;
+			glm::uvec2 m_size;
 
 			unsigned char* m_pixelData;
 		};

@@ -9,7 +9,7 @@ using namespace system;
 
 FileSystem* FileSystem::m_inst = NULL;
 
-FileSystem::FileSystem(const core::LaunchParameters& params)
+FileSystem::FileSystem()
 {
 	m_inst = this;
 }

@@ -5,7 +5,7 @@ using namespace ice;
 using namespace system;
 
 #ifdef ICE_LINUX
-LinuxWindow::LinuxWindow(const Vec2u& size, const String& windowTitle)
+LinuxWindow::LinuxWindow(const glm::uvec2& size, const String& windowTitle)
 {
 	/* Initialize the library */
 	if (!glfwInit()) 
@@ -145,7 +145,7 @@ void LinuxWindow::registerWindowRefreshCallback(GLFWwindow* window)
 }
 
 #else
-LinuxWindow::LinuxWindow(const Vec2u& size, const String& windowTitle)
+LinuxWindow::LinuxWindow(const glm::uvec2& size, const String& windowTitle)
 {
 	assert(0 && "Linux window is not supported on this platform.");
 }
@@ -170,9 +170,9 @@ void LinuxWindow::setWindowTitle(const String& title)
 
 }
 
-Vec2u LinuxWindow::getWindowSize()
+glm::uvec2 LinuxWindow::getWindowSize()
 {
-	return Vec2u(0, 0);
+	return glm::uvec2(0, 0);
 }
 
 WindowHandle LinuxWindow::getSystemHandle()

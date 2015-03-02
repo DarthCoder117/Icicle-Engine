@@ -23,7 +23,7 @@ namespace ice
 				unload();
 			}
 
-			void init(const Vec2u& size, unsigned char* pixelData, TEXTURE_FORMAT format);
+			void init(const glm::uvec2& size, unsigned char* pixelData, TEXTURE_FORMAT format);
 
 			void unload();
 

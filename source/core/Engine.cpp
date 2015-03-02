@@ -12,12 +12,11 @@ using namespace system;
 
 using namespace std;
 
-Engine::Engine(const LaunchParameters& params, system::Window& window) :
+Engine::Engine(system::Window& window) :
 	m_quit(false),
-	m_launchParams(params),
 	m_window(window),
 	m_graphics(&m_window),
-	m_fileSystem(params),
+	m_fileSystem(),
 	m_threadPool(6)
 {
 	registerSubSystem(&m_window);

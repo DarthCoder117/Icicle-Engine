@@ -14,6 +14,7 @@
 #include <condition_variable>
 #include <memory>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace ice
 {
@@ -30,21 +31,6 @@ namespace ice
 	typedef float f32;///< Signed 32-bit floating point
 	typedef double f64;///< Signed 64-bit floating point
 	
-	//Vector data types
-
-	typedef glm::u8vec3 Color3;
-	typedef glm::u8vec4 Color4;
-	typedef glm::vec3 Color3f;
-	typedef glm::vec4 Color4f;
-
-	typedef glm::vec2 Vec2;
-	typedef glm::vec3 Vec3;
-	typedef glm::vec4 Vec4;
-	typedef glm::uvec2 Vec2u;
-	typedef glm::uvec3 Vec3u;
-	typedef glm::uvec4 Vec4u;
-	typedef glm::mat4x4 Mat4x4;
-
 	//Engine types
 	typedef unsigned int ResourceType;
 	

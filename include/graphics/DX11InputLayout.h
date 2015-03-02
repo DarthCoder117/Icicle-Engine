@@ -28,8 +28,6 @@ namespace ice
 
 			void generateShaderSignature();
 
-			GraphicsDriver* m_driver;
-
 			ID3D11Device* m_device;
 
 			ID3D11InputLayout* m_layout;

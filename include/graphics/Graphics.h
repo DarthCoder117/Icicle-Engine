@@ -29,11 +29,17 @@ namespace ice
 			
 		private:
 			
-			Vec2u m_windowSize;
+			glm::uvec2 m_windowSize;
 
 			system::Window* m_window;
 
 			UniquePtr<GraphicsDriver> m_driver;
+
+			VertexShader* m_vs;
+			PixelShader* m_ps;
+
+			InputLayout* m_vertLayout;
+			VertexBuffer* m_vertBuffer;
 		};
 	}
 }

@@ -8,7 +8,7 @@ using namespace ice;
 using namespace core;
 using namespace gui;
 
-Gui::Gui() : m_lastMousePos(Vec2(0.0f,0.0f))
+Gui::Gui() : m_lastMousePos(glm::vec2(0.0f, 0.0f))
 {
 	m_clock.restart();
 }

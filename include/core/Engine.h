@@ -23,7 +23,7 @@ namespace ice
 		{
 		public:
 
-			Engine(const LaunchParameters& params, system::Window& window);
+			Engine(system::Window& window);
 
 			///@brief Registers a SubSystem with the Engine.
 			///Any registered SubSystem can be accessed by type later using getSubSystem().
@@ -49,9 +49,6 @@ namespace ice
 			///If using a manually created window, then use update() and render() from within your own window loop.
 			void startGame();
 
-			///@return The parameters used when the engine starts up.
-			LaunchParameters& getLaunchParameters(){ return m_launchParams; }
-
 			system::Window& getWindow(){ return m_window; }
 
 			EntityManager& getEntityManager(){ return m_entityMgr; }
@@ -69,8 +66,6 @@ namespace ice
 			virtual void onWindowEvent(const system::WindowEvent& evt);
 			virtual void onKeyEvent(system::KeyEvent event);
 			
-			LaunchParameters m_launchParams;
-
 			system::Window& m_window;
 
 			EntityManager m_entityMgr;

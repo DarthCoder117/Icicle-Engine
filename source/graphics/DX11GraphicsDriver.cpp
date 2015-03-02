@@ -12,6 +12,15 @@
 using namespace ice;
 using namespace graphics;
 
+struct SimpleVertex
+{
+	SimpleVertex(const glm::vec3& pos)
+	:m_pos(pos.x, pos.y, pos.z)
+	{}
+
+	glm::vec3 m_pos;
+};
+
 DX11GraphicsDriver::DX11GraphicsDriver(system::Window* window, u32 flags)
 	:m_window(window),
 	m_displayFlags(flags),
@@ -100,7 +109,7 @@ DX11GraphicsDriver::~DX11GraphicsDriver()
 	m_deviceContext->Release();
 }
 
-void DX11GraphicsDriver::reset(const Vec2u& resolution)
+void DX11GraphicsDriver::reset(const glm::uvec2& resolution)
 {
 	//TODO: Lock this reset method with a mutex
 
@@ -123,7 +132,7 @@ void DX11GraphicsDriver::reset(const Vec2u& resolution)
 	m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, NULL);
 }
 
-void DX11GraphicsDriver::setViewport(const Vec2& vp)
+void DX11GraphicsDriver::setViewport(const glm::vec2& vp)
 {
 	D3D11_VIEWPORT viewport;
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -138,7 +147,7 @@ void DX11GraphicsDriver::setViewport(const Vec2& vp)
 	m_deviceContext->RSSetViewports(1, &viewport);
 }
 
-void DX11GraphicsDriver::clear(const Color3f& color, float depth, char stencil)
+void DX11GraphicsDriver::clear(const glm::vec3& color, float depth, char stencil)
 {
 	float clearCol[4] = { color.r, color.g, color.b, 1.0f };
 
@@ -177,11 +186,17 @@ void DX11GraphicsDriver::setInputLayout(InputLayout* layout)
 
 void DX11GraphicsDriver::setVertexBuffer(VertexBuffer* vb, unsigned int slot)
 {
-	ID3D11Buffer* vertexBuffers[] = { ((DX11VertexBuffer*)vb)->getD3DBuffer() };
-	UINT offsets[] = { 0 };
-	UINT strides[] = { vb->getVertexSize() };
+	//ID3D11Buffer* vertexBuffers[] = { ((DX11VertexBuffer*)vb)->getD3DBuffer() };
+	//UINT offsets[] = { 0 };
+	//UINT strides[] = { vb->getVertexSize() };
 
-	m_deviceContext->IASetVertexBuffers(slot, 1, vertexBuffers, strides, offsets);
+	ID3D11Buffer* d3dvb = ((DX11VertexBuffer*)vb)->getD3DBuffer();
+	UINT stride = vb->getVertexSize();
+	UINT offset = 0;
+
+	m_deviceContext->IASetVertexBuffers(slot, 1, &d3dvb, &stride, &offset);
+
+	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);//TODO: Read this from vertex buffer
 }
 
 void DX11GraphicsDriver::unsetVertexBuffers()
@@ -193,7 +208,7 @@ void DX11GraphicsDriver::unsetVertexBuffers()
 	ZeroMemory(offsets, 16);
 	ZeroMemory(strides, 16);
 
-	m_deviceContext->IASetVertexBuffers(0, 16, vertexBuffers, strides, offsets);
+	m_deviceContext->IASetVertexBuffers(0, 16, vertexBuffers, strides, offsets);	
 }
 
 void DX11GraphicsDriver::setIndexBuffer(IndexBuffer* buffer)
@@ -231,6 +246,11 @@ void DX11GraphicsDriver::drawIndexed(unsigned int offset)
 Texture2D* DX11GraphicsDriver::createTexture()
 {
 	return new DX11Texture2D(this);
+}
+
+InputLayout* DX11GraphicsDriver::createInputLayout()
+{
+	return new DX11InputLayout(this);
 }
 
 VertexBuffer* DX11GraphicsDriver::createVertexBuffer()

@@ -17,12 +17,12 @@ SharedPtr<ShaderBlob> DX11ShaderCompiler::compileShader(const String& shaderSour
 	if (shaderType == ST_PIXEL)
 	{
 		entryPoint = "PS";
-		shaderModel = "ps_5_0";
+		shaderModel = "ps_4_0";
 	}
 	else if (shaderType == ST_VERTEX)
 	{
 		entryPoint = "VS";
-		shaderModel = "vs_5_0";
+		shaderModel = "vs_4_0";
 	}
 	else
 	{
@@ -33,7 +33,7 @@ SharedPtr<ShaderBlob> DX11ShaderCompiler::compileShader(const String& shaderSour
 	HRESULT hr = D3DCompile(&shaderSource[0], shaderSource.size(), "shader", NULL, NULL, entryPoint, shaderModel, D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_DEBUG, NULL, &vsBlob, &errorBlob);
 	if (FAILED(hr))
 	{
-		core::Debug::log(core::LL_ERROR, "vertex shader", (const char*)errorBlob->GetBufferPointer());
+		core::Debug::log(core::LL_ERROR, "Shader Compiler", (const char*)errorBlob->GetBufferPointer());
 
 		errorBlob->Release();
 

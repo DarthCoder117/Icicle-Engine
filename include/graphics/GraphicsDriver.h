@@ -40,13 +40,13 @@ namespace ice
 			virtual ~GraphicsDriver(){}
 
 			///@brief Recreates the graphics devices with a different resolution/other settings.
-			virtual void reset(const Vec2u& resolution) = 0;
+			virtual void reset(const glm::uvec2& resolution) = 0;
 
 			///@brief Changes the viewport size.
-			virtual void setViewport(const Vec2& vp) = 0;
+			virtual void setViewport(const glm::vec2& vp) = 0;
 
 			///@brief Clears the current render target to prepare for the next frame.
-			virtual void clear(const Color3f& color, float depth = 1.0f, char stencil = 0) = 0;
+			virtual void clear(const glm::vec3& color, float depth = 1.0f, char stencil = 0) = 0;
 
 			///@brief Presents the rendered backbuffer to the screen.
 			virtual void present() = 0;
@@ -86,6 +86,9 @@ namespace ice
 			///@brief Creates a 2D texture resource.
 			///The texture must be initialized afterwards.
 			virtual Texture2D* createTexture() = 0;
+			///@brief Creates an input layout.
+			///Input layouts must be initialized afterwards.
+			virtual InputLayout* createInputLayout() = 0;
 			///@brief Creates a vertex buffer.
 			///The vertex buffer must be initialized afterwards.
 			virtual VertexBuffer* createVertexBuffer() = 0;

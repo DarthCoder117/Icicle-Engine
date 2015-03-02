@@ -45,6 +45,17 @@ private:
 	Graphics* m_graphics;
 };
 
+struct SimpleVertex
+{
+	SimpleVertex(const glm::vec3& pos)
+		:m_pos(pos.x, pos.y, pos.z),
+		m_norm(1.0f)
+	{}
+
+	glm::vec3 m_pos;
+	glm::vec3 m_norm;
+};
+
 void Graphics::start()
 {
 	core::ResourceManager::instance()->registerFactory(new GraphicsResourceFactory(this));
@@ -54,6 +65,56 @@ void Graphics::start()
 	#elif defined(ICE_LINUX)
 
 	#endif
+
+	//TEMPORARY TEST
+
+	//Compile vertex shader
+	String vsSrc = "float4 VS( float3 Pos : POSITION ) : SV_POSITION\n"
+	"{\n"
+	"	return float4(Pos, 1.0f);\n"
+	"}";
+
+	SharedPtr<ShaderBlob> compiledVs = m_driver->getShaderCompiler()->compileShader(vsSrc, ST_VERTEX);
+
+	m_vs = m_driver->createVertexShader();
+	m_vs->init(compiledVs->getByteCode(), compiledVs->getByteCodeSize());
+
+	//Compile pixel shader
+	String psSrc = "float4 PS( float4 Pos : SV_POSITION ) : SV_Target\n"
+	"{\n"
+	"	return float4( 1.0f, 1.0f, 0.0f, 1.0f );\n"
+	"}";
+
+	SharedPtr<ShaderBlob> compiledPs = m_driver->getShaderCompiler()->compileShader(psSrc, ST_PIXEL);
+
+	m_ps = m_driver->createPixelShader();
+	m_ps->init(compiledPs->getByteCode(), compiledPs->getByteCodeSize());
+
+	//Create input layout
+	m_vertLayout = m_driver->createInputLayout();
+
+	InputElementDesc layout[] =
+	{
+		InputElementDesc("POSITION", 0, IEF_FLOAT3, 0)
+	};
+
+	m_vertLayout->init(layout, 1);
+
+	m_driver->setInputLayout(m_vertLayout);
+
+	//Create vertex buffer
+	SimpleVertex vertices[]
+	{
+		SimpleVertex(glm::vec3(0.0f, 0.5f, 0.5f)),
+		SimpleVertex(glm::vec3(0.5f, -0.5f, 0.5f)),
+		SimpleVertex(glm::vec3(-0.5f, -0.5f, 0.5f))
+	};
+
+	m_vertBuffer = m_driver->createVertexBuffer();
+	m_vertBuffer->init(vertices, 3, sizeof(SimpleVertex));
+
+	//Setup render states
+	m_driver->setVertexBuffer(m_vertBuffer, 0);
 }
 
 void Graphics::shutdown()
@@ -63,10 +124,17 @@ void Graphics::shutdown()
 
 void Graphics::render() 
 {
-	Color3f clearColor(0.6f, 0.6f, 0.6f);
+	glm::vec3 clearColor(0.6f, 0.6f, 0.6f);
 	m_driver->clear(clearColor);
 
 	//Draw stuff...
+
+	//TEST
+	m_driver->setPixelShader(m_ps);
+	m_driver->setVertexShader(m_vs);
+	m_driver->draw(3);
+
+	//END OF TEST
 
 	m_driver->present();
 }

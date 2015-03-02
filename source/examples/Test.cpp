@@ -35,16 +35,12 @@ public:
 
 int Test::start(int argc, char* argv[])
 {
-	core::LaunchParameters params;
-	params.m_argc = argc;
-	params.m_argv = argv;
-
 	#if defined(ICE_WINDOWS)
 	Win32Window window;
 	#elif defined(ICE_LINUX)
 	LinuxWindow window;
 	#endif
-	Engine engine(params, window);
+	Engine engine(window);
 	
 	engine.init();
 
