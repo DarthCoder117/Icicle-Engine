@@ -4,6 +4,7 @@ It's currently a work in progress, so any pull requests will most likely be merg
 
 # Todo
 
+* Cleanup engine system initialization
 * Resource manager
 * Graphics system
 * Fix dependency management

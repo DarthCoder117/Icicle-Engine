@@ -1,7 +1,6 @@
 #ifndef FILE_SYSTEM_H
 #define FILE_SYSTEM_H
 #include <IcicleCommon.h>
-#include "core/EngineSystem.h"
 #include "core/DataStream.h"
 #include "system/IFileLocation.h"
 #include <iostream>
@@ -11,7 +10,7 @@ namespace ice
 	namespace system
 	{
 		///@brief The FileSystem sub-system manages a virtual filesystem based on PhysicsFS.
-		class FileSystem : public core::IEngineSystem
+		class FileSystem : core::Uncopyable
 		{
 		public:
 

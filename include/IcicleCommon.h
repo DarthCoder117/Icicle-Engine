@@ -1,6 +1,7 @@
 #ifndef ICICLE_COMMON_H
 #define ICICLE_COMMON_H
 #include <IcicleConfig.h>
+#include <core/Uncopyable.h>
 
 #include <string>
 #include <vector>

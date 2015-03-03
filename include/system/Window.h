@@ -1,7 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 #include <IcicleCommon.h>
-#include "core/EngineSystem.h"
 
 #ifdef ICE_WINDOWS
 #include <Windows.h>
@@ -50,7 +49,7 @@ namespace ice
 		};
 
 		///@brief Manages the application window and sends window events to any subscribed callback listeners.
-		class Window : public core::IEngineSystem
+		class Window
 		{
 		public:
 

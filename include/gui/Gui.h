@@ -4,7 +4,6 @@
 #include <IcicleCommon.h>
 
 #include "core/Uncopyable.h"
-#include "core/EngineSystem.h"
 #include "system/InputSystem.h"
 #include "system/Window.h"
 
@@ -14,7 +13,7 @@ namespace ice
 {
 	namespace gui
 	{
-		class Gui : public core::IEngineSystem, public system::KeyEventListener, public system::MouseEventListener, public system::TextEventListener, public system::WindowEventListener
+		class Gui : public system::KeyEventListener, public system::MouseEventListener, public system::TextEventListener, public system::WindowEventListener
 		{
 		public:
 			Gui();

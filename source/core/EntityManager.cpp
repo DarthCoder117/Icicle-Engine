@@ -64,9 +64,9 @@ EntityManager::~EntityManager()
 	clear();
 }
 
-void EntityManager::start()
+void EntityManager::init(Engine* engine)
 {
-	getEngine()->registerUpdateListener(this);
+	engine->registerUpdateListener(this);
 }
 
 Entity* EntityManager::create()
@@ -105,6 +105,17 @@ void EntityManager::remove(EntityID id)
 	unsigned int idx = id.index();
 	m_generations[idx]++;
 	m_freeIndices.push_back(idx);
+}
+
+const List<IComponent*>& EntityManager::components(ComponentType type)
+{
+	if (m_componentLists.size() <= type)
+	{
+		m_componentLists.resize(type + 1);
+		m_initLists.resize(type + 1);
+	}
+
+	return m_componentLists[type];
 }
 
 void EntityManager::clear()

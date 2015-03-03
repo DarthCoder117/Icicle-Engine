@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <GLFW/glfw3.h>
-#include "core/EngineSystem.h"
 
 namespace ice
 {

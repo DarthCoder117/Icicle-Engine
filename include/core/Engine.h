@@ -2,7 +2,6 @@
 #define ENGINE_H
 #include <IcicleCommon.h>
 #include "core/Uncopyable.h"
-#include "core/EngineSystem.h"
 #include "core/EntityManager.h"
 #include "graphics/Graphics.h"
 #include "system/Window.h"
@@ -23,62 +22,49 @@ namespace ice
 		{
 		public:
 
-			Engine(system::Window& window);
-
-			///@brief Registers a SubSystem with the Engine.
-			///Any registered SubSystem can be accessed by type later using getSubSystem().
-			///The caller is responsible for managing the SubSystem's memory.
-			void registerSubSystem(IEngineSystem* system);
+			///@param window The render window. Cannot be NULL.
+			///@param graphics The graphics module to use for rendering. Cannot be NULL.
+			Engine(system::Window& window, graphics::Graphics& graphics);
 
 			///@brief Registers an update event listener with the engine.
 			void registerUpdateListener(UpdateEventListener* listener);
 
-			///@brief Initializes all registered subsystems. This must be called before startGame().
-			void init();
-
+			///@brief Updates the window and returns whether or not the game should continue running.
+			bool run();
 			///@brief Updates the engine's game world simulation.
 			void update();
-
 			///@brief Render the last simulated frame.
 			void render();
-
-			///@brief Cleans up all registered systems after the game is finished.
-			void shutdown();
 
 			///@brief Starts a game loop with the engine.
 			///If using a manually created window, then use update() and render() from within your own window loop.
 			void startGame();
 
-			system::Window& getWindow(){ return m_window; }
+			system::Window& window(){ return m_window; }
+			graphics::Graphics& graphics() { return m_graphics; }
 
-			EntityManager& getEntityManager(){ return m_entityMgr; }
-
-			graphics::Graphics& getGraphics() { return m_graphics; }
+			EntityManager& entities(){ return m_entityMgr; }
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
-
 			system::ThreadPool& getThreadPool(){ return m_threadPool; }
+			core::ResourceManager& resourceManager(){ return m_resourceMgr; }
 
 		private:
 
-			bool m_quit;
+			void internalInit();
 
 			virtual void onWindowEvent(const system::WindowEvent& evt);
 			virtual void onKeyEvent(system::KeyEvent event);
 			
 			system::Window& m_window;
+			graphics::Graphics& m_graphics;
 
 			EntityManager m_entityMgr;
-
-			graphics::Graphics m_graphics;
-
-			system::FileSystem m_fileSystem;
-			core::ResourceManager m_resourceMgr;
 			
-			Vector<IEngineSystem*> m_engineSystems;
+			core::ResourceManager m_resourceMgr;
 			system::ThreadPool m_threadPool;
-			TaskGroup m_simulationGroup;
-
+			system::FileSystem m_fileSystem;
+			
 			Vector<UpdateEventListener*> m_updateListeners;
 		};
 	}

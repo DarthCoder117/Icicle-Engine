@@ -1,7 +1,6 @@
 #ifndef ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 #include <IcicleCommon.h>
-#include "core/EngineSystem.h"
 #include "core/Reflection.h"
 #include "core/ComponentPool.h"
 #include "core/Component.h"
@@ -42,6 +41,7 @@ namespace ice
 
 		class EntityManager;
 		class Entity;
+		class Engine;
 
 		class Entity
 		{
@@ -133,13 +133,13 @@ namespace ice
 			List<IComponent*> m_componentList;
 		};
 
-		class EntityManager : public IEngineSystem, public UpdateEventListener
+		class EntityManager : public UpdateEventListener
 		{
 		public:
 
 			~EntityManager();
 
-			void start();
+			void init(Engine* engine);
 
 			Entity* create();
 
@@ -148,6 +148,9 @@ namespace ice
 			bool alive(EntityID id);
 
 			void remove(EntityID id);
+
+			const List<IComponent*>& components(ComponentType type);
+			template <typename T> const List<IComponent*>& components(){ return components(T::staticGetType()); }
 
 			void clear();
 

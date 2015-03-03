@@ -1,7 +1,6 @@
 #ifndef RESOURCE_MANAGER_H
 #define RESOURCE_MANAGER_H
 #include <IcicleCommon.h>
-#include "core/EngineSystem.h"
 #include "core/ResourceCache.h"
 #include "core/ResourceFactory.h"
 #include "core/Thread.h"
@@ -12,7 +11,7 @@ namespace ice
 	namespace core
 	{
 		///@brief Manages creation and loading of resources and contains the resource cache.
-		class ResourceManager : public core::IEngineSystem
+		class ResourceManager
 		{
 		public:
 

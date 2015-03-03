@@ -12,49 +12,39 @@ using namespace system;
 
 using namespace std;
 
-Engine::Engine(system::Window& window) :
-	m_quit(false),
-	m_window(window),
-	m_graphics(&m_window),
+Engine::Engine(system::Window& window, graphics::Graphics& graphics)
+	:m_window(window),
+	m_graphics(graphics),
 	m_fileSystem(),
 	m_threadPool(6)
 {
-	registerSubSystem(&m_window);
-	m_window.registerWindowEventListener(this);
-
-	registerSubSystem(&m_graphics);
-
-	registerSubSystem(&m_fileSystem);
-
-	registerSubSystem(&m_entityMgr);
-	
+	internalInit();
 }
 
-void Engine::init()
+void Engine::internalInit()
 {
-	//Call start on all SubSystems
-	for (auto iter : m_engineSystems)
-	{
-		iter->start();
-	}
+	m_window.registerWindowEventListener(this);
+
+	m_graphics.init(this);
+	m_entityMgr.init(this);
 }
 
 void Engine::startGame()
 {
-	while (!m_quit)
+	while (run())
 	{
 		update();
 		render();
 	}
-	
-	shutdown();
+}
+
+bool Engine::run()
+{
+	return m_window.run();
 }
 
 void Engine::update()
 {
-	//Update the window
-	m_quit = !m_window.run();
-
 	//Start game logic update.
 	for (auto iter : m_updateListeners)
 	{
@@ -77,23 +67,9 @@ void Engine::render()
 	m_graphics.render();
 }
 
-void Engine::registerSubSystem(IEngineSystem* system)
-{
-	m_engineSystems.push_back(system);
-	system->onRegistered(this);
-}
-
 void Engine::registerUpdateListener(UpdateEventListener* listener)
 {
 	m_updateListeners.push_back(listener);
-}
-
-void Engine::shutdown()
-{
-	for (auto iter : m_engineSystems)
-	{
-		iter->shutdown();
-	}
 }
 
 void Engine::onWindowEvent(const system::WindowEvent& evt)

@@ -13,6 +13,9 @@
 
 #include <core/ResourceManager.h>
 
+#include <core/Position.h>
+#include <graphics/RenderSystem2D.h>
+
 using namespace ice;
 using namespace core;
 using namespace graphics;
@@ -21,18 +24,6 @@ using namespace test;
 
 using namespace std;
 
-class TestComponent : public Component<TestComponent>
-{
-public:
-
-	~TestComponent()
-	{
-		printf("Destroyed\n");
-	}
-
-	unsigned int testNum;
-};
-
 int Test::start(int argc, char* argv[])
 {
 	#if defined(ICE_WINDOWS)
@@ -40,35 +31,16 @@ int Test::start(int argc, char* argv[])
 	#elif defined(ICE_LINUX)
 	LinuxWindow window;
 	#endif
-	Engine engine(window);
+	Graphics graphics(window);
+
+	Engine engine(window, graphics);
 	
-	engine.init();
-
-	Entity* ent = engine.getEntityManager().create();
-	TestComponent* testComp = ent->attach<TestComponent>();
-	printf("Attached TestComponent\n");
-	testComp->testNum = 10;
-
-	if (!ent->has<TestComponent>())
-	{
-		printf("Does not have TestComponent\n");
-	}
-	if (ent->has<TestComponent>())
-	{
-		printf("Has TestComponent\n");
-	}
-
-	ent->detach<TestComponent>();
-	printf("Detached TestComponent\n");
-
-	if (!ent->has<TestComponent>())
-	{
-		printf("Does not have TestComponent\n");
-	}
-	if (ent->has<TestComponent>())
-	{
-		printf("Has TestComponent\n");
-	}
+	Entity* ent = engine.entities().create();
+	Position* pos = ent->attach<Position>();
+	pos->Pos = glm::vec2(0.0f, 0.2f);
+	SquareRenderer* renderer = ent->attach<SquareRenderer>();
+	renderer->Dimensions = glm::vec2(1.2f, 0.7f);
+	renderer->Color = glm::vec4(0.5f, 0.5f, 1.0f, 1.0f);
 
  	engine.startGame();
 
