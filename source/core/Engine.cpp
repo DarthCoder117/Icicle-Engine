@@ -26,7 +26,7 @@ void Engine::internalInit()
 	m_window.registerWindowEventListener(this);
 
 	m_graphics.init(this);
-	m_entityMgr.init(this);
+	m_world.init(this);
 }
 
 void Engine::startGame()

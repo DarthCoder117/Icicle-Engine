@@ -4,6 +4,7 @@ It's currently a work in progress, so any pull requests will most likely be merg
 
 # Todo
 
+* Reorganize engine into core, engine, framework, and editor lib "layers".
 * Cleanup engine system initialization
 * Resource manager
 * Graphics system

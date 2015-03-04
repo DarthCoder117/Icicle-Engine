@@ -1,5 +1,5 @@
-#ifndef ENTITY_MANAGER_H
-#define ENTITY_MANAGER_H
+#ifndef WORLD_H
+#define WORLD_H
 #include <IcicleCommon.h>
 #include "core/Reflection.h"
 #include "core/ComponentPool.h"
@@ -39,7 +39,7 @@ namespace ice
 			static const unsigned ENTITY_GENERATION_MASK = (1 << ENTITY_GENERATION_BITS) - 1;
 		};
 
-		class EntityManager;
+		class World;
 		class Entity;
 		class Engine;
 
@@ -68,7 +68,7 @@ namespace ice
 				if (m_componentLookup[typeIdx].m_comp == NULL)
 				{
 					//EntityManager is responsible for allocating components so that they can be stored in one contiguous block of memory.
-					T* comp = m_entityMgr->allocateComponent<T>(p...);
+					T* comp = m_world->allocateComponent<T>(p...);
 					comp->m_owner = this;
 
 					//Push component to iteration list
@@ -80,7 +80,7 @@ namespace ice
 					m_componentLookup[typeIdx].m_comp = comp;
 
 					//Add to manager update list and store iterator for later removal
-					m_componentLookup[typeIdx].m_managerListIterator = m_entityMgr->addToUpdateList(comp);
+					m_componentLookup[typeIdx].m_managerListIterator = m_world->addToUpdateList(comp);
 
 					return comp;
 				}
@@ -108,15 +108,15 @@ namespace ice
 
 		private:
 
-			friend class EntityManager;
+			friend class World;
 
-			Entity(EntityID id, EntityManager* entityMgr)
+			Entity(EntityID id, World* world)
 				:m_id(id),
-				m_entityMgr(entityMgr)
+				m_world(world)
 			{}
 
 			EntityID m_id;
-			EntityManager* m_entityMgr;
+			World* m_world;
 
 			struct LookupTableData
 			{
@@ -133,11 +133,11 @@ namespace ice
 			List<IComponent*> m_componentList;
 		};
 
-		class EntityManager : public UpdateEventListener
+		class World : public UpdateEventListener
 		{
 		public:
 
-			~EntityManager();
+			~World();
 
 			void init(Engine* engine);
 

@@ -20,8 +20,6 @@ namespace ice
 			///@param driverType The type of graphics driver to create. If left as GDT_UNKNOWN then it will be automatically selected. 
 			Graphics(system::Window& window, GRAPHICS_DRIVER_TYPE driverType = GDT_UNKNOWN);
 			
-			void init(core::Engine* engine);
-
 			///@brief Registers a rendering event listener.
 			void registerRenderEventListener(RenderEventListener* listener);
 
@@ -30,6 +28,8 @@ namespace ice
 
 			///@return The low level graphics driver.
 			GraphicsDriver* getDriver(){ return m_driver.get(); }
+
+			void init(core::Engine* engine);
 
 			void render();
 			

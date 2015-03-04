@@ -28,10 +28,10 @@ struct ColorBuffer
 	glm::vec4 m_color;
 };
 
-void RenderSystem2D::init(GraphicsDriver* driver, core::EntityManager* entityMgr)
+void RenderSystem2D::init(GraphicsDriver* driver, core::World* world)
 {
 	m_driver = driver;
-	m_entityMgr = entityMgr;
+	m_world = world;
 
 	//Compile shape vertex shader
 	String shapeVsSrc =
@@ -105,7 +105,7 @@ void RenderSystem2D::render(RENDERING_STAGE stage)
 	m_driver->setVertexShader(m_shapeVS);
 	m_driver->setPixelShader(m_shapePS);
 
-	const List<core::IComponent*>& squareComponents = m_entityMgr->components<SquareRenderer>();
+	const List<core::IComponent*>& squareComponents = m_world->components<SquareRenderer>();
 	for (auto iter : squareComponents)
 	{
 		SquareRenderer* square = (SquareRenderer*)iter;

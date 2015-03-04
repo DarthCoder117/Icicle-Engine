@@ -2,7 +2,7 @@
 #define ENGINE_H
 #include <IcicleCommon.h>
 #include "core/Uncopyable.h"
-#include "core/EntityManager.h"
+#include "core/World.h"
 #include "graphics/Graphics.h"
 #include "system/Window.h"
 #include "system/FileSystem.h"
@@ -43,7 +43,7 @@ namespace ice
 			system::Window& window(){ return m_window; }
 			graphics::Graphics& graphics() { return m_graphics; }
 
-			EntityManager& entities(){ return m_entityMgr; }
+			World& world(){ return m_world; }
 
 			system::FileSystem& getFileSystem(){ return m_fileSystem; }
 			system::ThreadPool& getThreadPool(){ return m_threadPool; }
@@ -59,7 +59,7 @@ namespace ice
 			system::Window& m_window;
 			graphics::Graphics& m_graphics;
 
-			EntityManager m_entityMgr;
+			World m_world;
 			
 			core::ResourceManager m_resourceMgr;
 			system::ThreadPool m_threadPool;

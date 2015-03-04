@@ -1,7 +1,7 @@
 #ifndef RENDER_SYSTEM_2D
 #define RENDER_SYSTEM_2D
 #include "graphics/RenderEventListener.h"
-#include <core/EntityManager.h>
+#include <core/World.h>
 #include <core/Component.h>
 
 namespace ice
@@ -33,14 +33,14 @@ namespace ice
 		{
 		public:
 
-			void init(GraphicsDriver* driver, core::EntityManager* entityMgr);
+			void init(GraphicsDriver* driver, core::World* world);
 
 			void render(RENDERING_STAGE stage);
 
 		private:
 
 			GraphicsDriver* m_driver;
-			core::EntityManager* m_entityMgr;
+			core::World* m_world;
 
 			VertexShader* m_shapeVS;
 			PixelShader* m_shapePS;

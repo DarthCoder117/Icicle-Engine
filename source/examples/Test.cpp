@@ -35,7 +35,7 @@ int Test::start(int argc, char* argv[])
 
 	Engine engine(window, graphics);
 	
-	Entity* ent = engine.entities().create();
+	Entity* ent = engine.world().create();
 	Position* pos = ent->attach<Position>();
 	pos->Pos = glm::vec2(0.0f, 0.2f);
 	SquareRenderer* renderer = ent->attach<SquareRenderer>();

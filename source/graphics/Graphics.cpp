@@ -55,7 +55,7 @@ void Graphics::init(core::Engine* engine)
 
 	#endif
 
-	m_renderSystem2D.init(m_driver.get(), &engine->entities());
+	m_renderSystem2D.init(m_driver.get(), &engine->world());
 	registerRenderEventListener(&m_renderSystem2D);
 }
 

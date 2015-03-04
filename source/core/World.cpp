@@ -1,4 +1,4 @@
-#include "core/EntityManager.h"
+#include "core/World.h"
 #include "core/Engine.h"
 
 using namespace ice;
@@ -7,7 +7,7 @@ using namespace core;
 void Entity::remove()
 {
 	detachAll();
-	m_entityMgr->remove(m_id);
+	m_world->remove(m_id);
 }
 
 void Entity::detach(ComponentType type)
@@ -20,8 +20,8 @@ void Entity::detach(ComponentType type)
 	m_componentLookup[type].m_comp->detach();
 
 	//Remove from manager's update list and free component memory
-	m_entityMgr->removeFromUpdateList(m_componentLookup[type].m_managerListIterator);
-	m_entityMgr->deallocateComponent(m_componentLookup[type].m_comp);
+	m_world->removeFromUpdateList(m_componentLookup[type].m_managerListIterator);
+	m_world->deallocateComponent(m_componentLookup[type].m_comp);
 
 	//Clear entry in lookup table
 	m_componentLookup[type].m_comp = NULL;
@@ -59,17 +59,17 @@ IComponent* Entity::get(ComponentType type)
 	return m_componentLookup[type].m_comp;
 }
 
-EntityManager::~EntityManager()
+World::~World()
 {
 	clear();
 }
 
-void EntityManager::init(Engine* engine)
+void World::init(Engine* engine)
 {
 	engine->registerUpdateListener(this);
 }
 
-Entity* EntityManager::create()
+Entity* World::create()
 {
 	//Calculate next ID
 	unsigned int idx = 0;
@@ -90,24 +90,24 @@ Entity* EntityManager::create()
 	return &m_entityObjects[idx];
 }
 
-Entity* EntityManager::find(EntityID id)
+Entity* World::find(EntityID id)
 {
 	return &m_entityObjects[id.index()];
 }
 
-bool EntityManager::alive(EntityID id)
+bool World::alive(EntityID id)
 {
 	return m_generations[id.index()] == id.generation();
 }
 
-void EntityManager::remove(EntityID id)
+void World::remove(EntityID id)
 {
 	unsigned int idx = id.index();
 	m_generations[idx]++;
 	m_freeIndices.push_back(idx);
 }
 
-const List<IComponent*>& EntityManager::components(ComponentType type)
+const List<IComponent*>& World::components(ComponentType type)
 {
 	if (m_componentLists.size() <= type)
 	{
@@ -118,7 +118,7 @@ const List<IComponent*>& EntityManager::components(ComponentType type)
 	return m_componentLists[type];
 }
 
-void EntityManager::clear()
+void World::clear()
 {
 	//This can probably be optimized...
 
@@ -135,14 +135,14 @@ void EntityManager::clear()
 	m_generations.clear();
 }
 
-void EntityManager::deallocateComponent(IComponent* c)
+void World::deallocateComponent(IComponent* c)
 {
 	IComponentPool* pool = m_componentPools[c->getType()].get();
 	c->~IComponent();
 	pool->deallocate(c);
 }
 
-List<IComponent*>::iterator EntityManager::addToUpdateList(IComponent* c)
+List<IComponent*>::iterator World::addToUpdateList(IComponent* c)
 {
 	ComponentType type = c->getType();
 	if (m_componentLists.size() <= type)
@@ -158,7 +158,7 @@ List<IComponent*>::iterator EntityManager::addToUpdateList(IComponent* c)
 	return ret;
 }
 
-void EntityManager::removeFromUpdateList(List<IComponent*>::iterator c)
+void World::removeFromUpdateList(List<IComponent*>::iterator c)
 {
 	ComponentType type = (*c)->getType();
 	assert(m_componentLists.size() > type);
@@ -166,7 +166,7 @@ void EntityManager::removeFromUpdateList(List<IComponent*>::iterator c)
 	m_componentLists[type].erase(c);
 }
 
-void EntityManager::update()
+void World::update()
 {
 	for (auto componentList : m_componentLists)//Iterate first over component type
 	{
